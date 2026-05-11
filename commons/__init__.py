@@ -1,0 +1,1 @@
+"""Shared reference data for synthetic banking datasets."""

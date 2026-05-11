@@ -1,0 +1,45 @@
+{
+  "education_levels": [
+    "No Formal Education",
+    "Primary Education",
+    "High School Incomplete",
+    "High School Completed",
+    "Certificate",
+    "Diploma",
+    "Bachelor Degree",
+    "Honours Degree",
+    "Masters Degree",
+    "Doctorate/PhD"
+  ],
+  "education_probabilities": [0.20, 0.25, 0.25, 0.20, 0.06, 0.03, 0.015, 0.005, 0.003, 0.002],
+  "occupations": [
+    {"name": "Unemployed Unskilled", "required_education": "No Formal Education", "income_range": [0, 15000], "weight": 0.10, "sector": "Informal"},
+    {"name": "Student", "required_education": "High School Completed", "income_range": [0, 60000], "weight": 0.08, "sector": "Education"},
+    {"name": "Domestic Worker", "required_education": "No Formal Education", "income_range": [12000, 60000], "weight": 0.06, "sector": "Informal"},
+    {"name": "Street Vendor", "required_education": "No Formal Education", "income_range": [12000, 60000], "weight": 0.05, "sector": "Informal"},
+    {"name": "Taxi Driver", "required_education": "High School Incomplete", "income_range": [96000, 180000], "weight": 0.05, "sector": "Transport"},
+    {"name": "Spaza Shop Owner", "required_education": "No Formal Education", "income_range": [120000, 420000], "weight": 0.04, "sector": "Retail"},
+    {"name": "Retail Assistant", "required_education": "High School Completed", "income_range": [72000, 180000], "weight": 0.08, "sector": "Retail"},
+    {"name": "Cashier", "required_education": "High School Completed", "income_range": [84000, 180000], "weight": 0.08, "sector": "Retail"},
+    {"name": "Administrative Clerk", "required_education": "High School Completed", "income_range": [96000, 220000], "weight": 0.07, "sector": "Office"},
+    {"name": "Teacher", "required_education": "Bachelor Degree", "income_range": [180000, 420000], "weight": 0.06, "sector": "Public"},
+    {"name": "Nurse", "required_education": "Diploma", "income_range": [180000, 420000], "weight": 0.05, "sector": "Health"},
+    {"name": "Engineer", "required_education": "Bachelor Degree", "income_range": [360000, 900000], "weight": 0.05, "sector": "Technical"},
+    {"name": "Accountant", "required_education": "Bachelor Degree", "income_range": [300000, 720000], "weight": 0.04, "sector": "Finance"},
+    {"name": "IT Support", "required_education": "Certificate", "income_range": [120000, 300000], "weight": 0.05, "sector": "Technology"},
+    {"name": "Software Developer", "required_education": "Bachelor Degree", "income_range": [300000, 900000], "weight": 0.04, "sector": "Technology"},
+    {"name": "Manager", "required_education": "Bachelor Degree", "income_range": [420000, 1200000], "weight": 0.04, "sector": "Management"},
+    {"name": "Farmer", "required_education": "No Formal Education", "income_range": [60000, 360000], "weight": 0.04, "sector": "Agriculture"},
+    {"name": "Driver", "required_education": "High School Incomplete", "income_range": [84000, 180000], "weight": 0.05, "sector": "Transport"},
+    {"name": "Sales Representative", "required_education": "High School Completed", "income_range": [120000, 360000], "weight": 0.05, "sector": "Sales"},
+    {"name": "Cleaner", "required_education": "No Formal Education", "income_range": [72000, 120000], "weight": 0.05, "sector": "Facilities"},
+    {"name": "Security Guard", "required_education": "High School Incomplete", "income_range": [96000, 180000], "weight": 0.05, "sector": "Security"},
+    {"name": "Self Employed Contractor", "required_education": "High School Completed", "income_range": [180000, 1200000], "weight": 0.03, "sector": "Contracting"}
+  ],
+  "informal_occupations": [
+    "Street Vendor",
+    "Domestic Worker",
+    "Taxi Driver",
+    "Spaza Shop Owner"
+  ]
+}
