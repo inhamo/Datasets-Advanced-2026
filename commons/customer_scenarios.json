@@ -1,0 +1,61 @@
+{
+  "recommended_generation_cadence": {
+    "default": "monthly",
+    "rationale": "Monthly batches balance realism and runtime for practice datasets.",
+    "monthly_target_range": [12000, 28000],
+    "daily_target_range": [450, 1200]
+  },
+  "individual_scenarios": {
+    "married_rate": 0.36,
+    "married_shared_surname_rate": 0.63,
+    "minor_account_rate": 0.05,
+    "minor_campaign_school_rate": 0.22,
+    "minor_missing_docs_rate": 0.38,
+    "alias_rate": 0.015,
+    "phone_changer_rate": 0.13,
+    "passport_expired_rate": 0.24,
+    "fraudster_rate": 0.009,
+    "single_letter_name_misspelling_rate": 0.08,
+    "government_official_rate": 0.018,
+    "relative_network_rate": 0.28,
+    "different_surname_relative_rate": 0.57
+  },
+  "fraud_types": [
+    "Account Takeover Suspected",
+    "Synthetic Identity Pattern",
+    "Mule Account Behavior",
+    "Velocity Cash-out",
+    "Document Forgery Indicator",
+    "High-risk Device Fingerprint"
+  ],
+  "government_roles": [
+    "Revenue Service Auditor",
+    "Procurement Specialist",
+    "Policy Analyst",
+    "Municipal Finance Officer",
+    "Public Sector IT Security Analyst",
+    "State-Owned Enterprise Engineer",
+    "Education Department Planner",
+    "Health Systems Data Officer"
+  ],
+  "digital_devices": {
+    "Android": 0.62,
+    "iOS": 0.24,
+    "Web Browser": 0.09,
+    "Feature Phone": 0.05
+  },
+  "digital_exposure_levels": {
+    "Low": 0.25,
+    "Medium": 0.48,
+    "High": 0.27
+  },
+  "country_pack_extensions": {
+    "Kenya": {
+      "enabled": true,
+      "nationality_weight": 0.06,
+      "cities": ["Nairobi", "Mombasa", "Kisumu", "Nakuru", "Eldoret"],
+      "preferred_currency": "KES",
+      "tax_id_label": "KRA PIN"
+    }
+  }
+}

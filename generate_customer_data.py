@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import argparse
 import calendar
 import os
 import random
@@ -14,7 +15,10 @@ from faker import Faker
 from tqdm import tqdm
 
 from commons.data_loader import (
+    get_behavioral_profiles_data,
     get_branches_data,
+    get_company_profiles_data,
+    get_customer_scenarios_data,
     get_locations_data,
     get_location_profiles_data,
     get_names_by_country_data,
@@ -26,6 +30,19 @@ from commons.data_loader import (
 BASE_DIR = Path(__file__).resolve().parent
 OUTPUT_DIR = BASE_DIR / "banking_data"
 COMMONS_DIR = BASE_DIR / "commons"
+
+
+def get_output_path(base_path, year, month=None, record_type="customers"):
+    """
+    Resolve output path for customer files.
+    If month is None, returns base_path/customers_YEAR.parquet (flat structure).
+    If month is specified, returns base_path/YEAR/MM/customers_YEAR_MM.parquet (monthly structure).
+    """
+    if month is None:
+        return os.path.join(str(base_path), f"{record_type}_{year}")
+    year_month = f"{year}_{month:02d}"
+    month_dir = os.path.join(str(base_path), str(year), f"{month:02d}")
+    return os.path.join(month_dir, f"{record_type}_{year_month}")
 
 
 def introduce_typo(text, typo_prob=0.1):
@@ -98,6 +115,9 @@ def load_reference_data():
     occupations_payload = get_occupations_data()
     locations_payload = get_locations_data()
     location_profiles_payload = get_location_profiles_data()
+    behavioral_profiles_payload = get_behavioral_profiles_data()
+    customer_scenarios_payload = get_customer_scenarios_data()
+    company_profiles_payload = get_company_profiles_data()
     branches = get_branches_data()
     names_by_ethnicity = get_names_data()
     names_by_country = get_names_by_country_data()
@@ -150,6 +170,9 @@ def load_reference_data():
         "names_by_ethnicity": names_by_ethnicity,
         "names_by_country": names_by_country,
         "phone_rules": phone_rules,
+        "behavioral_profiles": behavioral_profiles_payload,
+        "customer_scenarios": customer_scenarios_payload,
+        "company_profiles": company_profiles_payload,
         "informal_occupations": occupations_payload.get("informal_occupations", []),
     }
 
@@ -279,7 +302,109 @@ def generate_address(fake, city, province):
     return base_address.strip().replace("  ", " ")
 
 
-def generate_customer_data(year):
+def sample_from_range(value_range):
+    return random.uniform(value_range[0], value_range[1])
+
+
+def income_band_for_amount(amount, income_bands):
+    for band in income_bands:
+        if band["min"] <= amount <= band["max"]:
+            return band["band"]
+    return income_bands[-1]["band"] if income_bands else "Unknown"
+
+
+def apply_single_letter_misspelling(full_name):
+    parts = full_name.split()
+    if not parts:
+        return full_name
+    token_idx = random.randint(0, len(parts) - 1)
+    token = parts[token_idx]
+    if len(token) <= 1:
+        return full_name
+    char_idx = random.randint(0, len(token) - 1)
+    token = token[:char_idx] + random.choice(string.ascii_lowercase) + token[char_idx + 1 :]
+    parts[token_idx] = token.capitalize()
+    return " ".join(parts)
+
+
+def assign_relationships(df, scenarios):
+    if df.empty:
+        return df
+
+    individual_idx = df.index[df["customer_type"] == "Individual"].tolist()
+    if not individual_idx:
+        return df
+
+    for col in [
+        "spouse_customer_id",
+        "family_group_id",
+        "surname_shared_with_spouse",
+        "relative_side",
+        "relative_link_customer_id",
+        "guardian_customer_id",
+        "is_minor_account",
+        "account_opened_for_minor",
+        "campaign_name",
+        "campaign_status",
+    ]:
+        if col not in df.columns:
+            df[col] = None
+
+    married_rate = scenarios["individual_scenarios"].get("married_rate", 0.3)
+    shared_surname_rate = scenarios["individual_scenarios"].get("married_shared_surname_rate", 0.6)
+    candidate_married = [idx for idx in individual_idx if df.at[idx, "marital_status"] in ["Married", "Single"]]
+    random.shuffle(candidate_married)
+    target_pairs = int((len(candidate_married) * married_rate) // 2)
+
+    pair_count = 0
+    while len(candidate_married) >= 2 and pair_count < target_pairs:
+        a = candidate_married.pop()
+        b = candidate_married.pop()
+        df.at[a, "marital_status"] = "Married"
+        df.at[b, "marital_status"] = "Married"
+        df.at[a, "spouse_customer_id"] = df.at[b, "customer_id"]
+        df.at[b, "spouse_customer_id"] = df.at[a, "customer_id"]
+        family_id = f"FAM{random.randint(100000, 999999)}"
+        df.at[a, "family_group_id"] = family_id
+        df.at[b, "family_group_id"] = family_id
+        surname_shared = random.random() < shared_surname_rate
+        df.at[a, "surname_shared_with_spouse"] = surname_shared
+        df.at[b, "surname_shared_with_spouse"] = surname_shared
+        if surname_shared:
+            surname = str(df.at[a, "full_name"]).split()[-1]
+            b_parts = str(df.at[b, "full_name"]).split()
+            if b_parts:
+                b_parts[-1] = surname
+                df.at[b, "full_name"] = " ".join(b_parts)
+        pair_count += 1
+
+    relative_rate = scenarios["individual_scenarios"].get("relative_network_rate", 0.2)
+    relatives_target = int(len(individual_idx) * relative_rate)
+    random.shuffle(individual_idx)
+    sides = ["maternal", "paternal", "inlaw", "extended"]
+    for i in range(0, min(relatives_target * 2, len(individual_idx) - 1), 2):
+        first_idx = individual_idx[i]
+        second_idx = individual_idx[i + 1]
+        df.at[first_idx, "relative_link_customer_id"] = df.at[second_idx, "customer_id"]
+        df.at[second_idx, "relative_link_customer_id"] = df.at[first_idx, "customer_id"]
+        side = random.choice(sides)
+        df.at[first_idx, "relative_side"] = side
+        df.at[second_idx, "relative_side"] = side
+
+    return df
+
+
+def generate_customer_data(year, cadence="monthly", target_records=None, month=None):
+    """
+    Generate customer data for a specific year, optionally filtered to a specific month.
+    
+    If month is None:
+      - All customers for the year are generated and saved to flat structure
+    
+    If month is specified (1-12):
+      - Only customers with date_of_entry in that month are generated/filtered
+      - Saved to monthly structure (banking_data/YEAR/MM/customers_YEAR_MM.parquet)
+    """
     seed_bytes = os.urandom(4)
     seed_int = int.from_bytes(seed_bytes, byteorder="big")
     random.seed(seed_int)
@@ -289,32 +414,39 @@ def generate_customer_data(year):
     fake = Faker("zu_ZA")
     reference_data = load_reference_data()
 
+    scenarios = reference_data["customer_scenarios"]
+    cadence_ranges = scenarios.get("recommended_generation_cadence", {})
+    if cadence == "daily":
+        low, high = cadence_ranges.get("daily_target_range", [450, 1200])
+        default_target = random.randint(low, high)
+    else:
+        low, high = cadence_ranges.get("monthly_target_range", [12000, 28000])
+        default_target = random.randint(low, high)
+
+    total_target = int(target_records) if target_records is not None else default_target
     if year == 2020:
-        num_individuals = random.randint(15, 40)
-        num_companies = random.randint(0, 3)
+        total_target = max(30, int(total_target * 0.15))
         print("Note: 2020 year - Reduced registrations due to COVID-19 lockdowns in South Africa.")
     elif year == 2021:
-        num_individuals = random.randint(10000, 15000)
-        num_companies = random.randint(1, 8)
+        total_target = max(5000 if cadence == "monthly" else 220, int(total_target * 0.75))
         print("Note: 2021 year - Recovery phase post-COVID.")
-    elif year in (2022, 2023):
-        num_individuals = random.randint(18000, 23000)
-        num_companies = random.randint(1, 8)
-    else:
-        num_individuals = random.randint(10000, 20000)
-        num_companies = random.randint(1, 8)
+
+    num_companies = max(1, int(total_target * random.uniform(0.01, 0.03)))
+    num_individuals = max(20, total_target - num_companies)
 
     print(f"Starting generation for year {year}...")
 
     if num_individuals == 0 and num_companies == 0:
         print("No customers generated for this year.")
         df = pd.DataFrame()
-        OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-        output_file = OUTPUT_DIR / f"customers_{year}.parquet"
+        output_base = get_output_path(OUTPUT_DIR, year, month, "customers")
+        output_dir = os.path.dirname(output_base) if month is not None else str(OUTPUT_DIR)
+        os.makedirs(output_dir, exist_ok=True)
+        output_file = Path(output_base + ".parquet")
         try:
             df.to_parquet(output_file, index=False)
         except Exception:
-            output_file = OUTPUT_DIR / f"customers_{year}.csv"
+            output_file = Path(output_base + ".csv")
             df.to_csv(output_file, index=False)
         print(f"Saved to {output_file}")
         return df
@@ -338,14 +470,20 @@ def generate_customer_data(year):
     names_by_country = reference_data["names_by_country"]
     phone_rules = reference_data["phone_rules"]
     location_profiles = reference_data["location_profiles"]
+    behavioral_profiles = reference_data["behavioral_profiles"]
+    company_profiles = reference_data["company_profiles"]
+    scenarios = reference_data["customer_scenarios"]
     informal_occupations = set(reference_data["informal_occupations"])
 
     ethnicity_options = ["Black", "Coloured", "White", "Indian", "Asian"]
     ethnicity_weights = [0.80, 0.09, 0.08, 0.025, 0.005]
-    non_sa_nationalities = ["Zimbabwe", "Lesotho", "Botswana", "Namibia", "Mozambique"]
-    non_sa_weights = [0.30, 0.18, 0.15, 0.12, 0.25]
+    non_sa_nationalities = ["Zimbabwe", "Lesotho", "Botswana", "Namibia", "Mozambique", "Kenya"]
+    non_sa_weights = [0.27, 0.17, 0.15, 0.12, 0.23, 0.06]
     capture_channels = ["Branch", "Mobile", "Online", "Call Center"]
     capture_weights = [0.42, 0.29, 0.22, 0.07]
+    income_bands = behavioral_profiles.get("income_bands", [])
+    segment_balance_behavior = behavioral_profiles.get("segment_balance_behavior", {})
+    province_segment_profiles = behavioral_profiles.get("province_segment_transaction_profiles", {})
 
     def generate_batch_individuals(batch_size_value, start_idx, used_ids_local=None):
         if used_ids_local is None:
@@ -398,9 +536,31 @@ def generate_customer_data(year):
             citizenship = "ZA" if nationality == "South Africa" else nationality[:2].upper()
             full_name = generate_name_from_profile(nationality, ethnicity, gender, names_by_country, names_by_ethnicity)
             full_name = introduce_typo(full_name, 0.05)
+            if random.random() < scenarios["individual_scenarios"].get("single_letter_name_misspelling_rate", 0.08):
+                full_name = apply_single_letter_misspelling(full_name)
+                issues = ["single_letter_name_misspelling"]
+            else:
+                issues = []
 
             income_range = occupation_lookup.get(occupation, {"range": (0, 0)})["range"]
             annual_income = int(np.random.uniform(income_range[0], max(income_range[1], income_range[0] + 1)) * (1 + (age - 25) * 0.01))
+            customer_segment = random.choices(["Retail", "Mass Market", "Affluent"], weights=[0.62, 0.30, 0.08], k=1)[0]
+            income_band = income_band_for_amount(annual_income, income_bands)
+
+            balance_profile = segment_balance_behavior.get(customer_segment, segment_balance_behavior.get("Retail", {}))
+            opening_balance = round(sample_from_range(balance_profile.get("opening_balance_range", [50, 2500])), 2)
+            avg_monthly_balance = round(sample_from_range(balance_profile.get("avg_monthly_balance_range", [1000, 18000])), 2)
+            balance_volatility = round(sample_from_range(balance_profile.get("volatility_range", [0.25, 0.65])), 3)
+
+            province_txn_profile = province_segment_profiles.get(province, {}).get(customer_segment, {})
+            expected_monthly_txn_count = int(sample_from_range(province_txn_profile.get("monthly_txn_range", [18, 90])))
+            cash_deposit_ratio = round(sample_from_range(province_txn_profile.get("cash_deposit_ratio_range", [0.05, 0.25])), 3)
+            merchant_spend_ratio = round(sample_from_range(province_txn_profile.get("merchant_spend_ratio_range", [0.3, 0.75])), 3)
+            cross_border_txn_ratio = round(sample_from_range(province_txn_profile.get("cross_border_ratio_range", [0.0, 0.06])), 3)
+
+            device_type = pick_from_distribution(scenarios.get("digital_devices", {"Android": 1.0}))
+            digital_exposure_level = pick_from_distribution(scenarios.get("digital_exposure_levels", {"Medium": 1.0}))
+
             base_risk = 0.15
             if annual_income < 120000:
                 base_risk += 0.25
@@ -412,6 +572,8 @@ def generate_customer_data(year):
                 base_risk += 0.03
             if province_profile.get("exposure", {}).get("cash_preference", 0) > 0.4:
                 base_risk += 0.02
+            if digital_exposure_level == "Low":
+                base_risk += 0.02
             risk_score = min(round(base_risk + np.random.random() * 0.15, 3), 0.99)
 
             max_birth_date = date(year, 12, 31) - timedelta(days=21 * 365)
@@ -419,7 +581,6 @@ def generate_customer_data(year):
             days_range = (max_birth_date - min_birth_date).days
             correct_birth_date = min_birth_date + timedelta(days=random.randint(0, days_range))
             birth_date = correct_birth_date
-            issues = []
             if random.random() < 0.05:
                 birth_date = adjust_date_for_year(correct_birth_date, random.choice([100, -100, 10, -10]))
                 issues.append("birth_date_mismatch")
@@ -442,9 +603,13 @@ def generate_customer_data(year):
                 date_of_entry = date(year, random.randint(1, 12), random.randint(1, 28))
 
             phone_number = generate_phone_number(nationality, phone_rules)
+            phone_change_count = 0
             if random.random() < 0.15:
                 phone_number = mutate_phone_number(phone_number)
                 issues.append("phone_format_error")
+            if random.random() < scenarios["individual_scenarios"].get("phone_changer_rate", 0.13):
+                phone_change_count = random.randint(1, 4)
+                issues.append("phone_number_changer")
 
             email = fake.email() if random.random() < 0.65 else None
             if email and random.random() < 0.12:
@@ -512,10 +677,38 @@ def generate_customer_data(year):
                 visa_type = random.choice(["Work", "Study", "Business", "Residence"])
                 visa_expiry_date = fake.date_between(start_date=date(year - 2, 1, 1), end_date=date(year + 2, 1, 1))
 
+            passport_expired = False
+            if id_type == "Passport" and random.random() < scenarios["individual_scenarios"].get("passport_expired_rate", 0.24):
+                passport_expired = True
+                issues.append("expired_passport")
+
+            is_alias = random.random() < scenarios["individual_scenarios"].get("alias_rate", 0.015)
+            alias_name = None
+            if is_alias:
+                alias_name = introduce_typo(generate_name_from_profile(nationality, ethnicity, gender, names_by_country, names_by_ethnicity), 0.2)
+                issues.append("alias_name_detected")
+
+            is_fraudster = random.random() < scenarios["individual_scenarios"].get("fraudster_rate", 0.009)
+            fraud_type = None
+            if is_fraudster:
+                fraud_type = random.choice(scenarios.get("fraud_types", ["Synthetic Identity Pattern"]))
+                risk_score = min(0.99, round(risk_score + 0.22, 3))
+                issues.append("fraud_pattern")
+
+            is_government_official = random.random() < scenarios["individual_scenarios"].get("government_official_rate", 0.018)
+            government_role = random.choice(scenarios.get("government_roles", [])) if is_government_official else None
+            if is_government_official and occupation in ["Student", "Unemployed Unskilled"]:
+                occupation = random.choice(["Policy Analyst", "Administrative Clerk", "Accountant", "Engineer"])
+
             preferred_contact_method = random.choice(["Email", "Phone", "SMS", None])
-            next_of_kin = None if random.random() < 0.85 else introduce_typo(generate_name_from_ethnicity(ethnicity, random.choice(["M", "F"]), names_by_ethnicity), 0.05)
+            next_of_kin = None if random.random() < 0.85 else introduce_typo(generate_name_from_profile(nationality, ethnicity, random.choice(["M", "F"]), names_by_country, names_by_ethnicity), 0.05)
             is_pep = random.random() < 0.01
             sanctioned_country = random.random() < 0.005
+            if is_government_official and random.random() < 0.15:
+                is_pep = True
+
+            campaign_name = None
+            campaign_status = None
 
             customer_data = {
                 "customer_id": customer_id,
@@ -531,9 +724,14 @@ def generate_customer_data(year):
                 "phone_number": phone_number,
                 "id_type": id_type,
                 "id_number": id_number,
-                "expiry_date": None if id_type == "National ID" else fake.future_date(end_date="+3y"),
+                "expiry_date": (
+                    fake.date_between(start_date=date(year - 5, 1, 1), end_date=date(year - 1, 12, 31))
+                    if passport_expired
+                    else None if id_type == "National ID" else fake.future_date(end_date="+3y")
+                ),
                 "visa_type": visa_type,
                 "visa_expiry_date": visa_expiry_date,
+                "passport_expired": passport_expired,
                 "is_pep": is_pep,
                 "sanctioned_country": sanctioned_country,
                 "risk_score": risk_score,
@@ -551,10 +749,27 @@ def generate_customer_data(year):
                 "next_of_kin": next_of_kin,
                 "date_of_entry": date_of_entry,
                 "annual_income": annual_income,
+                "income_band": income_band,
+                "opening_balance": opening_balance,
+                "avg_monthly_balance": avg_monthly_balance,
+                "balance_volatility": balance_volatility,
+                "expected_monthly_txn_count": expected_monthly_txn_count,
+                "cash_deposit_ratio": cash_deposit_ratio,
+                "merchant_spend_ratio": merchant_spend_ratio,
+                "cross_border_txn_ratio": cross_border_txn_ratio,
                 "education_level": education,
                 "location_exposure": exposure_profile,
                 "financial_goal": customer_goal,
                 "spending_habit": spending_habit,
+                "device_type": device_type,
+                "digital_exposure_level": digital_exposure_level,
+                "phone_change_count": phone_change_count,
+                "is_alias": is_alias,
+                "alias_name": alias_name,
+                "is_fraudster": is_fraudster,
+                "fraud_type": fraud_type,
+                "is_government_official": is_government_official,
+                "government_role": government_role,
                 "ethnicity": ethnicity,
                 "branch_id": branch["branch_id"],
                 "branch_name": branch["branch_name"],
@@ -562,7 +777,9 @@ def generate_customer_data(year):
                 "branch_province": branch["province"],
                 "capture_channel": capture_channel,
                 "source_system": random.choice(["core_banking", "branch_capture", "digital_onboarding", "migration_import"]),
-                "customer_segment": random.choice(["Retail", "Mass Market", "Affluent"]),
+                "customer_segment": customer_segment,
+                "campaign_name": campaign_name,
+                "campaign_status": campaign_status,
                 "is_affidavit": False,
                 "data_issue_flags": ";".join(issues) if issues else None,
             }
@@ -574,16 +791,21 @@ def generate_customer_data(year):
 
     def generate_batch_companies(batch_size_value, start_idx, used_ids_local):
         results = []
+        size_mix = company_profiles.get("size_mix", {"Small": 1.0})
+        size_profiles = company_profiles.get("company_size_profiles", {})
+        business_types = company_profiles.get("business_types", ["Services"])
         for i in range(batch_size_value):
             idx = start_idx + i + 1
             company_name = introduce_typo(fake.company(), 0.05)
-            company_age = random.randint(1, 20)
-            employees = random.randint(5, 80)
-            turnover = random.randint(1000000, 30000000)
+            company_age = random.randint(1, 60)
+            company_size = pick_from_distribution(size_mix)
+            size_profile = size_profiles.get(company_size, {})
+            employees = random.randint(*size_profile.get("employees_range", [5, 80]))
+            turnover = random.randint(*size_profile.get("turnover_range", [1000000, 30000000]))
             province = random.choices(provinces, weights=province_probs, k=1)[0]
             city = random.choice(cities_by_province[province])
             branch = choose_branch(province, city, reference_data)
-            risk_score = round(0.2 + np.random.random() * 0.25, 3)
+            risk_score = round(size_profile.get("risk_base", 0.2) + np.random.random() * 0.25, 3)
             date_of_entry = date(year, random.randint(1, 12), random.randint(1, 28))
             phone_number = generate_phone_number("South Africa", phone_rules)
             if random.random() < 0.1:
@@ -599,6 +821,19 @@ def generate_customer_data(year):
                 issues.append("branch_mismatch")
             if random.random() < 0.08:
                 issues.append("company_name_typo")
+
+            segment_weights = size_profile.get("segment_weights", {"SME": 1.0})
+            company_segment = pick_from_distribution(segment_weights)
+            balance_profile = segment_balance_behavior.get(company_segment, segment_balance_behavior.get("SME", {}))
+            opening_balance = round(sample_from_range(balance_profile.get("opening_balance_range", [5000, 60000])), 2)
+            avg_monthly_balance = round(sample_from_range(balance_profile.get("avg_monthly_balance_range", [25000, 700000])), 2)
+            balance_volatility = round(sample_from_range(balance_profile.get("volatility_range", [0.2, 0.7])), 3)
+
+            province_txn_profile = province_segment_profiles.get(province, {}).get("Mass Market", {})
+            expected_monthly_txn_count = int(sample_from_range(province_txn_profile.get("monthly_txn_range", [45, 300])) * (1.25 if company_size == "Large" else 1.0))
+            cash_deposit_ratio = round(sample_from_range(province_txn_profile.get("cash_deposit_ratio_range", [0.02, 0.2])), 3)
+            merchant_spend_ratio = round(sample_from_range(province_txn_profile.get("merchant_spend_ratio_range", [0.3, 0.8])), 3)
+            cross_border_txn_ratio = round(sample_from_range(province_txn_profile.get("cross_border_ratio_range", [0.0, 0.1])) + (0.05 if company_size == "Large" else 0.0), 3)
 
             company_data = {
                 "customer_id": customer_id,
@@ -621,7 +856,7 @@ def generate_customer_data(year):
                 "sanctioned_country": random.random() < 0.005,
                 "risk_score": risk_score,
                 "tax_id_number": "".join(str(random.randint(0, 9)) for _ in range(10)) if random.random() < 0.9 else None,
-                "occupation": random.choice(["Retail", "Manufacturing", "Finance", "IT", "Services", "Informal Trade"]),
+                "occupation": random.choice(business_types),
                 "employer_name": None,
                 "source_of_funds": random.choice(["Business Income", "Investment Income", "Trade Receipts"]),
                 "marital_status": None,
@@ -630,10 +865,27 @@ def generate_customer_data(year):
                 "next_of_kin": introduce_typo(fake.name(), 0.05) if random.random() < 0.8 else None,
                 "date_of_entry": date_of_entry,
                 "annual_income": turnover,
+                "income_band": income_band_for_amount(turnover, income_bands),
+                "opening_balance": opening_balance,
+                "avg_monthly_balance": avg_monthly_balance,
+                "balance_volatility": balance_volatility,
+                "expected_monthly_txn_count": expected_monthly_txn_count,
+                "cash_deposit_ratio": cash_deposit_ratio,
+                "merchant_spend_ratio": merchant_spend_ratio,
+                "cross_border_txn_ratio": cross_border_txn_ratio,
                 "education_level": None,
                 "location_exposure": None,
                 "financial_goal": None,
                 "spending_habit": None,
+                "device_type": random.choice(["Web Browser", "Android", "iOS"]),
+                "digital_exposure_level": random.choice(["Medium", "High"]),
+                "phone_change_count": random.randint(0, 3),
+                "is_alias": False,
+                "alias_name": None,
+                "is_fraudster": random.random() < 0.004,
+                "fraud_type": random.choice(scenarios.get("fraud_types", ["Mule Account Behavior"])) if random.random() < 0.004 else None,
+                "is_government_official": False,
+                "government_role": None,
                 "ethnicity": None,
                 "branch_id": branch["branch_id"],
                 "branch_name": branch["branch_name"],
@@ -641,12 +893,13 @@ def generate_customer_data(year):
                 "branch_province": branch["province"],
                 "capture_channel": random.choice(["Branch", "Online", "Call Center"]),
                 "source_system": random.choice(["core_banking", "branch_capture", "digital_onboarding", "migration_import"]),
-                "customer_segment": random.choice(["SME", "Commercial", "Corporate"]),
+                "customer_segment": company_segment,
                 "company_age": company_age,
+                "company_size": company_size,
                 "number_of_employees": employees,
                 "annual_turnover": turnover,
-                "directors_count": random.randint(1, 3),
-                "shareholders_count": random.randint(1, 5),
+                "directors_count": random.randint(*size_profile.get("directors_range", [1, 3])),
+                "shareholders_count": random.randint(*size_profile.get("shareholders_range", [1, 5])),
                 "beneficial_owners_count": random.randint(1, 4),
                 "bee_level": random.randint(1, 8) if random.random() < 0.7 else None,
                 "vat_registered": random.random() < 0.7,
@@ -658,6 +911,135 @@ def generate_customer_data(year):
             results.append(company_data)
         return results, used_ids_local
 
+    def generate_minor_accounts(adult_records, start_idx, used_ids_local):
+        minor_rate = scenarios["individual_scenarios"].get("minor_account_rate", 0.05)
+        school_rate = scenarios["individual_scenarios"].get("minor_campaign_school_rate", 0.22)
+        docs_missing_rate = scenarios["individual_scenarios"].get("minor_missing_docs_rate", 0.38)
+        target_minors = int(len(adult_records) * minor_rate)
+        if target_minors <= 0:
+            return [], used_ids_local
+
+        candidates = [r for r in adult_records if r.get("customer_type") == "Individual"]
+        random.shuffle(candidates)
+        minor_records = []
+        local_idx = start_idx
+
+        for parent in candidates[:target_minors]:
+            guardian_nationality = parent.get("nationality", "South Africa")
+            guardian_ethnicity = parent.get("ethnicity", "Black")
+            gender = random.choice(["M", "F"])
+            minor_name = generate_name_from_profile(
+                guardian_nationality,
+                guardian_ethnicity,
+                gender,
+                names_by_country,
+                names_by_ethnicity,
+            )
+
+            birth_year = year - random.randint(7, 17)
+            month = random.randint(1, 12)
+            day = random.randint(1, 28)
+            birth_date = date(birth_year, month, day)
+            is_school_campaign = random.random() < school_rate
+            missing_docs = is_school_campaign and random.random() < docs_missing_rate
+            issues = ["minor_account"]
+            if missing_docs:
+                issues.append("pending_documents_after_campaign")
+
+            customer_id = f"IND{year % 100:02d}{local_idx:06d}"
+            while customer_id in used_ids_local:
+                local_idx += 1
+                customer_id = f"IND{year % 100:02d}{local_idx:06d}"
+            used_ids_local.add(customer_id)
+
+            branch = choose_branch(parent["branch_province"], parent["branch_city"], reference_data)
+            campaign_name = "School Drive Campaign" if is_school_campaign else None
+            campaign_status = "Pending Documents" if missing_docs else ("Completed" if is_school_campaign else None)
+
+            minor_record = {
+                "customer_id": customer_id,
+                "customer_type": "Individual",
+                "full_name": introduce_typo(minor_name, 0.03),
+                "birth_date": birth_date,
+                "citizenship": parent.get("citizenship", "ZA"),
+                "nationality": guardian_nationality,
+                "residential_address": parent.get("residential_address"),
+                "residential_postal_code": parent.get("residential_postal_code"),
+                "commercial_address": None,
+                "email": None,
+                "phone_number": None,
+                "id_type": "Birth Certificate",
+                "id_number": generate_birth_certificate_number(),
+                "expiry_date": None,
+                "visa_type": None,
+                "visa_expiry_date": None,
+                "passport_expired": False,
+                "is_pep": False,
+                "sanctioned_country": False,
+                "risk_score": round(random.uniform(0.08, 0.35), 3),
+                "tax_id_number": None,
+                "occupation": "Student",
+                "employer_name": None,
+                "source_of_funds": "Parent/Guardian Support",
+                "marital_status": "Single",
+                "gender": gender,
+                "preferred_contact_method": "Guardian",
+                "next_of_kin": parent.get("full_name"),
+                "date_of_entry": date(year, random.randint(1, 12), random.randint(1, 28)),
+                "annual_income": 0,
+                "income_band": "Very Low",
+                "opening_balance": round(random.uniform(0, 350), 2),
+                "avg_monthly_balance": round(random.uniform(80, 1500), 2),
+                "balance_volatility": round(random.uniform(0.2, 0.5), 3),
+                "expected_monthly_txn_count": random.randint(2, 18),
+                "cash_deposit_ratio": round(random.uniform(0.05, 0.4), 3),
+                "merchant_spend_ratio": round(random.uniform(0.0, 0.25), 3),
+                "cross_border_txn_ratio": 0.0,
+                "education_level": random.choice(["Primary Education", "High School Incomplete", "High School Completed"]),
+                "location_exposure": "Guardian Controlled",
+                "financial_goal": "school_fees",
+                "spending_habit": "mobile_airtime",
+                "device_type": "Feature Phone",
+                "digital_exposure_level": "Low",
+                "phone_change_count": 0,
+                "is_alias": False,
+                "alias_name": None,
+                "is_fraudster": False,
+                "fraud_type": None,
+                "is_government_official": False,
+                "government_role": None,
+                "ethnicity": guardian_ethnicity,
+                "branch_id": branch["branch_id"],
+                "branch_name": branch["branch_name"],
+                "branch_city": branch["city"],
+                "branch_province": branch["province"],
+                "capture_channel": "Branch" if not is_school_campaign else "Campaign",
+                "source_system": "campaign_capture" if is_school_campaign else "branch_capture",
+                "customer_segment": "Retail",
+                "company_age": None,
+                "company_size": None,
+                "number_of_employees": None,
+                "annual_turnover": None,
+                "directors_count": None,
+                "shareholders_count": None,
+                "beneficial_owners_count": None,
+                "bee_level": None,
+                "vat_registered": None,
+                "industry_risk_rating": None,
+                "campaign_name": campaign_name,
+                "campaign_status": campaign_status,
+                "is_affidavit": False,
+                "data_issue_flags": ";".join(issues),
+                "guardian_customer_id": parent.get("customer_id"),
+                "is_minor_account": True,
+                "account_opened_for_minor": True,
+            }
+            minor_records.append(minor_record)
+            quality_counter.update(issues)
+            local_idx += 1
+
+        return minor_records, used_ids_local
+
     current_idx = 0
     print(f"Generating {num_individuals} individuals in {individual_batches} batches...")
     for batch in tqdm(range(individual_batches), desc="Individual batches"):
@@ -667,12 +1049,20 @@ def generate_customer_data(year):
         all_customers.extend(batch_customers)
         current_idx += current_batch_size
 
+    minor_customers, used_ids = generate_minor_accounts(all_customers, current_idx, used_ids)
+    if minor_customers:
+        print(f"Generating {len(minor_customers)} minors opened by guardians/campaigns...")
+        all_customers.extend(minor_customers)
+        num_individuals += len(minor_customers)
+        current_idx += len(minor_customers)
+
     if num_companies > 0:
         print(f"Generating {num_companies} companies...")
         company_customers, used_ids = generate_batch_companies(num_companies, 0, used_ids)
         all_customers.extend(company_customers)
 
     df = pd.DataFrame(all_customers)
+    df = assign_relationships(df, scenarios)
 
     if "reason_for_opening_account" in df.columns:
         df = df.drop(columns=["reason_for_opening_account"])
@@ -691,22 +1081,33 @@ def generate_customer_data(year):
                 replace=False,
             )
             df.loc[next_of_kin_indices, "next_of_kin"] = [
-                introduce_typo(generate_name_from_ethnicity(random.choice(ethnicity_options), random.choice(["M", "F"]), names_by_ethnicity), 0.05)
+                introduce_typo(generate_name_from_profile("South Africa", random.choice(ethnicity_options), random.choice(["M", "F"]), names_by_country, names_by_ethnicity), 0.05)
                 for _ in range(len(next_of_kin_indices))
             ]
 
     df = df.sample(frac=1, random_state=seed_int).reset_index(drop=True)
+    
+    # Filter by month if specified
+    if month is not None:
+        df['entry_month'] = pd.to_datetime(df['date_of_entry']).dt.month
+        df = df[df['entry_month'] == month].copy()
+        df.drop('entry_month', axis=1, inplace=True)
 
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    output_file = OUTPUT_DIR / f"customers_{year}.parquet"
+    output_base = get_output_path(OUTPUT_DIR, year, month, "customers")
+    output_dir = os.path.dirname(output_base) if month is not None else str(OUTPUT_DIR)
+    os.makedirs(output_dir, exist_ok=True)
+    output_file = Path(output_base + ".parquet")
     try:
         df.to_parquet(output_file, index=False)
     except Exception as exc:
         print(f"Parquet export failed ({exc}); writing CSV fallback.")
-        output_file = OUTPUT_DIR / f"customers_{year}.csv"
+        output_file = Path(output_base + ".csv")
         df.to_csv(output_file, index=False)
 
-    print(f"Generated {len(df)} customers (Individuals: {num_individuals}, Companies: {num_companies}) for year {year}")
+    print(
+        f"Generated {len(df)} customers (Individuals: {num_individuals}, Companies: {num_companies}) "
+        f"for year {year}{' (month ' + str(month).zfill(2) + ')' if month is not None else ''} using cadence={cadence}."
+    )
     if not df.empty:
         individual_df = df[df["customer_type"] == "Individual"]
         if len(individual_df) > 0:
@@ -725,6 +1126,10 @@ def generate_customer_data(year):
                 & (individual_df["birth_date"].apply(format_date_yymmdd) != individual_df["id_number"].str[:6])
             ]
             flagged_rows = df["data_issue_flags"].notna().sum() if "data_issue_flags" in df.columns else 0
+            fraudsters = int(individual_df.get("is_fraudster", pd.Series(dtype=bool)).fillna(False).sum())
+            aliases = int(individual_df.get("is_alias", pd.Series(dtype=bool)).fillna(False).sum())
+            minors = int(individual_df.get("is_minor_account", pd.Series(dtype=bool)).fillna(False).sum())
+            expired_passports = int(individual_df.get("passport_expired", pd.Series(dtype=bool)).fillna(False).sum())
 
             print("Data Quality Summary:")
             print(f"- Unemployed individuals with employer names: {len(unemployed_with_employer)}")
@@ -735,14 +1140,50 @@ def generate_customer_data(year):
             print(f"- Duplicate customer_id: {len(duplicate_ids)}")
             print(f"- Rows with explicit issue flags: {flagged_rows}")
             print(f"- Clean rows: {quality_counter.get('clean', 0)}")
+            print(f"- Flagged fraud-like profiles: {fraudsters}")
+            print(f"- Alias-name profiles: {aliases}")
+            print(f"- Minor accounts opened by guardians: {minors}")
+            print(f"- Expired passports: {expired_passports}")
             print(f"- Typographical errors introduced: Yes (NAMES, ADDRESSES, EMAILS, PHONES)")
             print(f"- Branch table used: Yes ({len(reference_data['branches'])} branches)")
             print(f"- Location lookup used: Yes ({len(reference_data['provinces'])} provinces)")
+            print(f"- Cadence recommendation: monthly (daily available for stream simulation)")
 
     print(f"Saved to {output_file}")
     return df
 
 
 if __name__ == "__main__":
-    year = 2024
-    generate_customer_data(year)
+    parser = argparse.ArgumentParser(description="Generate customer data for a specific year and optional month")
+    parser.add_argument("--year", type=int, help="Year for customer data generation")
+    parser.add_argument("--month", type=int, help="Month (1-12) for monthly subfolder organization. Omit for all months.")
+    parser.add_argument("--cadence", type=str, choices=["monthly", "daily"], default="monthly", help="Generation cadence")
+    parser.add_argument("--target-records", type=int, default=None, help="Optional target number of records")
+    args = parser.parse_args()
+
+    if args.year is None:
+        raw_year = input("Enter year for customer generation [2024]: ").strip()
+        if not raw_year:
+            year = 2024
+        else:
+            try:
+                year = int(raw_year)
+            except ValueError:
+                print(f"Invalid year '{raw_year}', using default 2024.")
+                year = 2024
+    else:
+        year = args.year
+    
+    selected_month = args.month
+    if selected_month is not None and (selected_month < 1 or selected_month > 12):
+        print(f"Invalid month {selected_month}, must be 1-12. Generating for all months.")
+        selected_month = None
+
+    # If monthly cadence and no specific month, generate all 12 months in subfolders
+    if args.cadence == "monthly" and selected_month is None:
+        print(f"Monthly cadence selected: generating customer data for all 12 months in subfolders...")
+        for month in range(1, 13):
+            print(f"\n--- Generating month {month:02d} ---")
+            generate_customer_data(year, cadence=args.cadence, target_records=args.target_records, month=month)
+    else:
+        generate_customer_data(year, cadence=args.cadence, target_records=args.target_records, month=selected_month)

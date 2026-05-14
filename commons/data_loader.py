@@ -41,3 +41,23 @@ def get_names_by_country_data() -> dict[str, Any]:
 
 def get_phone_rules_data() -> dict[str, Any]:
     return load_json("phone_rules.json")
+
+
+def get_behavioral_profiles_data() -> dict[str, Any]:
+    return load_json("behavioral_profiles.json")
+
+
+def get_customer_scenarios_data() -> dict[str, Any]:
+    return load_json("customer_scenarios.json")
+
+
+def get_company_profiles_data() -> dict[str, Any]:
+    return load_json("company_profiles.json")
+
+
+def get_retail_bank_products_data() -> dict[str, Any]:
+    return load_json("retail_bank_products_sa.json")
+
+
+def get_branch_codes_by_city_data() -> dict[str, Any]:
+    return load_json("branch_codes_by_city.json")

@@ -1,0 +1,53 @@
+{
+  "source_note": "Retail product catalog aligned to major South African banks for synthetic training data.",
+  "banks": [
+    {"name": "Standard Bank", "swift_base": "SBZAZAJJ", "weight": 0.2},
+    {"name": "First National Bank", "swift_base": "FIRNZAJJ", "weight": 0.2},
+    {"name": "Absa", "swift_base": "ABSAZAJJ", "weight": 0.18},
+    {"name": "Nedbank", "swift_base": "NEDSZAJJ", "weight": 0.17},
+    {"name": "Capitec", "swift_base": "CABLZAJJ", "weight": 0.15},
+    {"name": "African Bank", "swift_base": "AFRCZAJJ", "weight": 0.04},
+    {"name": "TymeBank", "swift_base": "TYMEZAJJ", "weight": 0.03},
+    {"name": "Discovery Bank", "swift_base": "DISCZAJJ", "weight": 0.02},
+    {"name": "Investec", "swift_base": "IVESZAJJ", "weight": 0.01}
+  ],
+  "account_products_by_type": {
+    "savings": ["Savings Account", "Flexible Savings Account", "Goal Save"],
+    "current": ["Current Account", "Everyday Account", "Transact Account"],
+    "cheque": ["Cheque Account", "Transactional Cheque"],
+    "aspire": ["Aspire Account", "Youth Plus Account"],
+    "easy": ["Easy Zero Account", "Entry Account"],
+    "islamic": ["Islamic Savings Account", "Shariah Compliant Account"],
+    "joint": ["Joint Everyday Account", "Joint Savings Account"],
+    "premium": ["Premier Account", "Private Bundle"],
+    "gold": ["Gold Account", "Gold Cheque"],
+    "platinum": ["Platinum Account", "Private Wealth Platinum"],
+    "business": ["Business Current Account", "SME Transactional Account", "Corporate Operating Account"]
+  },
+  "account_pricing": {
+    "savings": {"interest_rate": 0.01, "monthly_charges": 10, "transactions_rate": 0.02, "negative_balance_rate": 0.05},
+    "current": {"interest_rate": 0.005, "monthly_charges": 20, "transactions_rate": 0.01, "negative_balance_rate": 0.06},
+    "cheque": {"interest_rate": 0.007, "monthly_charges": 15, "transactions_rate": 0.015, "negative_balance_rate": 0.04},
+    "aspire": {"interest_rate": 0.009, "monthly_charges": 12, "transactions_rate": 0.017, "negative_balance_rate": 0.045},
+    "easy": {"interest_rate": 0.006, "monthly_charges": 8, "transactions_rate": 0.02, "negative_balance_rate": 0.05},
+    "islamic": {"interest_rate": 0.0, "monthly_charges": 8, "transactions_rate": 0.01, "negative_balance_rate": 0.0},
+    "joint": {"interest_rate": 0.006, "monthly_charges": 18, "transactions_rate": 0.012, "negative_balance_rate": 0.05},
+    "premium": {"interest_rate": 0.015, "monthly_charges": 30, "transactions_rate": 0.005, "negative_balance_rate": 0.03},
+    "gold": {"interest_rate": 0.012, "monthly_charges": 25, "transactions_rate": 0.007, "negative_balance_rate": 0.035},
+    "platinum": {"interest_rate": 0.02, "monthly_charges": 40, "transactions_rate": 0.004, "negative_balance_rate": 0.025},
+    "business": {"interest_rate": 0.005, "monthly_charges": 75, "transactions_rate": 0.025, "negative_balance_rate": 0.08}
+  },
+  "bundled_products_available": {
+    "savings": ["online_banking", "debit_card"],
+    "current": ["online_banking", "debit_card", "overdraft_facility"],
+    "cheque": ["online_banking", "debit_card", "overdraft_facility"],
+    "aspire": ["online_banking", "debit_card", "student_card"],
+    "easy": ["online_banking", "debit_card"],
+    "islamic": ["online_banking"],
+    "joint": ["online_banking", "debit_card", "overdraft_facility"],
+    "premium": ["online_banking", "credit_card", "overdraft_facility", "investment_account"],
+    "gold": ["online_banking", "credit_card", "overdraft_facility", "investment_account"],
+    "platinum": ["online_banking", "credit_card", "overdraft_facility", "investment_account", "wealth_management"],
+    "business": ["online_banking", "business_credit_line", "merchant_services", "payroll_services"]
+  }
+}

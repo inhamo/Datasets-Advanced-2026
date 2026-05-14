@@ -1,0 +1,45 @@
+{
+  "company_size_profiles": {
+    "Small": {
+      "employees_range": [3, 35],
+      "turnover_range": [500000, 15000000],
+      "segment_weights": {"SME": 0.85, "Commercial": 0.15},
+      "directors_range": [1, 3],
+      "shareholders_range": [1, 4],
+      "risk_base": 0.26
+    },
+    "Medium": {
+      "employees_range": [36, 250],
+      "turnover_range": [15000001, 400000000],
+      "segment_weights": {"SME": 0.3, "Commercial": 0.7},
+      "directors_range": [2, 6],
+      "shareholders_range": [2, 10],
+      "risk_base": 0.23
+    },
+    "Large": {
+      "employees_range": [251, 5000],
+      "turnover_range": [400000001, 25000000000],
+      "segment_weights": {"Commercial": 0.25, "Corporate": 0.75},
+      "directors_range": [5, 14],
+      "shareholders_range": [20, 500],
+      "risk_base": 0.2
+    }
+  },
+  "size_mix": {
+    "Small": 0.72,
+    "Medium": 0.22,
+    "Large": 0.06
+  },
+  "business_types": [
+    "Retail",
+    "Manufacturing",
+    "Finance",
+    "IT",
+    "Services",
+    "Informal Trade",
+    "Agribusiness",
+    "Logistics",
+    "Healthcare",
+    "Education"
+  ]
+}

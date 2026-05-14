@@ -1,0 +1,66 @@
+{
+  "source_note": "Anchored to public SA trends (Stats SA household expenditure and provincial urbanization patterns), then translated into synthetic banking distributions for training data.",
+  "income_bands": [
+    {"band": "Very Low", "min": 0, "max": 60000},
+    {"band": "Low", "min": 60001, "max": 150000},
+    {"band": "Lower Middle", "min": 150001, "max": 350000},
+    {"band": "Upper Middle", "min": 350001, "max": 900000},
+    {"band": "High", "min": 900001, "max": 2500000},
+    {"band": "Ultra", "min": 2500001, "max": 10000000}
+  ],
+  "segment_balance_behavior": {
+    "Retail": {"opening_balance_range": [50, 2500], "avg_monthly_balance_range": [1000, 18000], "volatility_range": [0.25, 0.65]},
+    "Mass Market": {"opening_balance_range": [200, 6000], "avg_monthly_balance_range": [3500, 45000], "volatility_range": [0.2, 0.55]},
+    "Affluent": {"opening_balance_range": [2000, 30000], "avg_monthly_balance_range": [30000, 450000], "volatility_range": [0.08, 0.35]},
+    "SME": {"opening_balance_range": [5000, 60000], "avg_monthly_balance_range": [25000, 700000], "volatility_range": [0.2, 0.7]},
+    "Commercial": {"opening_balance_range": [25000, 150000], "avg_monthly_balance_range": [150000, 2000000], "volatility_range": [0.15, 0.55]},
+    "Corporate": {"opening_balance_range": [100000, 1500000], "avg_monthly_balance_range": [750000, 15000000], "volatility_range": [0.1, 0.45]}
+  },
+  "province_segment_transaction_profiles": {
+    "Gauteng": {
+      "Retail": {"monthly_txn_range": [18, 110], "cash_deposit_ratio_range": [0.03, 0.19], "merchant_spend_ratio_range": [0.35, 0.78], "cross_border_ratio_range": [0.0, 0.07]},
+      "Mass Market": {"monthly_txn_range": [25, 140], "cash_deposit_ratio_range": [0.02, 0.16], "merchant_spend_ratio_range": [0.4, 0.82], "cross_border_ratio_range": [0.0, 0.09]},
+      "Affluent": {"monthly_txn_range": [30, 180], "cash_deposit_ratio_range": [0.0, 0.08], "merchant_spend_ratio_range": [0.5, 0.88], "cross_border_ratio_range": [0.01, 0.2]}
+    },
+    "Western Cape": {
+      "Retail": {"monthly_txn_range": [16, 95], "cash_deposit_ratio_range": [0.02, 0.17], "merchant_spend_ratio_range": [0.35, 0.8], "cross_border_ratio_range": [0.0, 0.06]},
+      "Mass Market": {"monthly_txn_range": [22, 125], "cash_deposit_ratio_range": [0.01, 0.14], "merchant_spend_ratio_range": [0.42, 0.84], "cross_border_ratio_range": [0.0, 0.08]},
+      "Affluent": {"monthly_txn_range": [28, 165], "cash_deposit_ratio_range": [0.0, 0.07], "merchant_spend_ratio_range": [0.52, 0.9], "cross_border_ratio_range": [0.01, 0.22]}
+    },
+    "KwaZulu-Natal": {
+      "Retail": {"monthly_txn_range": [14, 90], "cash_deposit_ratio_range": [0.05, 0.28], "merchant_spend_ratio_range": [0.3, 0.7], "cross_border_ratio_range": [0.0, 0.06]},
+      "Mass Market": {"monthly_txn_range": [20, 110], "cash_deposit_ratio_range": [0.03, 0.24], "merchant_spend_ratio_range": [0.35, 0.74], "cross_border_ratio_range": [0.0, 0.08]},
+      "Affluent": {"monthly_txn_range": [24, 150], "cash_deposit_ratio_range": [0.01, 0.12], "merchant_spend_ratio_range": [0.45, 0.82], "cross_border_ratio_range": [0.01, 0.18]}
+    },
+    "Eastern Cape": {
+      "Retail": {"monthly_txn_range": [10, 72], "cash_deposit_ratio_range": [0.08, 0.35], "merchant_spend_ratio_range": [0.25, 0.65], "cross_border_ratio_range": [0.0, 0.05]},
+      "Mass Market": {"monthly_txn_range": [14, 85], "cash_deposit_ratio_range": [0.06, 0.3], "merchant_spend_ratio_range": [0.28, 0.7], "cross_border_ratio_range": [0.0, 0.06]},
+      "Affluent": {"monthly_txn_range": [20, 110], "cash_deposit_ratio_range": [0.02, 0.16], "merchant_spend_ratio_range": [0.4, 0.78], "cross_border_ratio_range": [0.0, 0.12]}
+    },
+    "Limpopo": {
+      "Retail": {"monthly_txn_range": [9, 68], "cash_deposit_ratio_range": [0.1, 0.42], "merchant_spend_ratio_range": [0.22, 0.6], "cross_border_ratio_range": [0.01, 0.12]},
+      "Mass Market": {"monthly_txn_range": [12, 78], "cash_deposit_ratio_range": [0.08, 0.37], "merchant_spend_ratio_range": [0.25, 0.66], "cross_border_ratio_range": [0.02, 0.15]},
+      "Affluent": {"monthly_txn_range": [16, 98], "cash_deposit_ratio_range": [0.03, 0.2], "merchant_spend_ratio_range": [0.35, 0.75], "cross_border_ratio_range": [0.02, 0.22]}
+    },
+    "Mpumalanga": {
+      "Retail": {"monthly_txn_range": [10, 70], "cash_deposit_ratio_range": [0.08, 0.36], "merchant_spend_ratio_range": [0.24, 0.63], "cross_border_ratio_range": [0.01, 0.09]},
+      "Mass Market": {"monthly_txn_range": [14, 86], "cash_deposit_ratio_range": [0.06, 0.32], "merchant_spend_ratio_range": [0.28, 0.68], "cross_border_ratio_range": [0.01, 0.11]},
+      "Affluent": {"monthly_txn_range": [18, 112], "cash_deposit_ratio_range": [0.02, 0.16], "merchant_spend_ratio_range": [0.4, 0.76], "cross_border_ratio_range": [0.02, 0.18]}
+    },
+    "North West": {
+      "Retail": {"monthly_txn_range": [9, 64], "cash_deposit_ratio_range": [0.09, 0.38], "merchant_spend_ratio_range": [0.22, 0.61], "cross_border_ratio_range": [0.0, 0.07]},
+      "Mass Market": {"monthly_txn_range": [13, 82], "cash_deposit_ratio_range": [0.07, 0.33], "merchant_spend_ratio_range": [0.26, 0.67], "cross_border_ratio_range": [0.0, 0.09]},
+      "Affluent": {"monthly_txn_range": [16, 106], "cash_deposit_ratio_range": [0.02, 0.17], "merchant_spend_ratio_range": [0.38, 0.76], "cross_border_ratio_range": [0.0, 0.15]}
+    },
+    "Free State": {
+      "Retail": {"monthly_txn_range": [10, 66], "cash_deposit_ratio_range": [0.08, 0.34], "merchant_spend_ratio_range": [0.24, 0.62], "cross_border_ratio_range": [0.0, 0.05]},
+      "Mass Market": {"monthly_txn_range": [14, 80], "cash_deposit_ratio_range": [0.06, 0.3], "merchant_spend_ratio_range": [0.28, 0.68], "cross_border_ratio_range": [0.0, 0.07]},
+      "Affluent": {"monthly_txn_range": [18, 104], "cash_deposit_ratio_range": [0.02, 0.16], "merchant_spend_ratio_range": [0.4, 0.78], "cross_border_ratio_range": [0.0, 0.13]}
+    },
+    "Northern Cape": {
+      "Retail": {"monthly_txn_range": [9, 62], "cash_deposit_ratio_range": [0.09, 0.35], "merchant_spend_ratio_range": [0.23, 0.6], "cross_border_ratio_range": [0.0, 0.06]},
+      "Mass Market": {"monthly_txn_range": [12, 76], "cash_deposit_ratio_range": [0.07, 0.31], "merchant_spend_ratio_range": [0.27, 0.66], "cross_border_ratio_range": [0.0, 0.08]},
+      "Affluent": {"monthly_txn_range": [16, 98], "cash_deposit_ratio_range": [0.03, 0.17], "merchant_spend_ratio_range": [0.38, 0.75], "cross_border_ratio_range": [0.0, 0.14]}
+    }
+  }
+}
