@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:camt.053.001.08">
+  <BkToCstmrStmt>
+    <GrpHdr>
+      <MsgId>CAMT-ACC0099106-202412-202502</MsgId>
+      <CreDtTm>2026-05-20T00:18:30</CreDtTm>
+    </GrpHdr>
+    <Stmt>
+      <Id>CAMT-ACC0099106-202412-202502</Id>
+      <ElctrncSeqNb>202502</ElctrncSeqNb>
+      <CreDtTm>2026-05-20T00:18:30</CreDtTm>
+      <Acct>
+        <Id><Othr><Id>195205010991067</Id></Othr></Id>
+        <Nm>ACC0099106</Nm>
+        <Ccy>ZAR</Ccy>
+      </Acct>
+      <Svcr><FinInstnId><Nm>Standard Bank</Nm></FinInstnId></Svcr>
+      <FrToDt><FrDtTm>2024-12-01T00:00:00</FrDtTm><ToDtTm>2025-02-28T23:59:59</ToDtTm></FrToDt>
+      <Bal><Tp><CdOrPrtry><Cd>OPBD</Cd></CdOrPrtry></Tp><Amt Ccy="ZAR">13911.78</Amt><CdtDbtInd>CRDT</CdtDbtInd><Dt><Dt>2024-12-01</Dt></Dt></Bal>
+      <Bal><Tp><CdOrPrtry><Cd>CLBD</Cd></CdOrPrtry></Tp><Amt Ccy="ZAR">13903.02</Amt><CdtDbtInd>CRDT</CdtDbtInd><Dt><Dt>2025-02-28</Dt></Dt></Bal>
+      <Ntry>
+        <Amt Ccy="ZAR">12.39</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2024-12-25</Dt></BookgDt>
+        <ValDt><Dt>2024-12-25</Dt></ValDt>
+        <AcctSvcrRef>FEE-202412-17992</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>CHRG</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>FEE-202412-17992</EndToEndId></Refs>
+          <RmtInf><Ustrd>Cash Deposit Fee</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">5.32</Amt>
+        <CdtDbtInd>CRDT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2024-12-25</Dt></BookgDt>
+        <ValDt><Dt>2024-12-25</Dt></ValDt>
+        <AcctSvcrRef>FEE-202412-48946</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>CAMT</Cd><Fmly><Cd>MCOP</Cd><SubFmlyCd>INTR</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>FEE-202412-48946</EndToEndId></Refs>
+          <RmtInf><Ustrd>Interest_Income</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">2.97</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-25</Dt></BookgDt>
+        <ValDt><Dt>2025-01-25</Dt></ValDt>
+        <AcctSvcrRef>FEE-202501-51215</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>CAMT</Cd><Fmly><Cd>MCOP</Cd><SubFmlyCd>TAXR</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>FEE-202501-51215</EndToEndId></Refs>
+          <RmtInf><Ustrd>Withholding_Tax</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">1.28</Amt>
+        <CdtDbtInd>CRDT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-02-25</Dt></BookgDt>
+        <ValDt><Dt>2025-02-25</Dt></ValDt>
+        <AcctSvcrRef>FEE-202502-73955</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>CAMT</Cd><Fmly><Cd>MCOP</Cd><SubFmlyCd>INTR</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>FEE-202502-73955</EndToEndId></Refs>
+          <RmtInf><Ustrd>Interest_Income</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+    </Stmt>
+  </BkToCstmrStmt>
+</Document>

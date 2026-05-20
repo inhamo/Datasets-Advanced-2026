@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:camt.053.001.08">
+  <BkToCstmrStmt>
+    <GrpHdr>
+      <MsgId>CAMT-ACC0036163-202112-202205</MsgId>
+      <CreDtTm>2026-05-19T23:45:32</CreDtTm>
+    </GrpHdr>
+    <Stmt>
+      <Id>CAMT-ACC0036163-202112-202205</Id>
+      <ElctrncSeqNb>202205</ElctrncSeqNb>
+      <CreDtTm>2026-05-19T23:45:32</CreDtTm>
+      <Acct>
+        <Id><Othr><Id>221526030361633</Id></Othr></Id>
+        <Nm>ACC0036163</Nm>
+        <Ccy>ZAR</Ccy>
+      </Acct>
+      <Svcr><FinInstnId><Nm>Nedbank</Nm></FinInstnId></Svcr>
+      <FrToDt><FrDtTm>2021-12-01T00:00:00</FrDtTm><ToDtTm>2022-05-31T23:59:59</ToDtTm></FrToDt>
+      <Bal><Tp><CdOrPrtry><Cd>OPBD</Cd></CdOrPrtry></Tp><Amt Ccy="ZAR">2525.02</Amt><CdtDbtInd>CRDT</CdtDbtInd><Dt><Dt>2021-12-01</Dt></Dt></Bal>
+      <Bal><Tp><CdOrPrtry><Cd>CLBD</Cd></CdOrPrtry></Tp><Amt Ccy="ZAR">1644.45</Amt><CdtDbtInd>CRDT</CdtDbtInd><Dt><Dt>2022-05-31</Dt></Dt></Bal>
+      <Ntry>
+        <Amt Ccy="ZAR">127.66</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2021-12-25</Dt></BookgDt>
+        <ValDt><Dt>2021-12-25</Dt></ValDt>
+        <AcctSvcrRef>FEE-202112-81935</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>CHRG</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>FEE-202112-81935</EndToEndId></Refs>
+          <RmtInf><Ustrd>Service Fee</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">30.06</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2021-12-25</Dt></BookgDt>
+        <ValDt><Dt>2021-12-25</Dt></ValDt>
+        <AcctSvcrRef>FEE-202112-90181</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>CAMT</Cd><Fmly><Cd>MCOP</Cd><SubFmlyCd>TAXR</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>FEE-202112-90181</EndToEndId></Refs>
+          <RmtInf><Ustrd>Withholding Tax</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">82.48</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2022-01-25</Dt></BookgDt>
+        <ValDt><Dt>2022-01-25</Dt></ValDt>
+        <AcctSvcrRef>FEE-202201-67598</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>CHRG</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>FEE-202201-67598</EndToEndId></Refs>
+          <RmtInf><Ustrd>Cash_Deposit_Fee</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">46.82</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2022-02-25</Dt></BookgDt>
+        <ValDt><Dt>2022-02-25</Dt></ValDt>
+        <AcctSvcrRef>FEE-202202-60446</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>CHRG</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>FEE-202202-60446</EndToEndId></Refs>
+          <RmtInf><Ustrd>Cash Deposit Fee</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">48.41</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2022-02-25</Dt></BookgDt>
+        <ValDt><Dt>2022-02-25</Dt></ValDt>
+        <AcctSvcrRef>FEE-202202-65069</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>CHRG</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>FEE-202202-65069</EndToEndId></Refs>
+          <RmtInf><Ustrd>Service_Fee</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">76.28</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2022-03-25</Dt></BookgDt>
+        <ValDt><Dt>2022-03-25</Dt></ValDt>
+        <AcctSvcrRef>FEE-202203-32635</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>CHRG</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>FEE-202203-32635</EndToEndId></Refs>
+          <RmtInf><Ustrd>Service Fee</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">27.67</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2022-03-25</Dt></BookgDt>
+        <ValDt><Dt>2022-03-25</Dt></ValDt>
+        <AcctSvcrRef>FEE-202203-96517</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>CAMT</Cd><Fmly><Cd>MCOP</Cd><SubFmlyCd>TAXR</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>FEE-202203-96517</EndToEndId></Refs>
+          <RmtInf><Ustrd>Withholding Tax</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">98.96</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2022-04-25</Dt></BookgDt>
+        <ValDt><Dt>2022-04-25</Dt></ValDt>
+        <AcctSvcrRef>FEE-202204-90705</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>CHRG</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>FEE-202204-90705</EndToEndId></Refs>
+          <RmtInf><Ustrd>Service Fee</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">48.18</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2022-04-25</Dt></BookgDt>
+        <ValDt><Dt>2022-04-25</Dt></ValDt>
+        <AcctSvcrRef>FEE-202204-83881</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>CHRG</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>FEE-202204-83881</EndToEndId></Refs>
+          <RmtInf><Ustrd>Bank Charge</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">132.17</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2022-05-25</Dt></BookgDt>
+        <ValDt><Dt>2022-05-25</Dt></ValDt>
+        <AcctSvcrRef>FEE-202205-74067</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>CHRG</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>FEE-202205-74067</EndToEndId></Refs>
+          <RmtInf><Ustrd>Service Fee</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">70.87</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2022-05-25</Dt></BookgDt>
+        <ValDt><Dt>2022-05-25</Dt></ValDt>
+        <AcctSvcrRef>FEE-202205-26217</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>CHRG</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>FEE-202205-26217</EndToEndId></Refs>
+          <RmtInf><Ustrd>Cash_Deposit_Fee</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">91.01</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2022-05-25</Dt></BookgDt>
+        <ValDt><Dt>2022-05-25</Dt></ValDt>
+        <AcctSvcrRef>FEE-202205-87344</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>CHRG</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>FEE-202205-87344</EndToEndId></Refs>
+          <RmtInf><Ustrd>Bank Charge</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+    </Stmt>
+  </BkToCstmrStmt>
+</Document>

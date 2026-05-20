@@ -1,0 +1,27 @@
+From: sarah.pillay@analytics.retail.keystonebank.co.za
+To: data.engineering@keystonebank.co.za, compliance.retail@keystonebank.co.za
+Subject: Data quality - 4.0% of loan payments flagged in 2019-02
+Date: Sun, 10 Feb 2019 16:19:00 -0000
+Message-ID: <43126130841b44d893a41f7296ecc4ca@keystonebank.co.za>
+References: <00379d0dee8a4fc09eff16516a5c3331@keystonebank.co.za>
+ <dec03dcc1b5342cabf82c96d8904df6c@keystonebank.co.za>
+ <9bb1ee3e24494d5eb7d5551ffd04fb6e@keystonebank.co.za>
+ <7e1994549e4c416484afdf84610c151d@keystonebank.co.za>
+ <ec53afad8c7744f9be0b4f7d5b19d558@keystonebank.co.za>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Team,
+
+Reconciliation on the loan payment feed shows **4.0%** of rows with has data =
+error=3Dtrue (duplicate IDs, truncated descriptions, timestamp shifts).
+
+Before we publish the management collections pack, we need:
+1. Exception report by data error types
+2. Sign-off that regulatory returns exclude corrupt keys
+
+This is blocking the monthly MI pack.
+
+Regards,
+Retail Analytics

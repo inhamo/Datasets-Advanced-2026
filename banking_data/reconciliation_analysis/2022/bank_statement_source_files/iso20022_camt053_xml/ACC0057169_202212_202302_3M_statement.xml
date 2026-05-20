@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:camt.053.001.08">
+  <BkToCstmrStmt>
+    <GrpHdr>
+      <MsgId>CAMT-ACC0057169-202212-202302</MsgId>
+      <CreDtTm>2026-05-19T23:56:44</CreDtTm>
+    </GrpHdr>
+    <Stmt>
+      <Id>CAMT-ACC0057169-202212-202302</Id>
+      <ElctrncSeqNb>202302</ElctrncSeqNb>
+      <CreDtTm>2026-05-19T23:56:44</CreDtTm>
+      <Acct>
+        <Id><Othr><Id>255005030571692</Id></Othr></Id>
+        <Nm>ACC0057169</Nm>
+        <Ccy>ZAR</Ccy>
+      </Acct>
+      <Svcr><FinInstnId><Nm>Nedbank</Nm></FinInstnId></Svcr>
+      <FrToDt><FrDtTm>2022-12-01T00:00:00</FrDtTm><ToDtTm>2023-02-28T23:59:59</ToDtTm></FrToDt>
+      <Bal><Tp><CdOrPrtry><Cd>OPBD</Cd></CdOrPrtry></Tp><Amt Ccy="ZAR">14299.78</Amt><CdtDbtInd>CRDT</CdtDbtInd><Dt><Dt>2022-12-01</Dt></Dt></Bal>
+      <Bal><Tp><CdOrPrtry><Cd>CLBD</Cd></CdOrPrtry></Tp><Amt Ccy="ZAR">17156.51</Amt><CdtDbtInd>CRDT</CdtDbtInd><Dt><Dt>2023-02-28</Dt></Dt></Bal>
+      <Ntry>
+        <Amt Ccy="ZAR">37.95</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2022-12-25</Dt></BookgDt>
+        <ValDt><Dt>2022-12-25</Dt></ValDt>
+        <AcctSvcrRef>FEE-202212-32078</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>CHRG</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>FEE-202212-32078</EndToEndId></Refs>
+          <RmtInf><Ustrd>Service_Fee</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">0.48</Amt>
+        <CdtDbtInd>CRDT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2022-12-25</Dt></BookgDt>
+        <ValDt><Dt>2022-12-25</Dt></ValDt>
+        <AcctSvcrRef>FEE-202212-68575</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>CAMT</Cd><Fmly><Cd>MCOP</Cd><SubFmlyCd>INTR</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>FEE-202212-68575</EndToEndId></Refs>
+          <RmtInf><Ustrd>Interest_Income</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">82.57</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2023-01-25</Dt></BookgDt>
+        <ValDt><Dt>2023-01-25</Dt></ValDt>
+        <AcctSvcrRef>FEE-202301-79323</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>CHRG</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>FEE-202301-79323</EndToEndId></Refs>
+          <RmtInf><Ustrd>Cash Deposit Fee</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">3058.92</Amt>
+        <CdtDbtInd>CRDT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2023-02-24</Dt></BookgDt>
+        <ValDt><Dt>2023-02-24</Dt></ValDt>
+        <AcctSvcrRef>UNALLOC-462811</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>ICDT</Cd><SubFmlyCd>ESCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>UNALLOC-462811</EndToEndId></Refs>
+          <RmtInf><Ustrd>Manual correction</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">82.15</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2023-02-25</Dt></BookgDt>
+        <ValDt><Dt>2023-02-25</Dt></ValDt>
+        <AcctSvcrRef>FEE-202302-82839</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>CHRG</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>FEE-202302-82839</EndToEndId></Refs>
+          <RmtInf><Ustrd>Service_Fee</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+    </Stmt>
+  </BkToCstmrStmt>
+</Document>

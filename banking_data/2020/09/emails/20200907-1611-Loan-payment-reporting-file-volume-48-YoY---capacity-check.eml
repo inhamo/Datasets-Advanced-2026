@@ -1,0 +1,29 @@
+From: thabo.molefe@data.engineering.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za
+Cc: infrastructure.ops@keystonebank.co.za
+Subject: Loan payment reporting file volume +48% YoY - capacity check
+Date: Mon, 07 Sep 2020 16:11:00 -0000
+Message-ID: <0126739a60244744829aa57ee0aad6a3@keystonebank.co.za>
+In-Reply-To: <2f10173a21884adfb17f682c1559b0d9@keystonebank.co.za>
+References: <0fd5165c23f94b56bef609387893a762@keystonebank.co.za>
+ <845a747046e5452a9b542c1ebf37b7ad@keystonebank.co.za>
+ <40b1b379ad6545d3adbe878393249435@keystonebank.co.za>
+ <2f10173a21884adfb17f682c1559b0d9@keystonebank.co.za>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi Sarah / Emma,
+
+The loan payment files monthly partition for 2020-09 landed at **2,867 rows**=
+ (~+48.4% vs same month last year).
+
+the scheduled load SLA is still green, but the data file=E2=86=92the reportin=
+g database copy breached 42 minutes on the 3rd run (within our 60m threshold)=
+. Please confirm downstream dashboards still use the  v2 view with has data e=
+rror filters applied.
+
+Sipho will add file-size alerts before month-end close.
+
+Thabo
+Data Engineering

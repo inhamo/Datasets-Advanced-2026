@@ -1,0 +1,42 @@
+From: andile.mthembu@collections.ops.keystonebank.co.za
+To: payments.ops@keystonebank.co.za, analytics.retail@keystonebank.co.za
+Cc: credit.risk.retail@keystonebank.co.za
+Subject: Debit order failure rate 6.2% - 2023-12 loan repayments
+Date: Wed, 20 Dec 2023 09:30:00 -0000
+Message-ID: <a70e3edb8f8a490497059782a6054293@keystonebank.co.za>
+References: <7f2b36cc819041cf8129abd4fe9efe62@keystonebank.co.za>
+ <296b425f6a3d4dd3be40c5fb44fa349e@keystonebank.co.za>
+ <235d66dcee9c47df9b0fc49438c0dcaf@keystonebank.co.za>
+ <7501335c1e7c423289f7bf29cd5d8c05@keystonebank.co.za>
+ <3bb39050a1b34dbfa63e34cd0f3b8ada@keystonebank.co.za>
+ <ae43ef03de424a4d8eb245145d95fce0@keystonebank.co.za>
+ <74fb570006be47b38ba851debe25bbd3@keystonebank.co.za>
+ <373fe4d197d345a8bb05fbb03544e571@keystonebank.co.za>
+ <2b65fc72b0e74a288c089006230a0e67@keystonebank.co.za>
+ <e8717eefd223487c96582b70276447de@keystonebank.co.za>
+ <57274dff0c63478fa6e75149613d8815@keystonebank.co.za>
+ <d5dd3cf7f65e4b8ab1b9ae3f72e8142d@keystonebank.co.za>
+ <76eecc1f3e7e483a946bc65a430fae54@keystonebank.co.za>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi team,
+
+Our daily collections extract for loan-linked debit orders shows a failure ra=
+te of **6.2%** for December 2023 (10,806 payment rows in the mart).
+
+Breakdown highlights:
+=E2=80=A2 Insufficient funds: 216 postings
+=E2=80=A2 Bank timeout: 151 postings
+
+This is above our 5.5% internal trigger. Can Payments Ops confirm whether NAE=
+DO retries are clearing on T+2 and whether any sponsor bank latency was logge=
+d?
+
+@Analytics =E2=80=93 please drop the vintage view (2019 vs 2021 originations)=
+ into the shared notebook before Thursday=E2=80=99s stand-up.
+
+Regards,
+Collections & Recoveries
+Keystone Retail Bank

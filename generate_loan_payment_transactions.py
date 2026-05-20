@@ -11,6 +11,8 @@ import numpy as np
 import pandas as pd
 from tqdm import tqdm
 
+from commons.bank_errors import inject_data_errors, payment_status
+
 
 START_YEAR = 2024
 BASE_DIR = Path(__file__).resolve().parent
@@ -314,16 +316,8 @@ def _generate_new_loan_mandates(loans: pd.DataFrame, cm: ColumnMap, existing_map
     return mandates_df
 
 
-def _status_for_payment(is_recovery: bool = False) -> tuple[str, str | None]:
-    # Completed, Failed, Cancelled
-    probs = [0.96, 0.03, 0.01] if not is_recovery else [0.75, 0.22, 0.03]
-    draw = np.random.choice(["Completed", "Failed", "Cancelled"], p=probs)
-    if draw == "Failed":
-        reason = random.choice(["insufficient_funds", "mandate_limit", "bank_timeout", "account_blocked"])
-        return draw, reason
-    if draw == "Cancelled":
-        return draw, "customer_stop_instruction"
-    return draw, None
+def _status_for_payment(due_day: int, is_recovery: bool = False) -> tuple[str, str | None]:
+    return payment_status(due_day=due_day, is_recovery=is_recovery)
 
 
 def _payment_variation(base_amount: float, is_recovery: bool = False) -> tuple[float, str]:
@@ -394,7 +388,7 @@ def _generate_schedule_rows(
             is_recovery = True
 
         amount, payment_type = _payment_variation(base_installment, is_recovery=is_recovery)
-        status, failure_reason = _status_for_payment(is_recovery=is_recovery)
+        status, failure_reason = _status_for_payment(due_day=due_day, is_recovery=is_recovery)
 
         # Rail integration: if linked debit order exists, keep channel as Automated.
         if debit_order_id:
@@ -419,32 +413,37 @@ def _generate_schedule_rows(
         elif payment_type == "late_payment":
             description += " - Late Fee"
 
-        rows.append(
-            {
-                "transaction_id": f"TXNL{target_year}{counter:08d}",
-                "account_id": account_id,
-                "customer_id": customer_id,
-                "loan_id": loan_id,
-                "debit_order_id": debit_order_id,
-                "installment_number": installment_number,
-                "transaction_date": due_date.strftime("%Y-%m-%d"),
-                "transaction_time": tx_time,
-                "amount": amount,
-                "debit_credit": "Debit",
-                "status": status,
-                "failure_reason": failure_reason,
-                "description": description,
-                "immediate_payment": immediate_payment,
-                "receiving_account": None,
-                "transaction_cost": tx_cost,
-                "ewallet_number": None,
-                "channel": channel,
-                "loan_type": loan_type,
-                "payment_type": payment_type,
-                "is_recovery_attempt": is_recovery,
-                "source_system": "loan_payment_generator",
-            }
-        )
+        tx_row = {
+            "transaction_id": f"TXNL{target_year}{counter:08d}",
+            "account_id": account_id,
+            "customer_id": customer_id,
+            "loan_id": loan_id,
+            "debit_order_id": debit_order_id,
+            "installment_number": installment_number,
+            "transaction_date": due_date.strftime("%Y-%m-%d"),
+            "transaction_time": tx_time,
+            "amount": amount,
+            "debit_credit": "Debit",
+            "status": status,
+            "failure_reason": failure_reason,
+            "description": description,
+            "immediate_payment": immediate_payment,
+            "receiving_account": None,
+            "transaction_cost": tx_cost,
+            "ewallet_number": None,
+            "channel": channel,
+            "loan_type": loan_type,
+            "payment_type": payment_type,
+            "is_recovery_attempt": is_recovery,
+            "source_system": "loan_payment_generator",
+            "has_data_error": False,
+            "data_error_types": "",
+        }
+        data_errors = inject_data_errors(tx_row)
+        if data_errors:
+            tx_row["has_data_error"] = True
+            tx_row["data_error_types"] = "|".join(data_errors)
+        rows.append(tx_row)
 
         generated_keys.add(key)
         counter += 1

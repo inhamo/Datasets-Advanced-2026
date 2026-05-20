@@ -1,0 +1,26 @@
+From: peter.jacobs@banking.operations.keystonebank.co.za
+To: payments.ops@keystonebank.co.za, data.engineering@keystonebank.co.za
+Cc: analytics.retail@keystonebank.co.za, infrastructure.ops@keystonebank.co.za
+Subject: KB 202212 where are the delays coming from
+Date: Fri, 09 Dec 2022 09:05:00 -0000
+Message-ID: <0cc514b205d84824af990fc5af548087@keystonebank.co.za>
+References: <f47a85d7b18049598ba633e182df73f2@keystonebank.co.za>
+ <0ebb0e36fb9742c78b6dd50d97ad2da8@keystonebank.co.za>
+ <10c23cd8ea7f489091c7bbc18237e9a5@keystonebank.co.za>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi Priya / Thabo,
+
+Ops is getting questions about processing delays. We can see failures, but we=
+ cannot easily tell whether the issue is the payment switch, the bank respons=
+e, the ledger posting or the statement arriving late.
+
+Can you help us with an extract we can check manually for the month?
+
+Please show the worst days, channels affected and whether the delay created r=
+econciliation breaks later. Timeout count I have is 128, but please check you=
+r side because I may be looking at the wrong report.
+
+Peter

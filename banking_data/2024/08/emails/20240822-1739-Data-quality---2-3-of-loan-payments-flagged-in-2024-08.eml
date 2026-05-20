@@ -1,0 +1,36 @@
+From: emma.steyn@analytics.retail.keystonebank.co.za
+To: data.engineering@keystonebank.co.za, compliance.retail@keystonebank.co.za
+Subject: Data quality - 2.3% of loan payments flagged in 2024-08
+Date: Thu, 22 Aug 2024 17:39:00 -0000
+Message-ID: <eeee2d3e69e04ca5baacf778e628e1a8@keystonebank.co.za>
+In-Reply-To: <3f06360d0a9e483ca5b86a87ad32b3b5@keystonebank.co.za>
+References: <f73c15b610bf4cea9f10c1dc10245f3e@keystonebank.co.za>
+ <565f6cde8a27428f8ea54eeb319c4539@keystonebank.co.za>
+ <c921dfedadb64b6fa0d3401fda459e01@keystonebank.co.za>
+ <621f411ef76a402180a06bcfac3b3294@keystonebank.co.za>
+ <29e2caa9d8464df6932cb66f35fe0e44@keystonebank.co.za>
+ <01d862c0eed64a37887551e2d82edc08@keystonebank.co.za>
+ <f782fadc0cea4a9288a1c247c7c5919b@keystonebank.co.za>
+ <4143dc2265ee455098b361f2486c46bd@keystonebank.co.za>
+ <c88e2081246e46c99ddebf008f1b33a8@keystonebank.co.za>
+ <e8c2ca922f03465f9e1b59c1cd5527d3@keystonebank.co.za>
+ <9b0ca782dfd547708ebf576c18d6b27b@keystonebank.co.za>
+ <46c0afe791c149d7b202a40da3deec13@keystonebank.co.za>
+ <3f06360d0a9e483ca5b86a87ad32b3b5@keystonebank.co.za>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Team,
+
+Reconciliation on the loan payment feed shows **2.3%** of rows with has data =
+error=3Dtrue (duplicate IDs, truncated descriptions, timestamp shifts).
+
+Before we publish the management collections pack, we need:
+1. Exception report by data error types
+2. Sign-off that regulatory returns exclude corrupt keys
+
+This is blocking the monthly MI pack.
+
+Regards,
+Retail Analytics

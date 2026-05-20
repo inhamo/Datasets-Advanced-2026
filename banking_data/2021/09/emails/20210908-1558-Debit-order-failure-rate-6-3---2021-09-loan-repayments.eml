@@ -1,0 +1,32 @@
+From: andile.mthembu@collections.ops.keystonebank.co.za
+To: payments.ops@keystonebank.co.za, analytics.retail@keystonebank.co.za
+Cc: credit.risk.retail@keystonebank.co.za
+Subject: Debit order failure rate 6.3% - 2021-09 loan repayments
+Date: Wed, 08 Sep 2021 15:58:00 -0000
+Message-ID: <c81c60324a624aecb46be1ce178e6669@keystonebank.co.za>
+References: <d9cc3eb878874617aa4aa1511373efbe@keystonebank.co.za>
+ <5e4184f7988649b8b96126aafbb13033@keystonebank.co.za>
+ <5580662f8dfb4e45bdc516a67ec3af71@keystonebank.co.za>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi team,
+
+Our daily collections extract for loan-linked debit orders shows a failure ra=
+te of **6.3%** for September 2021 (4,773 payment rows in the mart).
+
+Breakdown highlights:
+=E2=80=A2 Insufficient funds: 113 postings
+=E2=80=A2 Bank timeout: 61 postings
+
+This is above our 5.5% internal trigger. Can Payments Ops confirm whether NAE=
+DO retries are clearing on T+2 and whether any sponsor bank latency was logge=
+d?
+
+@Analytics =E2=80=93 please drop the vintage view (2019 vs 2021 originations)=
+ into the shared notebook before Thursday=E2=80=99s stand-up.
+
+Regards,
+Collections & Recoveries
+Keystone Retail Bank

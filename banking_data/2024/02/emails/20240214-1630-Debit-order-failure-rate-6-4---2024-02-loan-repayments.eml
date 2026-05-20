@@ -1,0 +1,39 @@
+From: andile.mthembu@collections.ops.keystonebank.co.za
+To: payments.ops@keystonebank.co.za, analytics.retail@keystonebank.co.za
+Cc: credit.risk.retail@keystonebank.co.za
+Subject: Debit order failure rate 6.4% - 2024-02 loan repayments
+Date: Wed, 14 Feb 2024 16:30:00 -0000
+Message-ID: <67fca14adfca49d4bdffe0fd044052ef@keystonebank.co.za>
+References: <a02229c9851540068d358f783aee197f@keystonebank.co.za>
+ <001f07d3be464f4dbcd540a979e22471@keystonebank.co.za>
+ <839e5244dfec435f87e63c540586b688@keystonebank.co.za>
+ <eb511b8ffcaa484cb6d29d66b03d6f45@keystonebank.co.za>
+ <64f1c23c35fd496a92ec42b77ab1e93e@keystonebank.co.za>
+ <a0f38ec9fc654491beac60bbecd7a9f1@keystonebank.co.za>
+ <9ea758b23b0b4489a6f0572f4c4bed9e@keystonebank.co.za>
+ <385725e947014b50bb9792f3d6d44b85@keystonebank.co.za>
+ <8c7083e592544b60be5b4918137f5407@keystonebank.co.za>
+ <d081607b8fe4494c93311857709c838a@keystonebank.co.za>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi team,
+
+Our daily collections extract for loan-linked debit orders shows a failure ra=
+te of **6.4%** for February 2024 (11,168 payment rows in the mart).
+
+Breakdown highlights:
+=E2=80=A2 Insufficient funds: 229 postings
+=E2=80=A2 Bank timeout: 180 postings
+
+This is above our 5.5% internal trigger. Can Payments Ops confirm whether NAE=
+DO retries are clearing on T+2 and whether any sponsor bank latency was logge=
+d?
+
+@Analytics =E2=80=93 please drop the vintage view (2019 vs 2021 originations)=
+ into the shared notebook before Thursday=E2=80=99s stand-up.
+
+Regards,
+Collections & Recoveries
+Keystone Retail Bank
