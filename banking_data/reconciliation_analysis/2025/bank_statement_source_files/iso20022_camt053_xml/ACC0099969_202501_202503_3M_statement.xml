@@ -1,0 +1,959 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:camt.053.001.08">
+  <BkToCstmrStmt>
+    <GrpHdr>
+      <MsgId>CAMT-ACC0099969-202501-202503</MsgId>
+      <CreDtTm>2026-05-20T10:22:42</CreDtTm>
+    </GrpHdr>
+    <Stmt>
+      <Id>CAMT-ACC0099969-202501-202503</Id>
+      <ElctrncSeqNb>202503</ElctrncSeqNb>
+      <CreDtTm>2026-05-20T10:22:42</CreDtTm>
+      <Acct>
+        <Id><Othr><Id>018505010999695</Id></Othr></Id>
+        <Nm>ACC0099969</Nm>
+        <Ccy>ZAR</Ccy>
+      </Acct>
+      <Svcr><FinInstnId><Nm>Nedbank</Nm></FinInstnId></Svcr>
+      <FrToDt><FrDtTm>2025-01-01T00:00:00</FrDtTm><ToDtTm>2025-03-31T23:59:59</ToDtTm></FrToDt>
+      <Bal><Tp><CdOrPrtry><Cd>OPBD</Cd></CdOrPrtry></Tp><Amt Ccy="ZAR">1320.54</Amt><CdtDbtInd>CRDT</CdtDbtInd><Dt><Dt>2025-01-01</Dt></Dt></Bal>
+      <Bal><Tp><CdOrPrtry><Cd>CLBD</Cd></CdOrPrtry></Tp><Amt Ccy="ZAR">24704.52</Amt><CdtDbtInd>DBIT</CdtDbtInd><Dt><Dt>2025-03-31</Dt></Dt></Bal>
+      <Ntry>
+        <Amt Ccy="ZAR">684.33</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-01</Dt></BookgDt>
+        <ValDt><Dt>2025-01-01</Dt></ValDt>
+        <AcctSvcrRef>202501483529037</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501483529037</EndToEndId></Refs>
+          <RmtInf><Ustrd>Utilities via mobile_banking_app</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">272.72</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-01</Dt></BookgDt>
+        <ValDt><Dt>2025-01-01</Dt></ValDt>
+        <AcctSvcrRef>202501929477044</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501929477044</EndToEndId></Refs>
+          <RmtInf><Ustrd>Fuel via contactless</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">209.43</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-01</Dt></BookgDt>
+        <ValDt><Dt>2025-01-01</Dt></ValDt>
+        <AcctSvcrRef>202501155087631</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501155087631</EndToEndId></Refs>
+          <RmtInf><Ustrd>Transfer via online_banking</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">576.30</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-01</Dt></BookgDt>
+        <ValDt><Dt>2025-01-01</Dt></ValDt>
+        <AcctSvcrRef>202501503725730</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501503725730</EndToEndId></Refs>
+          <RmtInf><Ustrd>Retail via atm</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">270.11</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-01</Dt></BookgDt>
+        <ValDt><Dt>2025-01-01</Dt></ValDt>
+        <AcctSvcrRef>202501812045038</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501812045038</EndToEndId></Refs>
+          <RmtInf><Ustrd>Restaurants via mobile_banking_app</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">238.68</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-01</Dt></BookgDt>
+        <ValDt><Dt>2025-01-01</Dt></ValDt>
+        <AcctSvcrRef>202501466042002</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501466042002</EndToEndId></Refs>
+          <RmtInf><Ustrd>Utilities via ussd</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">647.79</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-02</Dt></BookgDt>
+        <ValDt><Dt>2025-01-02</Dt></ValDt>
+        <AcctSvcrRef>202501627006863</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501627006863</EndToEndId></Refs>
+          <RmtInf><Ustrd>Fuel via mobile banking app</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">343.60</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-02</Dt></BookgDt>
+        <ValDt><Dt>2025-01-02</Dt></ValDt>
+        <AcctSvcrRef>202501705148558</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501705148558</EndToEndId></Refs>
+          <RmtInf><Ustrd>Groceries via ewallet</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">10.00</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-03</Dt></BookgDt>
+        <ValDt><Dt>2025-01-03</Dt></ValDt>
+        <AcctSvcrRef>202501968323392</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501968323392</EndToEndId></Refs>
+          <RmtInf><Ustrd>Fuel via pos</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">440.16</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-03</Dt></BookgDt>
+        <ValDt><Dt>2025-01-03</Dt></ValDt>
+        <AcctSvcrRef>202501171917236</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501171917236</EndToEndId></Refs>
+          <RmtInf><Ustrd>Groceries via mobile banking app</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">214.43</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-03</Dt></BookgDt>
+        <ValDt><Dt>2025-01-03</Dt></ValDt>
+        <AcctSvcrRef>202501374947931</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501374947931</EndToEndId></Refs>
+          <RmtInf><Ustrd>Retail via pos</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">259.69</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-03</Dt></BookgDt>
+        <ValDt><Dt>2025-01-03</Dt></ValDt>
+        <AcctSvcrRef>202501743578786</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501743578786</EndToEndId></Refs>
+          <RmtInf><Ustrd>Groceries via atm</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">466.16</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-05</Dt></BookgDt>
+        <ValDt><Dt>2025-01-05</Dt></ValDt>
+        <AcctSvcrRef>202501289721159</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501289721159</EndToEndId></Refs>
+          <RmtInf><Ustrd>Restaurants via pos</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">474.58</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-06</Dt></BookgDt>
+        <ValDt><Dt>2025-01-06</Dt></ValDt>
+        <AcctSvcrRef>202501466336841</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501466336841</EndToEndId></Refs>
+          <RmtInf><Ustrd>Groceries via mobile_banking_app</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">89.82</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-06</Dt></BookgDt>
+        <ValDt><Dt>2025-01-06</Dt></ValDt>
+        <AcctSvcrRef>202501752983006</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501752983006</EndToEndId></Refs>
+          <RmtInf><Ustrd>Airtime via mobile_banking_app</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">200.04</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-06</Dt></BookgDt>
+        <ValDt><Dt>2025-01-06</Dt></ValDt>
+        <AcctSvcrRef>202501300378942</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501300378942</EndToEndId></Refs>
+          <RmtInf><Ustrd>Groceries via pos</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">410.18</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-06</Dt></BookgDt>
+        <ValDt><Dt>2025-01-06</Dt></ValDt>
+        <AcctSvcrRef>202501345054234</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501345054234</EndToEndId></Refs>
+          <RmtInf><Ustrd>Retail via contactless</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">46.43</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-07</Dt></BookgDt>
+        <ValDt><Dt>2025-01-07</Dt></ValDt>
+        <AcctSvcrRef>202501710810881</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501710810881</EndToEndId></Refs>
+          <RmtInf><Ustrd>Airtime via pos</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">61.88</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-08</Dt></BookgDt>
+        <ValDt><Dt>2025-01-08</Dt></ValDt>
+        <AcctSvcrRef>202501620073790</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501620073790</EndToEndId></Refs>
+          <RmtInf><Ustrd>Airtime via mobile_banking_app</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">385.86</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-08</Dt></BookgDt>
+        <ValDt><Dt>2025-01-08</Dt></ValDt>
+        <AcctSvcrRef>202501302651890</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501302651890</EndToEndId></Refs>
+          <RmtInf><Ustrd>Utilities via online banking</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">90.11</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-08</Dt></BookgDt>
+        <ValDt><Dt>2025-01-08</Dt></ValDt>
+        <AcctSvcrRef>202501274174802</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501274174802</EndToEndId></Refs>
+          <RmtInf><Ustrd>Airtime via mobile banking app</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">1198.72</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-09</Dt></BookgDt>
+        <ValDt><Dt>2025-01-09</Dt></ValDt>
+        <AcctSvcrRef>202501436057982</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501436057982</EndToEndId></Refs>
+          <RmtInf><Ustrd>Transfer via mobile_banking_app</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">69.95</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-09</Dt></BookgDt>
+        <ValDt><Dt>2025-01-09</Dt></ValDt>
+        <AcctSvcrRef>202501970198741</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501970198741</EndToEndId></Refs>
+          <RmtInf><Ustrd>Airtime via mobile banking app</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">10.00</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-09</Dt></BookgDt>
+        <ValDt><Dt>2025-01-09</Dt></ValDt>
+        <AcctSvcrRef>202501340834067</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501340834067</EndToEndId></Refs>
+          <RmtInf><Ustrd>Airtime via ussd</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">66.64</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-10</Dt></BookgDt>
+        <ValDt><Dt>2025-01-10</Dt></ValDt>
+        <AcctSvcrRef>202501360226330</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501360226330</EndToEndId></Refs>
+          <RmtInf><Ustrd>Restaurants via mobile banking app</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">247.08</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-10</Dt></BookgDt>
+        <ValDt><Dt>2025-01-10</Dt></ValDt>
+        <AcctSvcrRef>202501519821971</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501519821971</EndToEndId></Refs>
+          <RmtInf><Ustrd>Restaurants via ewallet</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">527.42</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-12</Dt></BookgDt>
+        <ValDt><Dt>2025-01-12</Dt></ValDt>
+        <AcctSvcrRef>202501223862460</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501223862460</EndToEndId></Refs>
+          <RmtInf><Ustrd>Groceries via pos</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">455.99</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-12</Dt></BookgDt>
+        <ValDt><Dt>2025-01-12</Dt></ValDt>
+        <AcctSvcrRef>202501431417920</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501431417920</EndToEndId></Refs>
+          <RmtInf><Ustrd>Retail via atm</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">52.04</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-13</Dt></BookgDt>
+        <ValDt><Dt>2025-01-13</Dt></ValDt>
+        <AcctSvcrRef>202501677322897</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501677322897</EndToEndId></Refs>
+          <RmtInf><Ustrd>Transport via mobile banking app</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">81.54</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-13</Dt></BookgDt>
+        <ValDt><Dt>2025-01-13</Dt></ValDt>
+        <AcctSvcrRef>202501741249611</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501741249611</EndToEndId></Refs>
+          <RmtInf><Ustrd>Airtime via mobile_banking_app</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">88.40</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-14</Dt></BookgDt>
+        <ValDt><Dt>2025-01-14</Dt></ValDt>
+        <AcctSvcrRef>202501229099409</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501229099409</EndToEndId></Refs>
+          <RmtInf><Ustrd>Airtime via mobile_banking_app</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">395.40</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-14</Dt></BookgDt>
+        <ValDt><Dt>2025-01-14</Dt></ValDt>
+        <AcctSvcrRef>202501212098263</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501212098263</EndToEndId></Refs>
+          <RmtInf><Ustrd>Restaurants via mobile banking app</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">329.65</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-16</Dt></BookgDt>
+        <ValDt><Dt>2025-01-16</Dt></ValDt>
+        <AcctSvcrRef>202501635752885</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501635752885</EndToEndId></Refs>
+          <RmtInf><Ustrd>Restaurants via mobile banking app</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">329.65</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-16</Dt></BookgDt>
+        <ValDt><Dt>2025-01-16</Dt></ValDt>
+        <AcctSvcrRef>202501635752885</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501635752885</EndToEndId></Refs>
+          <RmtInf><Ustrd>Restaurants via mobile_banking_app</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">763.03</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-16</Dt></BookgDt>
+        <ValDt><Dt>2025-01-16</Dt></ValDt>
+        <AcctSvcrRef>202501836064205</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501836064205</EndToEndId></Refs>
+          <RmtInf><Ustrd>Utilities via online banking</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">325.08</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-16</Dt></BookgDt>
+        <ValDt><Dt>2025-01-16</Dt></ValDt>
+        <AcctSvcrRef>202501136566080</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501136566080</EndToEndId></Refs>
+          <RmtInf><Ustrd>Entertainment via atm</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">296.10</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-16</Dt></BookgDt>
+        <ValDt><Dt>2025-01-16</Dt></ValDt>
+        <AcctSvcrRef>202501724339426</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501724339426</EndToEndId></Refs>
+          <RmtInf><Ustrd>Alcohol via atm</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">39.25</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-16</Dt></BookgDt>
+        <ValDt><Dt>2025-01-16</Dt></ValDt>
+        <AcctSvcrRef>202501464722660</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501464722660</EndToEndId></Refs>
+          <RmtInf><Ustrd>Airtime via mobile banking app</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">737.99</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-17</Dt></BookgDt>
+        <ValDt><Dt>2025-01-17</Dt></ValDt>
+        <AcctSvcrRef>202501594356238</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501594356238</EndToEndId></Refs>
+          <RmtInf><Ustrd>Retail via atm</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">274.79</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-17</Dt></BookgDt>
+        <ValDt><Dt>2025-01-17</Dt></ValDt>
+        <AcctSvcrRef>202501539066448</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501539066448</EndToEndId></Refs>
+          <RmtInf><Ustrd>Restaurants via contactless</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">266.72</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-18</Dt></BookgDt>
+        <ValDt><Dt>2025-01-18</Dt></ValDt>
+        <AcctSvcrRef>202501227870715</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501227870715</EndToEndId></Refs>
+          <RmtInf><Ustrd>Restaurants via atm</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">260.43</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-20</Dt></BookgDt>
+        <ValDt><Dt>2025-01-20</Dt></ValDt>
+        <AcctSvcrRef>202501292077491</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501292077491</EndToEndId></Refs>
+          <RmtInf><Ustrd>Clothing via mobile banking app</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">1066.92</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-20</Dt></BookgDt>
+        <ValDt><Dt>2025-01-20</Dt></ValDt>
+        <AcctSvcrRef>202501680251305</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501680251305</EndToEndId></Refs>
+          <RmtInf><Ustrd>Groceries via mobile_banking_app</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">150.32</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-20</Dt></BookgDt>
+        <ValDt><Dt>2025-01-20</Dt></ValDt>
+        <AcctSvcrRef>202501222376552</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501222376552</EndToEndId></Refs>
+          <RmtInf><Ustrd>Entertainment via contactless</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">350.30</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-21</Dt></BookgDt>
+        <ValDt><Dt>2025-01-21</Dt></ValDt>
+        <AcctSvcrRef>202501269894631</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501269894631</EndToEndId></Refs>
+          <RmtInf><Ustrd>Groceries via pos</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">218.17</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-21</Dt></BookgDt>
+        <ValDt><Dt>2025-01-21</Dt></ValDt>
+        <AcctSvcrRef>202501438931595</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501438931595</EndToEndId></Refs>
+          <RmtInf><Ustrd>Utilities via mobile banking app</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">364.35</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-21</Dt></BookgDt>
+        <ValDt><Dt>2025-01-21</Dt></ValDt>
+        <AcctSvcrRef>202501682914753</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501682914753</EndToEndId></Refs>
+          <RmtInf><Ustrd>Groceries via pos</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">471.37</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-21</Dt></BookgDt>
+        <ValDt><Dt>2025-01-21</Dt></ValDt>
+        <AcctSvcrRef>202501241500013</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501241500013</EndToEndId></Refs>
+          <RmtInf><Ustrd>Retail via atm</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">1000.73</Amt>
+        <CdtDbtInd>CRDT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-22</Dt></BookgDt>
+        <ValDt><Dt>2025-01-22</Dt></ValDt>
+        <AcctSvcrRef>202501172695067</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>ICDT</Cd><SubFmlyCd>CRDT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501172695067</EndToEndId></Refs>
+          <RmtInf><Ustrd>Transfer via mobile banking app</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">467.56</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-22</Dt></BookgDt>
+        <ValDt><Dt>2025-01-22</Dt></ValDt>
+        <AcctSvcrRef>202501390181434</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501390181434</EndToEndId></Refs>
+          <RmtInf><Ustrd>Retail via mobile_banking_app</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">33.58</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-23</Dt></BookgDt>
+        <ValDt><Dt>2025-01-23</Dt></ValDt>
+        <AcctSvcrRef>202501964768115</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501964768115</EndToEndId></Refs>
+          <RmtInf><Ustrd>Airtime via mobile banking app</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">95.28</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-23</Dt></BookgDt>
+        <ValDt><Dt>2025-01-23</Dt></ValDt>
+        <AcctSvcrRef>202501612025850</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501612025850</EndToEndId></Refs>
+          <RmtInf><Ustrd>Restaurants via online banking</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">253.01</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-24</Dt></BookgDt>
+        <ValDt><Dt>2025-01-24</Dt></ValDt>
+        <AcctSvcrRef>202501587803440</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501587803440</EndToEndId></Refs>
+          <RmtInf><Ustrd>Groceries via mobile banking app</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">61.91</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-25</Dt></BookgDt>
+        <ValDt><Dt>2025-01-25</Dt></ValDt>
+        <AcctSvcrRef>FEE-202501-64744</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>CHRG</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>FEE-202501-64744</EndToEndId></Refs>
+          <RmtInf><Ustrd>Service Fee</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">2.02</Amt>
+        <CdtDbtInd>CRDT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-25</Dt></BookgDt>
+        <ValDt><Dt>2025-01-25</Dt></ValDt>
+        <AcctSvcrRef>FEE-202501-76634</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>CAMT</Cd><Fmly><Cd>MCOP</Cd><SubFmlyCd>INTR</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>FEE-202501-76634</EndToEndId></Refs>
+          <RmtInf><Ustrd>Interest_Income</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">543.47</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-25</Dt></BookgDt>
+        <ValDt><Dt>2025-01-25</Dt></ValDt>
+        <AcctSvcrRef>202501619970623</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501619970623</EndToEndId></Refs>
+          <RmtInf><Ustrd>Fuel via pos</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">162.54</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-26</Dt></BookgDt>
+        <ValDt><Dt>2025-01-26</Dt></ValDt>
+        <AcctSvcrRef>202501606547261</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501606547261</EndToEndId></Refs>
+          <RmtInf><Ustrd>Entertainment via contactless</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">541.69</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-27</Dt></BookgDt>
+        <ValDt><Dt>2025-01-27</Dt></ValDt>
+        <AcctSvcrRef>202501704639074</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501704639074</EndToEndId></Refs>
+          <RmtInf><Ustrd>Fuel via mobile banking app</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">97.70</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-28</Dt></BookgDt>
+        <ValDt><Dt>2025-01-28</Dt></ValDt>
+        <AcctSvcrRef>202501224535438</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501224535438</EndToEndId></Refs>
+          <RmtInf><Ustrd>Transport via mobile banking app</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">246.89</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-28</Dt></BookgDt>
+        <ValDt><Dt>2025-01-28</Dt></ValDt>
+        <AcctSvcrRef>202501767258829</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501767258829</EndToEndId></Refs>
+          <RmtInf><Ustrd>Restaurants via online banking</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">78.30</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-28</Dt></BookgDt>
+        <ValDt><Dt>2025-01-28</Dt></ValDt>
+        <AcctSvcrRef>202501420766357</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501420766357</EndToEndId></Refs>
+          <RmtInf><Ustrd>Airtime via ussd</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">93.44</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-29</Dt></BookgDt>
+        <ValDt><Dt>2025-01-29</Dt></ValDt>
+        <AcctSvcrRef>202501411560457</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501411560457</EndToEndId></Refs>
+          <RmtInf><Ustrd>Clothing via mobile_banking_app</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">173.59</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-29</Dt></BookgDt>
+        <ValDt><Dt>2025-01-29</Dt></ValDt>
+        <AcctSvcrRef>202501425694610</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501425694610</EndToEndId></Refs>
+          <RmtInf><Ustrd>Airtime via contactless</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">352.15</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-29</Dt></BookgDt>
+        <ValDt><Dt>2025-01-29</Dt></ValDt>
+        <AcctSvcrRef>202501849465408</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501849465408</EndToEndId></Refs>
+          <RmtInf><Ustrd>Retail via mobile banking app</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">597.93</Amt>
+        <CdtDbtInd>CRDT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-29</Dt></BookgDt>
+        <ValDt><Dt>2025-01-29</Dt></ValDt>
+        <AcctSvcrRef>202501489502947</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>ICDT</Cd><SubFmlyCd>CRDT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501489502947</EndToEndId></Refs>
+          <RmtInf><Ustrd>Transfer via ussd</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">6801.33</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-30</Dt></BookgDt>
+        <ValDt><Dt>2025-01-30</Dt></ValDt>
+        <AcctSvcrRef>202501989519751</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501989519751</EndToEndId></Refs>
+          <RmtInf><Ustrd>Internal transfer - Mortgage</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">160.16</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-31</Dt></BookgDt>
+        <ValDt><Dt>2025-01-31</Dt></ValDt>
+        <AcctSvcrRef>202501770917574</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501770917574</EndToEndId></Refs>
+          <RmtInf><Ustrd>Groceries via pos</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">353.79</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-31</Dt></BookgDt>
+        <ValDt><Dt>2025-01-31</Dt></ValDt>
+        <AcctSvcrRef>202501273693072</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501273693072</EndToEndId></Refs>
+          <RmtInf><Ustrd>Restaurants via pos</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">1226.34</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-01-31</Dt></BookgDt>
+        <ValDt><Dt>2025-01-31</Dt></ValDt>
+        <AcctSvcrRef>202501590727219</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>DMCT</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>202501590727219</EndToEndId></Refs>
+          <RmtInf><Ustrd>Transfer via ussd</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">6.98</Amt>
+        <CdtDbtInd>CRDT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-02-25</Dt></BookgDt>
+        <ValDt><Dt>2025-02-25</Dt></ValDt>
+        <AcctSvcrRef>FEE-202502-76180</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>CAMT</Cd><Fmly><Cd>MCOP</Cd><SubFmlyCd>INTR</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>FEE-202502-76180</EndToEndId></Refs>
+          <RmtInf><Ustrd>Interest Income</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">31.53</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-03-25</Dt></BookgDt>
+        <ValDt><Dt>2025-03-25</Dt></ValDt>
+        <AcctSvcrRef>FEE-202503-25692</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>PMNT</Cd><Fmly><Cd>RCDT</Cd><SubFmlyCd>CHRG</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>FEE-202503-25692</EndToEndId></Refs>
+          <RmtInf><Ustrd>Cash_Deposit_Fee</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+      <Ntry>
+        <Amt Ccy="ZAR">28.86</Amt>
+        <CdtDbtInd>DBIT</CdtDbtInd>
+        <Sts><Cd>BOOK</Cd></Sts>
+        <BookgDt><Dt>2025-03-25</Dt></BookgDt>
+        <ValDt><Dt>2025-03-25</Dt></ValDt>
+        <AcctSvcrRef>FEE-202503-92463</AcctSvcrRef>
+        <BkTxCd><Domn><Cd>CAMT</Cd><Fmly><Cd>MCOP</Cd><SubFmlyCd>TAXR</SubFmlyCd></Fmly></Domn></BkTxCd>
+        <NtryDtls><TxDtls>
+          <Refs><EndToEndId>FEE-202503-92463</EndToEndId></Refs>
+          <RmtInf><Ustrd>Withholding Tax</Ustrd></RmtInf>
+        </TxDtls></NtryDtls>
+      </Ntry>
+    </Stmt>
+  </BkToCstmrStmt>
+</Document>

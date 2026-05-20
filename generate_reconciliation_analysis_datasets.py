@@ -216,9 +216,6 @@ def statement_pdf(path: Path, account: pd.Series, rows: list[dict[str, Any]], pe
 
 
 def statement_source_format(account: pd.Series, rng: random.Random) -> str:
-    bank = str(account.get("bank_name", ""))
-    if bank in {"Standard Bank", "Nedbank", "Absa"}:
-        return rng.choices(STATEMENT_SOURCE_FORMATS, weights=[0.55, 0.30, 0.15], k=1)[0]
     return rng.choices(STATEMENT_SOURCE_FORMATS, weights=[0.30, 0.50, 0.20], k=1)[0]
 
 
@@ -294,7 +291,7 @@ def write_statement_source_file(
 def statement_iso20022_xml(account: pd.Series, rows: list[dict[str, Any]], period_start: datetime, period_end: datetime, opening: float, closing: float) -> str:
     account_id = escape(str(account.get("account_id", "")))
     account_number = escape(str(account.get("account_number", account_id)))
-    bank_name = escape(str(account.get("bank_name", "Synthetic Bank")))
+    bank_name = escape(COMPANY_BANK_NAME)
     statement_id = f"CAMT-{account_id}-{period_start:%Y%m}-{period_end:%Y%m}"
     lines = [
         '<?xml version="1.0" encoding="UTF-8"?>',
@@ -640,6 +637,382 @@ def write_dataset(path: Path, rows: list[dict[str, Any]]) -> None:
     df.to_csv(path.with_suffix(".csv"), index=False)
 
 
+def dataframe_rows(df: pd.DataFrame) -> list[dict[str, Any]]:
+    if df.empty:
+        return []
+    return df.to_dict(orient="records")
+
+
+def build_realism_expansion(
+    accounts: pd.DataFrame,
+    ledger: pd.DataFrame,
+    recon: pd.DataFrame,
+    statement_tx: pd.DataFrame,
+    non_tx: pd.DataFrame,
+    exceptions: pd.DataFrame,
+    year: int,
+    rng: random.Random,
+) -> dict[str, list[dict[str, Any]]]:
+    chart_of_accounts = pd.DataFrame(
+        [
+            {"gl_account_id": "GL1000", "gl_account_name": "Cash Settlement", "gl_type": "Asset"},
+            {"gl_account_id": "GL2000", "gl_account_name": "Customer Deposits", "gl_type": "Liability"},
+            {"gl_account_id": "GL4100", "gl_account_name": "Fee Income", "gl_type": "Revenue"},
+            {"gl_account_id": "GL4200", "gl_account_name": "Interest Income", "gl_type": "Revenue"},
+            {"gl_account_id": "GL5100", "gl_account_name": "Interest Expense", "gl_type": "Expense"},
+            {"gl_account_id": "GL6100", "gl_account_name": "Tax Payable", "gl_type": "Liability"},
+            {"gl_account_id": "GL1999", "gl_account_name": "Suspense / Reconciliation", "gl_type": "Asset"},
+        ]
+    )
+
+    journal_rows: list[dict[str, Any]] = []
+    if not recon.empty:
+        recon_copy = recon.copy()
+        recon_copy["event_ts"] = pd.to_datetime(recon_copy.get("statement_date", recon_copy.get("ledger_date")), errors="coerce")
+        for idx, row in recon_copy.iterrows():
+            amount = float(pd.to_numeric(row.get("statement_amount", row.get("ledger_amount", 0.0)), errors="coerce") or 0.0)
+            if amount == 0:
+                continue
+            abs_amt = round(abs(amount), 2)
+            journal_id = f"JRN-{year}-{idx + 1:08d}"
+            event_ts = row.get("event_ts")
+            if pd.isna(event_ts):
+                event_ts = datetime(year, 1, 1)
+            if amount > 0:
+                dr_account, cr_account = ("GL1000", "GL2000")
+            else:
+                dr_account, cr_account = ("GL2000", "GL1000")
+
+            journal_rows.append(
+                {
+                    "journal_id": journal_id,
+                    "line_no": 1,
+                    "gl_account_id": dr_account,
+                    "dr_cr": "DR",
+                    "amount": abs_amt,
+                    "currency": "ZAR",
+                    "event_type": "customer_transaction",
+                    "source_table": "reconciliation_results",
+                    "source_id": row.get("ledger_transaction_id"),
+                    "event_timestamp": event_ts,
+                    "posting_date": pd.to_datetime(event_ts).date().isoformat(),
+                    "posting_status": "posted",
+                }
+            )
+            journal_rows.append(
+                {
+                    "journal_id": journal_id,
+                    "line_no": 2,
+                    "gl_account_id": cr_account,
+                    "dr_cr": "CR",
+                    "amount": abs_amt,
+                    "currency": "ZAR",
+                    "event_type": "customer_transaction",
+                    "source_table": "reconciliation_results",
+                    "source_id": row.get("ledger_transaction_id"),
+                    "event_timestamp": event_ts,
+                    "posting_date": pd.to_datetime(event_ts).date().isoformat(),
+                    "posting_status": "posted",
+                }
+            )
+
+    if not non_tx.empty:
+        non_tx_copy = non_tx.copy()
+        non_tx_copy["event_ts"] = pd.to_datetime(non_tx_copy.get("statement_date"), errors="coerce")
+        for idx, row in non_tx_copy.iterrows():
+            amount = float(pd.to_numeric(row.get("statement_amount", 0.0), errors="coerce") or 0.0)
+            if amount == 0:
+                continue
+            abs_amt = round(abs(amount), 2)
+            journal_id = f"JRN-NTX-{year}-{idx + 1:07d}"
+            entry_type = str(row.get("entry_type", ""))
+            if entry_type == "interest_income":
+                dr_account, cr_account = ("GL5100", "GL2000")
+            elif entry_type == "withholding_tax":
+                dr_account, cr_account = ("GL2000", "GL6100")
+            else:
+                dr_account, cr_account = ("GL2000", "GL4100")
+            event_ts = row.get("event_ts")
+            if pd.isna(event_ts):
+                event_ts = datetime(year, 1, 1)
+
+            journal_rows.append(
+                {
+                    "journal_id": journal_id,
+                    "line_no": 1,
+                    "gl_account_id": dr_account,
+                    "dr_cr": "DR",
+                    "amount": abs_amt,
+                    "currency": "ZAR",
+                    "event_type": "non_transactional_statement_entry",
+                    "source_table": "non_transactional_statement_entries",
+                    "source_id": row.get("statement_transaction_id"),
+                    "event_timestamp": event_ts,
+                    "posting_date": pd.to_datetime(event_ts).date().isoformat(),
+                    "posting_status": "posted",
+                }
+            )
+            journal_rows.append(
+                {
+                    "journal_id": journal_id,
+                    "line_no": 2,
+                    "gl_account_id": cr_account,
+                    "dr_cr": "CR",
+                    "amount": abs_amt,
+                    "currency": "ZAR",
+                    "event_type": "non_transactional_statement_entry",
+                    "source_table": "non_transactional_statement_entries",
+                    "source_id": row.get("statement_transaction_id"),
+                    "event_timestamp": event_ts,
+                    "posting_date": pd.to_datetime(event_ts).date().isoformat(),
+                    "posting_status": "posted",
+                }
+            )
+
+    payment_events: list[dict[str, Any]] = []
+    if not recon.empty:
+        rc = recon.copy()
+        rc["ledger_ts"] = pd.to_datetime(rc.get("ledger_date"), errors="coerce")
+        rc["statement_ts"] = pd.to_datetime(rc.get("statement_date"), errors="coerce")
+        for idx, row in rc.iterrows():
+            base_ts = row.get("ledger_ts")
+            if pd.isna(base_ts):
+                base_ts = row.get("statement_ts")
+            if pd.isna(base_ts):
+                base_ts = datetime(year, 1, 1, 9, 0, 0)
+
+            payment_id = str(row.get("ledger_transaction_id") or row.get("statement_transaction_id") or f"PAY-{idx + 1:08d}")
+            match_status = str(row.get("match_status", "matched"))
+            category = str(row.get("exception_category", ""))
+            is_exception = match_status == "exception"
+
+            timeline = [
+                ("initiated", base_ts),
+                ("authorized", base_ts + timedelta(seconds=rng.randint(1, 45))),
+            ]
+            if is_exception and category in {"missing_in_bank_statement", "outstanding_at_statement_cutoff"}:
+                timeline.append(("pending_settlement", base_ts + timedelta(hours=rng.randint(2, 20))))
+                timeline.append(("reconciliation_exception", base_ts + timedelta(days=rng.randint(1, 4))))
+            elif is_exception:
+                timeline.append(("posted", base_ts + timedelta(minutes=rng.randint(2, 90))))
+                timeline.append(("reconciliation_exception", base_ts + timedelta(hours=rng.randint(2, 48))))
+            else:
+                timeline.append(("posted", base_ts + timedelta(minutes=rng.randint(1, 60))))
+                timeline.append(("settled", base_ts + timedelta(hours=rng.randint(1, 36))))
+
+            for seq, (status, ts_val) in enumerate(timeline, start=1):
+                payment_events.append(
+                    {
+                        "payment_id": payment_id,
+                        "event_sequence": seq,
+                        "event_status": status,
+                        "event_timestamp": ts_val,
+                        "account_id": row.get("account_id"),
+                        "customer_id": row.get("customer_id"),
+                        "exception_category": None if status != "reconciliation_exception" else category,
+                        "source": "reconciliation_results",
+                    }
+                )
+
+    account_dim_rows: list[dict[str, Any]] = []
+    customer_dim_rows: list[dict[str, Any]] = []
+    if not accounts.empty:
+        for _, row in accounts.iterrows():
+            account_id = str(row.get("account_id", ""))
+            customer_id = str(row.get("customer_id", ""))
+            open_date = pd.to_datetime(row.get("opening_date"), errors="coerce")
+            if pd.isna(open_date):
+                open_date = datetime(year, 1, 1)
+            end_open = "9999-12-31"
+            account_tier = str(row.get("account_tier", "standard"))
+            account_type = str(row.get("account_type", "personal"))
+
+            if rng.random() < 0.22:
+                change_date = open_date + timedelta(days=rng.randint(90, 240))
+                account_dim_rows.append(
+                    {
+                        "account_id": account_id,
+                        "customer_id": customer_id,
+                        "effective_start_date": open_date.date().isoformat(),
+                        "effective_end_date": (change_date.date() - timedelta(days=1)).isoformat(),
+                        "is_current": False,
+                        "account_type": account_type,
+                        "account_tier": "standard",
+                        "statement_frequency": str(row.get("statement_frequency", "monthly")),
+                        "bank_name": COMPANY_BANK_NAME,
+                    }
+                )
+                account_dim_rows.append(
+                    {
+                        "account_id": account_id,
+                        "customer_id": customer_id,
+                        "effective_start_date": change_date.date().isoformat(),
+                        "effective_end_date": end_open,
+                        "is_current": True,
+                        "account_type": account_type,
+                        "account_tier": account_tier,
+                        "statement_frequency": str(row.get("statement_frequency", "monthly")),
+                        "bank_name": COMPANY_BANK_NAME,
+                    }
+                )
+            else:
+                account_dim_rows.append(
+                    {
+                        "account_id": account_id,
+                        "customer_id": customer_id,
+                        "effective_start_date": open_date.date().isoformat(),
+                        "effective_end_date": end_open,
+                        "is_current": True,
+                        "account_type": account_type,
+                        "account_tier": account_tier,
+                        "statement_frequency": str(row.get("statement_frequency", "monthly")),
+                        "bank_name": COMPANY_BANK_NAME,
+                    }
+                )
+
+        cust_cols = [c for c in ["customer_id", "customer_segment", "risk_band", "province", "city"] if c in accounts.columns]
+        if "customer_id" in cust_cols:
+            customer_base = accounts[cust_cols].drop_duplicates(subset=["customer_id"])
+            for _, row in customer_base.iterrows():
+                customer_dim_rows.append(
+                    {
+                        "customer_id": row.get("customer_id"),
+                        "effective_start_date": f"{year}-01-01",
+                        "effective_end_date": "9999-12-31",
+                        "is_current": True,
+                        "customer_segment": row.get("customer_segment", "retail"),
+                        "risk_band": row.get("risk_band", rng.choice(["low", "medium", "high"])),
+                        "province": row.get("province"),
+                        "city": row.get("city"),
+                    }
+                )
+
+    alerts: list[dict[str, Any]] = []
+    cases: list[dict[str, Any]] = []
+    if not exceptions.empty:
+        ex = exceptions.copy()
+        ex["statement_ts"] = pd.to_datetime(ex.get("statement_date"), errors="coerce")
+        for idx, row in ex.iterrows():
+            sev = "medium"
+            category = str(row.get("exception_category", ""))
+            if category in {"duplicate_bank_entry", "amount_mismatch"}:
+                sev = "high"
+            elif category in {"missing_in_ledger", "missing_in_bank_statement"}:
+                sev = "critical"
+            alert_id = f"ALRT-{year}-{idx + 1:07d}"
+            created_ts = row.get("statement_ts")
+            if pd.isna(created_ts):
+                created_ts = datetime(year, 1, 1, 8, 0, 0)
+            alerts.append(
+                {
+                    "alert_id": alert_id,
+                    "alert_type": "reconciliation_exception",
+                    "severity": sev,
+                    "account_id": row.get("account_id"),
+                    "customer_id": row.get("customer_id"),
+                    "source_reference": row.get("statement_transaction_id"),
+                    "rule_name": f"rule_{category or 'unknown'}",
+                    "created_at": created_ts,
+                    "status": rng.choice(["new", "investigating", "closed"]),
+                }
+            )
+        for idx, group_start in enumerate(range(0, len(alerts), 6), start=1):
+            linked = alerts[group_start:group_start + 6]
+            cases.append(
+                {
+                    "case_id": f"CASE-{year}-{idx:06d}",
+                    "opened_at": linked[0]["created_at"] if linked else datetime(year, 1, 1),
+                    "closed_at": None if rng.random() < 0.28 else linked[-1]["created_at"],
+                    "status": "open" if rng.random() < 0.28 else "closed",
+                    "priority": rng.choice(["P1", "P2", "P3"]),
+                    "linked_alert_count": len(linked),
+                    "primary_alert_id": linked[0]["alert_id"] if linked else None,
+                    "owner_team": rng.choice(["compliance", "fraud", "finance_recon"]),
+                }
+            )
+
+    customer_labels: list[dict[str, Any]] = []
+    if not ledger.empty:
+        tx = ledger.copy()
+        tx["transaction_timestamp"] = pd.to_datetime(tx["transaction_timestamp"], errors="coerce")
+        tx = tx.dropna(subset=["transaction_timestamp"])
+        tx["month"] = tx["transaction_timestamp"].dt.strftime("%Y-%m")
+        grouped = (
+            tx.groupby(["customer_id", "month"])
+            .agg(
+                tx_count=("transaction_id", "count"),
+                failed_rate=("status", lambda s: float((s.astype(str).str.lower() == "failed").mean())),
+                fraud_events=("is_fraudulent", lambda s: int(pd.Series(s).fillna(False).sum())),
+            )
+            .reset_index()
+        )
+        grouped["next_month"] = (pd.to_datetime(grouped["month"] + "-01") + pd.offsets.MonthBegin(1)).dt.strftime("%Y-%m")
+        has_next = set(zip(grouped["customer_id"].astype(str), grouped["month"].astype(str)))
+        for _, row in grouped.iterrows():
+            churn = (str(row["customer_id"]), str(row["next_month"])) not in has_next
+            customer_labels.append(
+                {
+                    "customer_id": row["customer_id"],
+                    "observation_month": row["month"],
+                    "label_date": f"{row['month']}-28",
+                    "fraud_label_30d": int(row["fraud_events"] > 0),
+                    "default_risk_label_90d": int((row["failed_rate"] > 0.22) or (row["tx_count"] < 2)),
+                    "churn_label_60d": int(churn),
+                    "feature_window_days": 90,
+                }
+            )
+
+    dq_rows: list[dict[str, Any]] = []
+    dq_inputs: dict[str, pd.DataFrame] = {
+        "accounts": accounts,
+        "ledger": ledger,
+        "reconciliation_results": recon,
+        "reconciliation_exceptions": exceptions,
+        "statement_transactions": statement_tx,
+        "non_transactional_entries": non_tx,
+    }
+    for name, df in dq_inputs.items():
+        if df.empty:
+            dq_rows.append(
+                {
+                    "dataset_name": name,
+                    "row_count": 0,
+                    "column_count": 0,
+                    "null_rate": 1.0,
+                    "duplicate_rate": 0.0,
+                    "quality_status": "empty",
+                }
+            )
+            continue
+        row_count = int(len(df))
+        col_count = int(len(df.columns))
+        null_rate = float(df.isna().sum().sum() / max(1, row_count * col_count))
+        duplicate_rate = float(df.duplicated().mean()) if row_count > 1 else 0.0
+        status = "good" if null_rate < 0.12 and duplicate_rate < 0.03 else "review"
+        dq_rows.append(
+            {
+                "dataset_name": name,
+                "row_count": row_count,
+                "column_count": col_count,
+                "null_rate": round(null_rate, 5),
+                "duplicate_rate": round(duplicate_rate, 5),
+                "quality_status": status,
+            }
+        )
+
+    return {
+        "realism_chart_of_accounts": dataframe_rows(chart_of_accounts),
+        "realism_journal_entries": journal_rows,
+        "realism_payment_lifecycle_events": payment_events,
+        "realism_dim_accounts_scd2": account_dim_rows,
+        "realism_dim_customers_scd2": customer_dim_rows,
+        "realism_compliance_alerts": alerts,
+        "realism_compliance_cases": cases,
+        "realism_customer_labels": customer_labels,
+        "realism_data_quality_scorecard": dq_rows,
+    }
+
+
 def cleanup_statement_outputs(year: int) -> None:
     out = OUT_DIR / str(year)
     for subdir in ["bank_statement_pdfs", "bank_statement_source_files"]:
@@ -697,7 +1070,13 @@ def generate(year: int, start_month: int, target_accounts: int | None, seed: int
         manifest[-1]["statement_source_format"] = source_format
         manifest[-1]["statement_source_file_path"] = str(source_path.relative_to(DATA_DIR))
 
-    analytics = build_analytics_marts(ledger, pd.DataFrame(recon_rows), pd.DataFrame(exception_rows), accounts)
+    recon_df = pd.DataFrame(recon_rows)
+    exception_df = pd.DataFrame(exception_rows)
+    statement_df = pd.DataFrame(statement_rows)
+    non_tx_df = pd.DataFrame(non_tx_rows)
+
+    analytics = build_analytics_marts(ledger, recon_df, exception_df, accounts)
+    realism = build_realism_expansion(accounts, ledger, recon_df, statement_df, non_tx_df, exception_df, year, rng)
     out = OUT_DIR / str(year)
     write_dataset(out / "bank_statement_manifest", manifest)
     write_dataset(out / "bank_statement_transactions", statement_rows)
@@ -706,6 +1085,8 @@ def generate(year: int, start_month: int, target_accounts: int | None, seed: int
     write_dataset(out / "non_transactional_statement_entries", non_tx_rows)
     for name, rows in analytics.items():
         write_dataset(out / name, rows)
+    for name, rows in realism.items():
+        write_dataset(out / "realism" / name, rows)
 
     return {
         "accounts": int(len(accounts)),
@@ -715,6 +1096,7 @@ def generate(year: int, start_month: int, target_accounts: int | None, seed: int
         "statement_rows": int(len(statement_rows)),
         "reconciliation_rows": int(len(recon_rows)),
         "exceptions": int(len(exception_rows)),
+        "realism_tables": sorted(realism.keys()),
         "output_dir": str(out),
     }
 
