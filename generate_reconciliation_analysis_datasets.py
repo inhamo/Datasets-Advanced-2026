@@ -1210,6 +1210,33 @@ def get_period_ends_for_cycle(
     ]
 
 
+def get_period_ends_for_account(
+    account: pd.Series, cycle: int, start_year: int = 2019, end_year: int = 2025
+) -> list[tuple[int, int]]:
+    """Return cycle end months anchored to the account opening month.
+
+    Example: account opened in Jan with cycle=3 -> first statement ends in Mar.
+    Account opened in Feb with cycle=3 -> first statement ends in Apr.
+    """
+    window_start = start_year * 12
+    window_end = end_year * 12 + 11
+    opened = pd.to_datetime(account.get("opening_date"), errors="coerce")
+    if pd.isna(opened):
+        open_idx = window_start
+    else:
+        open_idx = int(opened.year) * 12 + int(opened.month) - 1
+
+    end_idx = open_idx + cycle - 1
+    while end_idx < window_start:
+        end_idx += cycle
+
+    out: list[tuple[int, int]] = []
+    while end_idx <= window_end:
+        out.append((end_idx // 12, end_idx % 12 + 1))
+        end_idx += cycle
+    return out
+
+
 def period_start_for_end(end_year: int, end_month: int, cycle: int) -> tuple[int, int]:
     """Return (start_year, start_month) given a period end date and cycle length in months."""
     total = end_year * 12 + end_month - 1  # zero-based month index
@@ -1477,7 +1504,7 @@ def print_generation_summary(
     print(f"\n{'=' * 80}")
     print("BANK STATEMENT PDF GENERATION PLAN")
     print(f"{'=' * 80}")
-    print(f"Date range     : {start_year}/01 \u2192 {end_year}/12")
+    print(f"Date range     : {start_year}/01 -> {end_year}/12")
     print(f"Total accounts : {len(summary_df):,}")
     print(f"Total PDFs     : {total_pdfs:,}")
     print()
@@ -1489,7 +1516,7 @@ def print_generation_summary(
             f"{int(row['total_statements']):>17}  {row['folder_months']}"
         )
     if len(summary_df) > 30:
-        print(f"  \u2026 {len(summary_df) - 30} more accounts not shown")
+        print(f"  ... {len(summary_df) - 30} more accounts not shown")
     print(f"{'=' * 80}\n")
 
 
@@ -1525,7 +1552,7 @@ def generate_bank_statement_pdfs(
 
     for _, account in all_accounts.iterrows():
         cycle = int(account["cycle_months"])
-        period_ends = get_period_ends_for_cycle(cycle, start_year, end_year)
+        period_ends = get_period_ends_for_account(account, cycle, start_year, end_year)
         folder_months = sorted({m for _, m in period_ends})
         summary_rows.append({
             "account_id": account["account_id"],
