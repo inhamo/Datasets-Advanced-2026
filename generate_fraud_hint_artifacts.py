@@ -2,8 +2,8 @@
 Create fraud investigation hint artifacts before removing direct fraud labels.
 
 Outputs live under:
-  banking_data/YYYY/MM/fraud_hints/news_articles/
-  banking_data/YYYY/MM/fraud_hints/emails/
+  banking_data/YYYY/MM/news/
+  banking_data/YYYY/MM/emails/
 
 The artifacts intentionally use customer names in narrative text, not customer IDs,
 so analysts have to connect evidence back to customer records through normal
@@ -121,7 +121,7 @@ def write_news(case: dict[str, Any], idx: int) -> Path:
     year = int(case["year"])
     month = int(case["month"])
     published = datetime(year, month, min(8 + idx * 2, 24), 9, 30)
-    out_dir = BANKING_DIR / f"{year}" / f"{month:02d}" / "fraud_hints" / "news_articles"
+    out_dir = BANKING_DIR / f"{year}" / f"{month:02d}" / "news"
     out_dir.mkdir(parents=True, exist_ok=True)
 
     title = theme["headline"]
@@ -160,7 +160,7 @@ def write_email(case: dict[str, Any], idx: int) -> Path:
     year = int(case["year"])
     month = int(case["month"])
     sent = datetime(year, month, min(10 + idx * 2, 25), 8 + idx % 4, 15)
-    out_dir = BANKING_DIR / f"{year}" / f"{month:02d}" / "fraud_hints" / "emails"
+    out_dir = BANKING_DIR / f"{year}" / f"{month:02d}" / "emails"
     out_dir.mkdir(parents=True, exist_ok=True)
 
     subject = f"Tip-off from {theme['org']} - need a view on similar customers"
