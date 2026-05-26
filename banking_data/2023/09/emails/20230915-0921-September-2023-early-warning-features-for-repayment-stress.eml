@@ -1,0 +1,28 @@
+From: johan.vanwyk@credit.risk.retail.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za
+Cc: loan.products@keystonebank.co.za, collections.ops@keystonebank.co.za
+Subject: September 2023 early warning features for repayment stress
+Date: Fri, 15 Sep 2023 09:21:00 -0000
+Message-ID: <5a7d34ed6f204790952423fbb3bbaa33@keystonebank.co.za>
+X-Keystone-Department: Retail Credit Risk
+X-Keystone-Project-Type: early_warning_features
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi Analytics,
+
+Can we create a model-ready table for repayment stress using only information=
+ available up to the observation date?
+
+Target: failed loan debit, repeat NSF, or collections action in the next 30 d=
+ays.
+
+Candidate features: balance trend, debit day versus salary window, failed pay=
+ment history, fees, recent cash withdrawals, channel change, complaint flags =
+and product type.
+
+Please avoid future leakage. A row from an older month must not use outcomes =
+from months that had not happened yet. Same principle for every year.
+
+Johan

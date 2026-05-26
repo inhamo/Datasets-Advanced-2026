@@ -1,0 +1,27 @@
+From: priya.naidoo@payments.ops.keystonebank.co.za
+To: data.engineering@keystonebank.co.za, banking.operations@keystonebank.co.za
+Cc: finance.recon@keystonebank.co.za
+Subject: June 2021 failed debit root cause split
+Date: Wed, 16 Jun 2021 14:42:00 -0000
+Message-ID: <8ab71bd67d6e4e0ba95a1de2494521ae@keystonebank.co.za>
+X-Keystone-Department: Payments Operations
+X-Keystone-Project-Type: payments_root_cause
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Morning,
+
+Before we call customers, Payments needs to know what actually happened.
+
+Please split failed debits into insufficient funds, bank timeout, rejected ma=
+ndate, duplicate attempt, reversal, late settlement and customer-cancelled it=
+ems.
+
+For June 2021, the raw count I have is 86 insufficient-funds cases and 47 tim=
+eout cases. Please validate against the transaction file and statement dates.
+
+Output should be simple enough for the sponsor-bank call and detailed enough =
+for the analysts to reproduce.
+
+Priya
