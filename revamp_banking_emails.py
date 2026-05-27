@@ -16,6 +16,7 @@ import re
 import uuid
 from dataclasses import dataclass
 from datetime import date, datetime
+from calendar import monthrange
 from email.message import EmailMessage
 from pathlib import Path
 from typing import Any
@@ -585,6 +586,19 @@ def safe_filename(text: str) -> str:
     return re.sub(r"[^A-Za-z0-9\-]+", "-", text)[:72].strip("-")
 
 
+def nearest_business_day(year: int, month: int, day: int) -> int:
+    """Move weekend dates to a nearby weekday inside the same month."""
+    last_day = monthrange(year, month)[1]
+    day = max(1, min(day, last_day))
+    current = date(year, month, day)
+    if current.weekday() < 5:
+        return day
+    if current.weekday() == 5:  # Saturday
+        return day - 1 if day > 1 else min(day + 2, last_day)
+    # Sunday
+    return day + 1 if day < last_day else max(day - 2, 1)
+
+
 def validate_no_future_references(path: Path, year: int) -> list[str]:
     text = path.read_text(encoding="utf-8", errors="ignore")
     problems = []
@@ -613,7 +627,7 @@ def generate(start_year: int, end_year: int, write_pdf: bool = True) -> None:
             specs = monthly_email_specs(sig, teams, rng)
             used_days: dict[int, int] = {}
             for spec_item in specs:
-                base_day = min(28, int(spec_item["day"]))
+                base_day = nearest_business_day(year, month, min(28, int(spec_item["day"])))
                 used_days[base_day] = used_days.get(base_day, 0) + 1
                 minute_offset = used_days[base_day] * 7
                 sent = datetime(year, month, base_day, rng.randint(8, 16), min(59, rng.randint(0, 45) + minute_offset))
