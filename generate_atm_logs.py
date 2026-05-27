@@ -3,14 +3,17 @@
 Outputs:
   banking_data/YYYY/MM/atm_logs_YYYY_MM.parquet
 
-These are not a replacement for financial transactions. They represent ATM
-events: balance enquiries, failed PIN attempts, blocked/expired card attempts,
-eWallet/cardless errors, cash activity, mini statements and retained-card logs.
+These are not a replacement for financial transactions. Financial ATM logs are
+anchored to transactions.jsonl through linked_transaction_id. Non-financial ATM
+events such as balance enquiries, failed PIN attempts, blocked/expired card
+attempts, eWallet/cardless errors, mini statements and retained-card logs are
+generated as operational-only events.
 """
 
 from __future__ import annotations
 
 import argparse
+import ast
 import hashlib
 import random
 from calendar import monthrange
@@ -42,16 +45,14 @@ ATM_NETWORK = [
 ]
 
 EVENT_WEIGHTS = [
-    ("cash_withdrawal", 0.33),
-    ("balance_enquiry", 0.24),
+    ("balance_enquiry", 0.38),
     ("mini_statement", 0.08),
-    ("cash_deposit", 0.08),
     ("pin_change", 0.04),
-    ("ewallet_cashout", 0.10),
-    ("ewallet_send_voucher", 0.06),
-    ("cardless_withdrawal", 0.04),
-    ("card_retained", 0.01),
-    ("card_status_check", 0.02),
+    ("ewallet_cashout", 0.22),
+    ("ewallet_send_voucher", 0.12),
+    ("cardless_withdrawal", 0.10),
+    ("card_retained", 0.02),
+    ("card_status_check", 0.04),
 ]
 
 CARD_LOOKUP: pd.DataFrame | None = None
@@ -178,6 +179,64 @@ def ewallet_fields(event_type: str, failure_reason: str | None, rng: random.Rand
     }
 
 
+def parse_metadata(value: Any) -> dict[str, Any]:
+    if isinstance(value, dict):
+        return value
+    if value is None or pd.isna(value):
+        return {}
+    if isinstance(value, str):
+        try:
+            parsed = ast.literal_eval(value)
+            return parsed if isinstance(parsed, dict) else {}
+        except (ValueError, SyntaxError):
+            return {}
+    return {}
+
+
+def atm_from_metadata(metadata: dict[str, Any], rng: random.Random) -> tuple[str, str, str, float, float]:
+    atm_id = metadata.get("atm_id")
+    gps = metadata.get("gps_coordinates") or {}
+    if atm_id:
+        province = "Unknown"
+        location = "ATM network terminal"
+        lat = gps.get("latitude")
+        lon = gps.get("longitude")
+        return (
+            str(atm_id),
+            location,
+            province,
+            float(lat) if lat is not None else 0.0,
+            float(lon) if lon is not None else 0.0,
+        )
+    return rng.choice(ATM_NETWORK)
+
+
+def card_record_for_account(account_id: Any, lookup: pd.DataFrame) -> pd.Series | None:
+    if lookup.empty or account_id is None or pd.isna(account_id):
+        return None
+    found = lookup.loc[lookup["account_id"].eq(account_id)]
+    if found.empty:
+        return None
+    return found.iloc[0]
+
+
+def failure_from_transaction(tx: pd.Series, rng: random.Random) -> str | None:
+    status = str(tx.get("status") or "").lower()
+    if status in {"completed", "successful", "success"}:
+        return None
+    return rng.choice(["insufficient_funds", "transaction_declined", "host_timeout", "daily_limit_exceeded"])
+
+
+def event_type_from_transaction(tx: pd.Series) -> str:
+    category = str(tx.get("category") or "").lower()
+    debit_credit = str(tx.get("debit_credit") or "").lower()
+    if category in {"airtime", "data", "prepaid"}:
+        return "prepaid_purchase"
+    if debit_credit == "credit":
+        return "cash_deposit"
+    return "cash_withdrawal"
+
+
 def all_card_lookup() -> pd.DataFrame:
     global CARD_LOOKUP
     if CARD_LOOKUP is not None:
@@ -241,16 +300,92 @@ def load_month_accounts(year: int, month: int) -> pd.DataFrame:
     return fallback[fallback["card_number"].notna()].copy()
 
 
+def transaction_log_rows(year: int, month: int, lookup: pd.DataFrame, rng: random.Random) -> list[dict[str, Any]]:
+    tx_path = BANKING_DIR / str(year) / f"{month:02d}" / "transactions.jsonl"
+    if not tx_path.exists():
+        return []
+
+    tx = pd.read_json(tx_path, lines=True)
+    if tx.empty or "channel" not in tx.columns:
+        return []
+    tx = tx[tx["channel"].astype(str).str.lower().eq("atm")].copy()
+    if tx.empty:
+        return []
+
+    rows: list[dict[str, Any]] = []
+    for i, item in enumerate(tx.itertuples(index=False), start=1):
+        row = pd.Series(item._asdict())
+        account = card_record_for_account(row.get("account_id"), lookup)
+        if account is None:
+            continue
+        ts = pd.to_datetime(row.get("transaction_timestamp")).to_pydatetime()
+        metadata = parse_metadata(row.get("channel_metadata"))
+        atm = atm_from_metadata(metadata, rng)
+        failure_reason = failure_from_transaction(row, rng)
+        result = "successful" if failure_reason is None else "failed"
+        event_type = event_type_from_transaction(row)
+        card_blocked = failure_reason == "blocked_card" or str(account.get("account_status")).lower() in {"restricted", "blocked", "suspended", "closed"}
+
+        rows.append(
+            {
+                "atm_log_id": f"ATMLOG-{year}{month:02d}-TX-{i:07d}",
+                "event_timestamp": ts.isoformat(),
+                "event_date": ts.date().isoformat(),
+                "event_time": ts.time().isoformat(timespec="seconds"),
+                "atm_id": atm[0],
+                "terminal_id": metadata.get("terminal_id") or f"TERM-{str(atm[0]).replace('ATM-', '')}",
+                "atm_location": atm[1],
+                "atm_province": atm[2],
+                "atm_latitude": atm[3],
+                "atm_longitude": atm[4],
+                "customer_id": row.get("customer_id"),
+                "account_id": row.get("account_id"),
+                "account_number": account.get("account_number"),
+                "account_status": account.get("account_status"),
+                "masked_card_number": mask_card(account.get("card_number")),
+                "card_number_hash": hash_card(account.get("card_number")),
+                "card_type": account.get("card_type"),
+                "card_expiry_date": None if pd.isna(account.get("card_expiry_date")) else str(account.get("card_expiry_date")),
+                "card_block_status": bool(card_blocked),
+                "event_type": event_type,
+                "attempt_result": result,
+                "failure_reason": failure_reason,
+                "amount": float(row.get("amount")) if not pd.isna(row.get("amount")) else None,
+                "currency": account.get("currency") or "ZAR",
+                "balance_enquiry_requested": False,
+                "available_balance_returned": None,
+                "pin_attempt_number": None,
+                "cash_bin_status": rng.choice(["normal", "low_cash", "cash_out"]) if event_type == "cash_withdrawal" else None,
+                "receipt_printed": bool(rng.random() < 0.74) if result == "successful" else False,
+                "host_response_code": "00" if result == "successful" else rng.choice(["05", "51", "55", "57", "61", "68", "91"]),
+                "network_latency_ms": row.get("network_latency_ms") if "network_latency_ms" in row else rng.randint(120, 1800),
+                "linked_transaction_id": row.get("transaction_id"),
+                "transaction_category": row.get("category"),
+                "transaction_status": row.get("status"),
+                "source_system": "atm_switch",
+                "ewallet_reference": None,
+                "ewallet_recipient_msisdn_entered": None,
+                "ewallet_error_type": None,
+            }
+        )
+    return rows
+
+
 def generate_month(year: int, month: int) -> int:
     accounts = load_month_accounts(year, month)
-    if accounts.empty:
+    lookup = all_card_lookup()
+    if accounts.empty and lookup.empty:
         return 0
 
     rng = random.Random(9100 + year * 100 + month)
-    n = min(len(accounts), max(80, int(len(accounts) * rng.uniform(0.10, 0.18))))
+    rows: list[dict[str, Any]] = transaction_log_rows(year, month, lookup, rng)
+
+    if accounts.empty:
+        accounts = lookup.sample(n=min(len(lookup), 100), random_state=9100 + year * 100 + month).copy()
+
+    n = min(len(accounts), max(60, int(len(accounts) * rng.uniform(0.06, 0.10))))
     selected = accounts.sample(n=n, random_state=9100 + year * 100 + month, replace=False)
 
-    rows: list[dict[str, Any]] = []
     sequence = 1
     for _, account in selected.iterrows():
         attempts = rng.choices([1, 2, 3, 4], weights=[72, 20, 6, 2], k=1)[0]
@@ -300,6 +435,8 @@ def generate_month(year: int, month: int) -> int:
                     "host_response_code": "00" if result == "successful" else rng.choice(["05", "51", "55", "57", "61", "68", "91"]),
                     "network_latency_ms": rng.randint(120, 1800) if failure_reason != "host_timeout" else rng.randint(5000, 15000),
                     "linked_transaction_id": None,
+                    "transaction_category": None,
+                    "transaction_status": None,
                     "source_system": "atm_switch",
                     **ew,
                 }
@@ -307,7 +444,11 @@ def generate_month(year: int, month: int) -> int:
             sequence += 1
 
     out_path = BANKING_DIR / str(year) / f"{month:02d}" / f"atm_logs_{year}_{month:02d}.parquet"
-    pd.DataFrame(rows).sort_values(["event_timestamp", "atm_log_id"]).to_parquet(out_path, index=False)
+    tmp_path = out_path.with_name(f"{out_path.stem}.tmp{out_path.suffix}")
+    if tmp_path.exists():
+        tmp_path.unlink()
+    pd.DataFrame(rows).sort_values(["event_timestamp", "atm_log_id"]).to_parquet(tmp_path, index=False)
+    tmp_path.replace(out_path)
     return len(rows)
 
 
