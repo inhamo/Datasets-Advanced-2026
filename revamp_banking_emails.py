@@ -249,7 +249,6 @@ def monthly_email_specs(sig: MonthSignal, teams: dict[str, Any], rng: random.Ran
     customer_b = rng.choice(names)
     top_loan = (sig.top_loan_type or "personal loan").replace("_", " ")
     deliverable = rng.choice(["Excel extract", "Power BI page", "short slide pack", "case list", "one-page note"])
-    growth = "not available" if sig.yoy_tx_growth_pct is None else f"{sig.yoy_tx_growth_pct:+.1f}%"
     light_touch_channel = "phone note or branch callback"
     if y >= 2024:
         light_touch_channel = "SMS, WhatsApp or app message"
@@ -275,7 +274,7 @@ Please show customer activity, active accounts, loan repayment pressure, channel
 
 The board question is simple: are we growing safely, are customers struggling, and where is the bank creating avoidable work?
 
-For context, the loan payment file has {sig.tx_count:,} rows, a {sig.fail_pct:.1f}% failure rate and YoY volume growth of {growth}.
+I have heard repayment issues may be up, but I do not want us to work from corridor numbers. Please use the source files and tell me what is actually happening.
 
 Thanks,
 Kabelo""",
@@ -354,7 +353,7 @@ Farah""",
 
 Ops needs a view of where service failed in {month_label}. Please separate true customer error from bank-side delay.
 
-Use the transaction status, channel, posting timestamp, statement date and any timeout indicators. Current timeout count is {sig.timeout_count:,}, but I want the customer impact, not just the technical count.
+Use the transaction status, channel, posting timestamp, statement date and any timeout indicators. I have heard there were timeout problems, but I want the customer impact, not just a technical count.
 
 Please show worst day, worst channel, affected accounts, repeat incidents and whether the issue created follow-up calls or complaints.
 
@@ -436,7 +435,7 @@ Before we call customers, Payments needs to know what actually happened.
 
 Please split failed debits into insufficient funds, bank timeout, rejected mandate, duplicate attempt, reversal, late settlement and customer-cancelled items.
 
-For {month_label}, the raw count I have is {sig.insuf_count:,} insufficient-funds cases and {sig.timeout_count:,} timeout cases. Please validate against the transaction file and statement dates.
+For {month_label}, I am hearing different versions of the story from Collections and Ops. Please validate the root-cause split against the transaction file and statement dates.
 
 Output should be simple enough for the sponsor-bank call and detailed enough for the analysts to reproduce.
 
@@ -480,7 +479,7 @@ Collections does not want to phone everyone who missed a debit. That creates noi
 
 Please rank customers for the next debit run using recent NSF, balance recovery, hardship flag, complaint history and whether the customer usually fixes the account within a few days.
 
-Failure rate for {month_label} is {sig.fail_pct:.1f}%, so we need a priority list rather than a full dialler dump.
+People are saying missed debits are higher than usual for {month_label}, so we need a priority list rather than a full dialler dump.
 
 Also give us a small group where a {light_touch_channel} is enough. Service tone matters here.
 

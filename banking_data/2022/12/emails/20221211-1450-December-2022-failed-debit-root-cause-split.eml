@@ -3,7 +3,7 @@ To: data.engineering@keystonebank.co.za, banking.operations@keystonebank.co.za
 Cc: finance.recon@keystonebank.co.za
 Subject: December 2022 failed debit root cause split
 Date: Sun, 11 Dec 2022 14:50:00 -0000
-Message-ID: <4d771ca0ec4a41f78d0a90581aaf861b@keystonebank.co.za>
+Message-ID: <71769bc2437d4db1a6cb86a99e8993cc@keystonebank.co.za>
 X-Keystone-Department: Payments Operations
 X-Keystone-Project-Type: payments_root_cause
 Content-Type: text/plain; charset="utf-8"
@@ -18,9 +18,9 @@ Please split failed debits into insufficient funds, bank timeout, rejected ma=
 ndate, duplicate attempt, reversal, late settlement and customer-cancelled it=
 ems.
 
-For December 2022, the raw count I have is 169 insufficient-funds cases and 1=
-28 timeout cases. Please validate against the transaction file and statement =
-dates.
+For December 2022, I am hearing different versions of the story from Collecti=
+ons and Ops. Please validate the root-cause split against the transaction fil=
+e and statement dates.
 
 Output should be simple enough for the sponsor-bank call and detailed enough =
 for the analysts to reproduce.
