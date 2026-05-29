@@ -245,6 +245,7 @@ def monthly_email_specs(sig: MonthSignal, teams: dict[str, Any], rng: random.Ran
     y, m = sig.year, sig.month
     caps = year_capabilities(y)
     month_label = date(y, m, 1).strftime("%B %Y")
+    early_bank_buildout = y == 2019 and m <= 6
     names = load_customer_names(y, m)
     customer_a = rng.choice(names)
     customer_b = rng.choice(names)
@@ -257,6 +258,17 @@ def monthly_email_specs(sig: MonthSignal, teams: dict[str, Any], rng: random.Ran
         light_touch_channel = "SMS or app message"
     elif y >= 2020 and m >= 4:
         light_touch_channel = "phone note or in-app service message"
+
+    executive_detail = (
+        "Please show customer activity, newly active accounts, loan repayment pressure, first-use by channel and the top customer pain points. Use the bank data we already have. If the number is draft, mark it as draft."
+        if early_bank_buildout
+        else "Please show customer activity, active accounts, loan repayment pressure, channel movement and the top customer pain points. Use the bank data we already have. If the number is draft, mark it as draft."
+    )
+    credit_feature_detail = (
+        "Candidate features: balance trend, debit day versus salary window, failed payment history, fees, recent cash withdrawals, first successful card or ATM use, complaint flags and product type."
+        if early_bank_buildout
+        else "Candidate features: balance trend, debit day versus salary window, failed payment history, fees, recent cash withdrawals, channel change, complaint flags and product type."
+    )
 
     specs = [
         spec(
@@ -271,7 +283,7 @@ def monthly_email_specs(sig: MonthSignal, teams: dict[str, Any], rng: random.Ran
 
 Can you give me a simple business health view for {month_label}? I want it practical, not a perfect model.
 
-Please show customer activity, active accounts, loan repayment pressure, channel movement and the top customer pain points. Use the bank data we already have. If the number is draft, mark it as draft.
+{executive_detail}
 
 The board question is simple: are we growing safely, are customers struggling, and where is the bank creating avoidable work?
 
@@ -322,15 +334,37 @@ Output can be a {deliverable}. Please include suggested wording for the top thre
 Thanks,
 Zanele""",
         ),
-        spec(
-            day=rng.randint(6, 12),
-            from_team="product",
-            to=[mailbox("analytics", teams)],
-            cc=[mailbox("customer_experience", teams)],
-            department="Products and Channels",
-            project_type="channel_and_product_analytics",
-            subject=f"{month_label} channel movement and hidden defection",
-            body=f"""Hi Emma,
+        (
+            spec(
+                day=rng.randint(6, 12),
+                from_team="product",
+                to=[mailbox("analytics", teams)],
+                cc=[mailbox("customer_experience", teams), mailbox("operations", teams)],
+                department="Products and Channels",
+                project_type="new_customer_activation",
+                subject=f"{month_label} new customer activation and channel setup",
+                body=f"""Hi Emma,
+
+We are still in the early build-out phase, so Product wants to understand whether account opening is turning into real first usage.
+
+Can you help us see whether newly opened customers are actually getting started after account approval? I mean first card use, first ATM cash withdrawal or deposit, first debit order, first statement request, and cases where a customer opened an account but had no useful activity afterwards.
+
+Please split branch-assisted setup, ATM/card activity, debit-order setup and early service contacts. Also show customers who may need a simple welcome call because the first transaction failed, the card was blocked, or the account looks unused after opening.
+
+Output can be a {deliverable}. Keep it practical for branch and product teams; we need to fix onboarding friction before we scale campaigns.
+
+Farah""",
+            )
+            if early_bank_buildout
+            else spec(
+                day=rng.randint(6, 12),
+                from_team="product",
+                to=[mailbox("analytics", teams)],
+                cc=[mailbox("customer_experience", teams)],
+                department="Products and Channels",
+                project_type="channel_and_product_analytics",
+                subject=f"{month_label} channel movement and hidden defection",
+                body=f"""Hi Emma,
 
 Product is worried that some customers still keep the account open but move useful activity elsewhere.
 
@@ -341,6 +375,7 @@ Please split routine activity, product purchase activity and service recovery co
 The theme for this month is {caps['digital']}. Keep the view grounded in actual transactions and customer behaviour, not just campaign counts.
 
 Farah""",
+            )
         ),
         spec(
             day=rng.randint(7, 13),
@@ -416,7 +451,7 @@ Can we create a model-ready table for repayment stress using only information av
 
 Target: failed loan debit, repeat NSF, or collections action in the next 30 days.
 
-Candidate features: balance trend, debit day versus salary window, failed payment history, fees, recent cash withdrawals, channel change, complaint flags and product type.
+{credit_feature_detail}
 
 Please avoid future leakage. A row from an older month must not use outcomes from months that had not happened yet. Same principle for every year.
 
