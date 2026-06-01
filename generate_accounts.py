@@ -915,6 +915,7 @@ def generate_accounts(year, month=None, ultra_fast=False, counter_persist_every=
             swift_code = generate_swift_code(swift_by_bank.get(bank_name, "WOLZAJJ"), branch_code) if currency != "ZAR" else None
             iban = generate_iban(account_number) if currency != "ZAR" else None
             account_purpose = determine_account_purpose(row, acc_type)
+            expected_amount = round(np.random.lognormal(mean=8.5, sigma=1.2), 2)
 
             is_primary = customer_id not in customer_primary_accounts
             if is_primary:
@@ -954,7 +955,8 @@ def generate_accounts(year, month=None, ultra_fast=False, counter_persist_every=
                     "branch_code": branch_code,
                     "kyc_verified": True,
                     "fica_verified": row.get("citizenship") != "ZA",
-                    "expected_amount": round(np.random.lognormal(mean=8.5, sigma=1.2), 2),
+                    "expected_amount": expected_amount,
+                    "initial_deposit": expected_amount,
                     "account_status": account_status,
                     "status_change_date": status_change_date,
                     "closure_date": closure_date,
@@ -1004,6 +1006,7 @@ def generate_accounts(year, month=None, ultra_fast=False, counter_persist_every=
             account_tier = determine_account_tier("joint", income_level)
             overdraft_limit, credit_card_limit = generate_credit_limit("joint", income_level, annual_income)
             bank_name, product_name = choose_bank_and_product("joint", products_payload, bank_names, bank_weights)
+            expected_amount = min(round(np.random.lognormal(mean=8.5, sigma=1.2), 2), 100000)
 
             global_id = counter.get_next()
             account_number = generate_sa_account_number(branch_code, global_id)
@@ -1030,7 +1033,8 @@ def generate_accounts(year, month=None, ultra_fast=False, counter_persist_every=
                     "branch_code": branch_code,
                     "kyc_verified": True,
                     "fica_verified": any(non_za_citizens_by_id.get(cid, False) for cid in [customer_id, *list(partners)]),
-                    "expected_amount": min(round(np.random.lognormal(mean=8.5, sigma=1.2), 2), 100000),
+                    "expected_amount": expected_amount,
+                    "initial_deposit": expected_amount,
                     "account_status": account_status,
                     "status_change_date": status_change_date,
                     "closure_date": closure_date,
@@ -1111,6 +1115,7 @@ def generate_accounts(year, month=None, ultra_fast=False, counter_persist_every=
             swift_code = generate_swift_code(swift_by_bank.get(bank_name, "WOLZAJJ"), branch_code) if currency != "ZAR" else None
             iban = generate_iban(account_number) if currency != "ZAR" else None
             account_purpose = determine_account_purpose(row, acc_type)
+            expected_amount = round(random.uniform(10000, 1000000), 2)
 
             is_primary = customer_id not in customer_primary_accounts
             if is_primary:
@@ -1139,7 +1144,8 @@ def generate_accounts(year, month=None, ultra_fast=False, counter_persist_every=
                     "branch_code": branch_code,
                     "kyc_verified": True,
                     "fica_verified": None,
-                    "expected_amount": round(random.uniform(10000, 1000000), 2),
+                    "expected_amount": expected_amount,
+                    "initial_deposit": expected_amount,
                     "account_status": account_status,
                     "status_change_date": status_change_date,
                     "closure_date": closure_date,
