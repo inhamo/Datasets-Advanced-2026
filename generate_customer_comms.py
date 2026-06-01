@@ -7,8 +7,8 @@ Outputs per month:
   banking_data/{year}/{month}/customer_communications/suggestions.csv
 
 The generator reads existing monthly banking data, monthly signals, news articles,
-and macro events so the records are linked to real synthetic customers and to the
-business context already present in the dataset.
+and macro events so the records use real synthetic customers and feel appropriate
+for the business context already present in the dataset.
 """
 
 from __future__ import annotations
@@ -61,8 +61,6 @@ COMM_FIELDS = [
     "subject",
     "body",
     "sentiment",
-    "linked_news_title",
-    "linked_event_date",
     "is_complaint",
     "complaint_category",
 ]
@@ -622,8 +620,6 @@ def generate_communication(
         "subject": subject,
         "body": body,
         "sentiment": sentiment,
-        "linked_news_title": article.get("title", "") if article else "",
-        "linked_event_date": event.get("date", "") if event else "",
         "is_complaint": str(bool(is_complaint)),
         "complaint_category": category,
     }
