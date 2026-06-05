@@ -18,6 +18,35 @@ BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = BASE_DIR / "banking_data"
 COMMONS_DIR = BASE_DIR / "commons"
 
+TRANSACTION_OUTPUT_DROP_COLUMNS = {
+    "batch_id",
+    "generation_timestamp",
+    "customer_id",
+    "customer_session_id",
+    "customer_device_fingerprint",
+    "customer_location_state_before",
+    "customer_location_state_after",
+    "customer_behavioral_score",
+    "realism_score",
+    "temporal_realism_score",
+    "spatial_realism_score",
+    "behavioral_realism_score",
+    "financial_realism_score",
+    "account_balance_before",
+    "account_balance_after",
+    "daily_transaction_count_so_far",
+    "daily_total_amount_so_far",
+    "monthly_transaction_count_so_far",
+    "network_latency_ms",
+    "source_table",
+    "is_fraudulent",
+    "fraud_pattern",
+    "fraud_confidence",
+    "fraud_metadata",
+}
+
+EXTERNAL_CONTEXT_DROP_KEYS = {"weather_condition", "load_shedding_stage"}
+
 
 # Simplified but production-usable schedule templates.
 CUSTOMER_SCHEDULE_TEMPLATES: dict[str, dict[str, list[dict[str, Any]]]] = {
@@ -250,6 +279,18 @@ def _to_serializable(obj: Any) -> Any:
     if isinstance(obj, list):
         return [_to_serializable(v) for v in obj]
     return obj
+
+
+def prune_transaction_output(row: dict[str, Any]) -> dict[str, Any]:
+    cleaned = {key: value for key, value in row.items() if key not in TRANSACTION_OUTPUT_DROP_COLUMNS}
+    external_context = cleaned.get("external_context")
+    if isinstance(external_context, dict):
+        cleaned["external_context"] = {
+            key: value
+            for key, value in external_context.items()
+            if key not in EXTERNAL_CONTEXT_DROP_KEYS
+        }
+    return cleaned
 
 
 def write_jsonl(path: Path, rows: list[dict[str, Any]]) -> None:
@@ -1433,7 +1474,11 @@ def generate_month(year: int, month: int, target_customers: int | None = None) -
     channel_analytics = channel_analytics.to_dict("records")
 
     out_dir = DATA_DIR / str(year) / f"{month:02d}"
-    write_jsonl(out_dir / "transactions.jsonl", tx_df.drop(columns=["signed_amount", "date_key"]).to_dict("records"))
+    transaction_rows = [
+        prune_transaction_output(row)
+        for row in tx_df.drop(columns=["signed_amount", "date_key"]).to_dict("records")
+    ]
+    write_jsonl(out_dir / "transactions.jsonl", transaction_rows)
     write_jsonl(out_dir / "customer_sessions.jsonl", sessions)
     write_jsonl(out_dir / "fraud_cases.jsonl", fraud_rows)
     write_jsonl(out_dir / "error_log.jsonl", error_rows)
