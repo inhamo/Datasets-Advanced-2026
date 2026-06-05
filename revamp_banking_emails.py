@@ -30,6 +30,8 @@ BASE_DIR = Path(__file__).resolve().parent
 BANKING_DIR = BASE_DIR / "banking_data"
 COMMONS_DIR = BASE_DIR / "commons"
 SOURCE_NOTES_PATH = COMMONS_DIR / "email_research_backbone.csv"
+FIRST_EMAIL_YEAR = 2019
+FIRST_EMAIL_MONTH = 4
 
 
 @dataclass
@@ -158,6 +160,19 @@ def clean_email_dir(year: int, month: int) -> Path:
     return out
 
 
+def remove_email_dir(year: int, month: int) -> None:
+    out = BANKING_DIR / str(year) / f"{month:02d}" / "emails"
+    if not out.exists():
+        return
+    for path in out.iterdir():
+        if path.is_file() and path.suffix.lower() in {".eml", ".pdf"}:
+            path.unlink()
+    try:
+        out.rmdir()
+    except OSError:
+        pass
+
+
 def load_customer_names(year: int, month: int) -> list[str]:
     path = BANKING_DIR / str(year) / f"{month:02d}" / f"customers_{year}_{month:02d}.parquet"
     if not path.exists():
@@ -259,11 +274,38 @@ def monthly_email_specs(sig: MonthSignal, teams: dict[str, Any], rng: random.Ran
     elif y >= 2020 and m >= 4:
         light_touch_channel = "phone note or in-app service message"
 
-    executive_detail = (
-        "Please show customer activity, newly active accounts, loan repayment pressure, first-use by channel and the top customer pain points. Use the bank data we already have. If the number is draft, mark it as draft."
-        if early_bank_buildout
-        else "Please show customer activity, active accounts, loan repayment pressure, channel movement and the top customer pain points. Use the bank data we already have. If the number is draft, mark it as draft."
-    )
+    if early_bank_buildout:
+        if m == 4:
+            launch_scope = "the January to March launch period, plus April month-to-date where the files are already closed"
+        else:
+            launch_scope = f"the first quarter and what has changed so far in {month_label}"
+        executive_subject = f"{month_label} launch health view after Q1"
+        executive_body = f"""Hi Sarah,
+
+Can you help me with a simple launch health view for {launch_scope}? I want it practical, not a perfect model.
+
+Please show account opening, first real customer activity, first-use by channel, early debit-order pressure, blocked cards or ATM issues, statement requests and the top customer pain points. If the base is too small for a trend, say so plainly and mark it as early.
+
+The board question is simple: are we onboarding customers safely, where are customers getting stuck, and what should we fix before we scale?
+
+I have heard anecdotes about repayment and card issues, but I do not want us to work from corridor numbers. Please use the source files and tell me what is actually happening.
+
+Thanks,
+Kabelo"""
+    else:
+        executive_subject = f"{month_label} business health view before EXCO"
+        executive_body = f"""Hi Sarah,
+
+Can you give me a simple business health view for {month_label}? I want it practical, not a perfect model.
+
+Please show customer activity, active accounts, loan repayment pressure, channel movement and the top customer pain points. Use the bank data we already have. If the number is draft, mark it as draft.
+
+The board question is simple: are we growing safely, are customers struggling, and where is the bank creating avoidable work?
+
+I have heard repayment issues may be up, but I do not want us to work from corridor numbers. Please use the source files and tell me what is actually happening.
+
+Thanks,
+Kabelo"""
     credit_feature_detail = (
         "Candidate features: balance trend, debit day versus salary window, failed payment history, fees, recent cash withdrawals, first successful card or ATM use, complaint flags and product type."
         if early_bank_buildout
@@ -278,19 +320,8 @@ def monthly_email_specs(sig: MonthSignal, teams: dict[str, Any], rng: random.Ran
             cc=[mailbox("data_engineering", teams)],
             department="Executive Office",
             project_type="business_health_dashboard",
-            subject=f"{month_label} business health view before EXCO",
-            body=f"""Hi Sarah,
-
-Can you give me a simple business health view for {month_label}? I want it practical, not a perfect model.
-
-{executive_detail}
-
-The board question is simple: are we growing safely, are customers struggling, and where is the bank creating avoidable work?
-
-I have heard repayment issues may be up, but I do not want us to work from corridor numbers. Please use the source files and tell me what is actually happening.
-
-Thanks,
-Kabelo""",
+            subject=executive_subject,
+            body=executive_body,
         ),
         spec(
             day=rng.randint(4, 9),
@@ -654,6 +685,9 @@ def generate(start_year: int, end_year: int, write_pdf: bool = True) -> None:
 
     for year in range(start_year, end_year + 1):
         for month in range(1, 13):
+            if (year, month) < (FIRST_EMAIL_YEAR, FIRST_EMAIL_MONTH):
+                remove_email_dir(year, month)
+                continue
             sig = signals.get((year, month))
             if sig is None:
                 continue
