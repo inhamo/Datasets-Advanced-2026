@@ -6,9 +6,8 @@ For each banking_data/YYYY/MM folder:
   - append loan_payment_transactions_YYYY_MM.parquet or .csv rows to transactions.jsonl
   - delete the separate debit_order_transactions and loan_payment_transactions files
 
-The appended rows preserve their original fields and add common JSON transaction
-fields such as transaction_timestamp, category, source_table, batch_id and
-generation_timestamp.
+The appended rows preserve useful banking fields and add a common transaction
+timestamp and category.
 """
 
 from __future__ import annotations
@@ -106,39 +105,29 @@ def row_to_json_record(row: dict[str, Any], year: int, month: int, source_table:
     cleaned = {str(k): clean_value(v) for k, v in row.items()}
     ts = transaction_timestamp(cleaned)
     category = "loan_payment" if source_table == "loan_payment_transactions" else "debit_order"
+    excluded = {
+        "bank_name",
+        "batch_id",
+        "generation_timestamp",
+        "record_last_updated_at",
+        "transaction_date",
+        "transaction_time",
+        "source_system",
+        "has_data_error",
+        "data_error_types",
+        "ewallet_number",
+        "is_immediate_payment",
+        "immediate_payment",
+    }
     record = {
-        **cleaned,
-        "batch_id": cleaned.get("batch_id") or f"BATCH-{year}{month:02d}",
-        "generation_timestamp": cleaned.get("record_last_updated_at") or cleaned.get("generation_timestamp"),
+        **{key: value for key, value in cleaned.items() if key not in excluded},
         "transaction_timestamp": ts,
-        "transaction_date": str(cleaned.get("transaction_date") or "")[:10],
-        "transaction_time": str(cleaned.get("transaction_time") or ""),
         "category": category,
         "amount": clean_value(cleaned.get("amount")),
         "debit_credit": normalize_debit_credit(cleaned.get("debit_credit")),
         "status": normalize_status(cleaned.get("status")),
-        "source_table": source_table,
         "merchant_name": cleaned.get("beneficiary_name") or ("Keystone Bank Loans" if category == "loan_payment" else None),
-        "has_error": bool(cleaned.get("has_data_error")) if "has_data_error" in cleaned else bool(cleaned.get("failure_reason")),
-        "error_types": cleaned.get("data_error_types") or ([] if not cleaned.get("failure_reason") else [cleaned.get("failure_reason")]),
     }
-    if source_table == "loan_payment_transactions":
-        record["loan_payment_metadata"] = {
-            "loan_id": cleaned.get("loan_id"),
-            "loan_type": cleaned.get("loan_type"),
-            "installment_number": cleaned.get("installment_number"),
-            "payment_type": cleaned.get("payment_type"),
-            "is_recovery_attempt": cleaned.get("is_recovery_attempt"),
-            "immediate_payment": cleaned.get("immediate_payment"),
-        }
-    else:
-        record["debit_order_metadata"] = {
-            "debit_order_id": cleaned.get("debit_order_id"),
-            "debit_order_type": cleaned.get("debit_order_type"),
-            "frequency": cleaned.get("frequency"),
-            "is_immediate_payment": cleaned.get("is_immediate_payment"),
-            "beneficiary_name": cleaned.get("beneficiary_name"),
-        }
     return record
 
 

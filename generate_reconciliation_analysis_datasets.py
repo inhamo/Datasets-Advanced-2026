@@ -1166,7 +1166,7 @@ def build_analytics_marts(ledger: pd.DataFrame, recon: pd.DataFrame, exceptions:
             }
         )
 
-    account_segments = accounts[["account_id", "customer_id", "bank_name", "account_type", "account_tier", "statement_timeframe_months"]].copy()
+    account_segments = accounts[["account_id", "customer_id", "account_type", "account_tier", "statement_timeframe_months"]].copy()
     account_segments["analysis_segment"] = account_segments["account_tier"].astype(str) + "_" + account_segments["account_type"].astype(str)
 
     return {
@@ -1180,7 +1180,7 @@ def build_analytics_marts(ledger: pd.DataFrame, recon: pd.DataFrame, exceptions:
 
 # ── Bank statement PDF generation (monthly-foldered, per-account cycle) ──────
 
-FREQ_TO_CYCLE: dict[str, int] = {"monthly": 1, "quarterly": 3, "annually": 6}
+FREQ_TO_CYCLE: dict[str, int] = {"monthly": 1, "quarterly": 3, "annually": 12}
 
 
 def get_account_cycle(account: pd.Series) -> int:
@@ -1230,10 +1230,19 @@ def get_period_ends_for_account(
     while end_idx < window_start:
         end_idx += cycle
 
+    closure = pd.to_datetime(account.get("closure_date"), errors="coerce")
+    closure_idx = window_end if pd.isna(closure) else int(closure.year) * 12 + int(closure.month) - 1
+    final_idx = min(window_end, closure_idx)
+
     out: list[tuple[int, int]] = []
-    while end_idx <= window_end:
+    while end_idx <= final_idx:
         out.append((end_idx // 12, end_idx % 12 + 1))
         end_idx += cycle
+    if not pd.isna(closure) and closure_idx >= open_idx:
+        closure_period = (closure_idx // 12, closure_idx % 12 + 1)
+        if closure_period not in out:
+            out.append(closure_period)
+            out.sort()
     return out
 
 
@@ -1528,7 +1537,7 @@ def generate_bank_statement_pdfs(
 ) -> dict[str, Any]:
     """Generate per-account monthly-foldered bank statement PDFs for every
     account from start_year/01 through end_year/12 using each account's
-    individual statement cycle (monthly=1, quarterly=3, semi-annual=6).
+    individual statement cycle (monthly=1, quarterly=3, annual=12).
 
     Folder structure: banking_data/bank_statements/YEAR/MM/{account_id}.pdf
     Only months where at least one account has a cycle end are created.
@@ -1596,6 +1605,12 @@ def generate_bank_statement_pdfs(
 
         for account in accounts_in_group:
             account_id = str(account["account_id"])
+            closure = pd.to_datetime(account.get("closure_date"), errors="coerce")
+            account_period_end = (
+                min(period_end_dt, closure.to_pydatetime())
+                if not pd.isna(closure)
+                else period_end_dt
+            )
 
             if ledger.empty:
                 acc_tx = pd.DataFrame()
@@ -1608,7 +1623,7 @@ def generate_bank_statement_pdfs(
                 )
 
             acc_tx_bank, discrepancies = inject_bank_discrepancies(
-                acc_tx, period_end_dt, rng, missing_omitted, account_id
+                acc_tx, account_period_end, rng, missing_omitted, account_id
             )
 
             for d in discrepancies:
@@ -1623,7 +1638,7 @@ def generate_bank_statement_pdfs(
             pdf_path = folder / f"{account_id}.pdf"
             bank_statement_pdf(
                 pdf_path, account, acc_tx_bank,
-                period_start_dt, period_end_dt, discrepancies,
+                period_start_dt, account_period_end, discrepancies,
             )
             total_generated += 1
 

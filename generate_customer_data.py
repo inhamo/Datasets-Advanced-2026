@@ -31,6 +31,44 @@ BASE_DIR = Path(__file__).resolve().parent
 OUTPUT_DIR = BASE_DIR / "banking_data"
 COMMONS_DIR = BASE_DIR / "commons"
 
+COUNTRY_CODES = {
+    "South Africa": "ZA",
+    "Zimbabwe": "ZW",
+    "Mozambique": "MZ",
+    "Lesotho": "LS",
+    "Botswana": "BW",
+    "Namibia": "NA",
+    "Kenya": "KE",
+    "Malawi": "MW",
+    "Zambia": "ZM",
+    "Eswatini": "SZ",
+    "Nigeria": "NG",
+    "Democratic Republic of the Congo": "CD",
+    "United Kingdom": "GB",
+    "India": "IN",
+    "China": "CN",
+    "Saudi Arabia": "SA",
+}
+
+REALISTIC_EMPLOYERS = [
+    "Shoprite Checkers", "Pick n Pay", "Woolworths", "Spar Group", "Clicks Group",
+    "Transnet", "Eskom", "PRASA", "Telkom South Africa", "MTN South Africa",
+    "Vodacom South Africa", "City of Johannesburg", "City of Cape Town",
+    "eThekwini Municipality", "Gauteng Department of Health",
+    "KwaZulu-Natal Department of Education", "Netcare", "Life Healthcare",
+    "University of Johannesburg", "Mokoena Logistics", "Dlamini Construction",
+    "Naidoo Accounting Services", "Mthembu Security Services", "Khumalo Transport",
+]
+
+ORGANISATION_NAMES = [
+    "Ikhaya Children's Home", "Siyakhula Orphanage", "Ubuntu Youth Development Centre",
+    "Masibambane Community Trust", "Hope Haven Child and Youth Care Centre",
+    "Thuthukani Disability Support Association", "Sisonke Women's Cooperative",
+    "Imbokodo Community Foundation", "Khanyisa Early Childhood Centre",
+    "Bambanani Food Relief Network", "New Life Community Church",
+    "Sakhisizwe School Governing Body", "Vukani Sports Development Club",
+]
+
 
 def get_output_path(base_path, year, month=None, record_type="customers"):
     """
@@ -477,8 +515,12 @@ def generate_customer_data(year, cadence="monthly", target_records=None, month=N
 
     ethnicity_options = ["Black", "Coloured", "White", "Indian", "Asian"]
     ethnicity_weights = [0.80, 0.09, 0.08, 0.025, 0.005]
-    non_sa_nationalities = ["Zimbabwe", "Lesotho", "Botswana", "Namibia", "Mozambique", "Kenya"]
-    non_sa_weights = [0.27, 0.17, 0.15, 0.12, 0.23, 0.06]
+    non_sa_nationalities = [
+        "Zimbabwe", "Mozambique", "Lesotho", "Malawi", "Botswana", "Namibia",
+        "Zambia", "Eswatini", "Nigeria", "Kenya",
+        "Democratic Republic of the Congo", "United Kingdom", "India", "China", "Saudi Arabia",
+    ]
+    non_sa_weights = [0.40, 0.19, 0.08, 0.06, 0.05, 0.04, 0.04, 0.03, 0.03, 0.02, 0.015, 0.015, 0.01, 0.005, 0.005]
     capture_channels = ["Branch", "Mobile", "Online", "Call Center"]
     capture_weights = [0.42, 0.29, 0.22, 0.07]
     income_bands = behavioral_profiles.get("income_bands", [])
@@ -533,7 +575,11 @@ def generate_customer_data(year, cadence="monthly", target_records=None, month=N
             province_profile = location_profiles.get(province, {})
 
             nationality = "South Africa" if random.random() < 0.93 else random.choices(non_sa_nationalities, weights=non_sa_weights, k=1)[0]
-            citizenship = "ZA" if nationality == "South Africa" else nationality[:2].upper()
+            citizenship = COUNTRY_CODES[nationality]
+            dual_probability = 0.09 if citizenship != "ZA" else 0.006
+            if random.random() < dual_probability:
+                second = "ZA" if citizenship != "ZA" else random.choice(["ZW", "GB", "NG", "AU"])
+                citizenship = ",".join(sorted({citizenship, second}, key=lambda code: (code != "ZA", code)))
             full_name = generate_name_from_profile(nationality, ethnicity, gender, names_by_country, names_by_ethnicity)
             full_name = introduce_typo(full_name, 0.05)
             if random.random() < scenarios["individual_scenarios"].get("single_letter_name_misspelling_rate", 0.08):
@@ -738,8 +784,8 @@ def generate_customer_data(year, cadence="monthly", target_records=None, month=N
                 "tax_id_number": tax_id_number,
                 "occupation": occupation,
                 "employer_name": (
-                    introduce_typo(fake.company(), 0.05)
-                    if occupation and "unemployed" not in occupation.lower() and random.random() < 0.65
+                    random.choice(REALISTIC_EMPLOYERS)
+                    if occupation and "unemployed" not in occupation.lower() and occupation != "Student" and random.random() < 0.74
                     else None
                 ),
                 "source_of_funds": source_of_funds,
@@ -796,7 +842,8 @@ def generate_customer_data(year, cadence="monthly", target_records=None, month=N
         business_types = company_profiles.get("business_types", ["Services"])
         for i in range(batch_size_value):
             idx = start_idx + i + 1
-            company_name = introduce_typo(fake.company(), 0.05)
+            is_organisation = random.random() < 0.18
+            company_name = random.choice(ORGANISATION_NAMES) if is_organisation else introduce_typo(fake.company(), 0.05)
             company_age = random.randint(1, 60)
             company_size = pick_from_distribution(size_mix)
             size_profile = size_profiles.get(company_size, {})
@@ -837,7 +884,7 @@ def generate_customer_data(year, cadence="monthly", target_records=None, month=N
 
             company_data = {
                 "customer_id": customer_id,
-                "customer_type": "Company",
+                "customer_type": "Organization" if is_organisation else "Company",
                 "full_name": company_name,
                 "birth_date": None,
                 "citizenship": "ZA",
@@ -847,7 +894,7 @@ def generate_customer_data(year, cadence="monthly", target_records=None, month=N
                 "commercial_address": f"{introduce_typo(fake.street_address(), 0.08)}, {city}, {province}, South Africa",
                 "email": fake.company_email() if random.random() < 0.9 else None,
                 "phone_number": phone_number,
-                "id_type": "Registration Number",
+                "id_type": "NPO/Trust Registration Number" if is_organisation else "Registration Number",
                 "id_number": f"{random.randint(1900, year)}/{random.randint(100000, 999999)}/{random.randint(1, 99)}",
                 "expiry_date": None,
                 "visa_type": None,
@@ -856,15 +903,19 @@ def generate_customer_data(year, cadence="monthly", target_records=None, month=N
                 "sanctioned_country": random.random() < 0.005,
                 "risk_score": risk_score,
                 "tax_id_number": "".join(str(random.randint(0, 9)) for _ in range(10)) if random.random() < 0.9 else None,
-                "occupation": random.choice(business_types),
+                "occupation": "Non-profit and community services" if is_organisation else random.choice(business_types),
                 "employer_name": None,
-                "source_of_funds": random.choice(["Business Income", "Investment Income", "Trade Receipts"]),
+                "source_of_funds": (
+                    random.choice(["Donations", "Grant Funding", "Membership Contributions", "Fundraising Proceeds"])
+                    if is_organisation
+                    else random.choice(["Business Income", "Investment Income", "Trade Receipts"])
+                ),
                 "marital_status": None,
                 "gender": None,
                 "preferred_contact_method": random.choice(["Email", "Phone", None]),
                 "next_of_kin": introduce_typo(fake.name(), 0.05) if random.random() < 0.8 else None,
                 "date_of_entry": date_of_entry,
-                "annual_income": turnover,
+                "annual_income": None,
                 "income_band": income_band_for_amount(turnover, income_bands),
                 "opening_balance": opening_balance,
                 "avg_monthly_balance": avg_monthly_balance,
@@ -891,7 +942,11 @@ def generate_customer_data(year, cadence="monthly", target_records=None, month=N
                 "branch_name": branch["branch_name"],
                 "branch_city": branch["city"],
                 "branch_province": branch["province"],
-                "capture_channel": random.choice(["Branch", "Online", "Call Center"]),
+                "capture_channel": (
+                    random.choices(["Branch", "Online", "Call Center"], weights=[0.76, 0.18, 0.06], k=1)[0]
+                    if is_organisation
+                    else random.choices(["Branch", "Online", "Call Center"], weights=[0.62, 0.31, 0.07], k=1)[0]
+                ),
                 "source_system": random.choice(["core_banking", "branch_capture", "digital_onboarding", "migration_import"]),
                 "customer_segment": company_segment,
                 "company_age": company_age,

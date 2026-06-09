@@ -96,40 +96,34 @@ def generate_card_number(account_type):
     return card_num + str(check_digit), card_type
 
 
-def determine_account_purpose(customer_data, account_type):
-    if customer_data.get("customer_type") == "Company":
-        purposes = ["business_operations", "payroll", "tax_payments", "investment", "trading"]
-        weights = [0.5, 0.2, 0.15, 0.1, 0.05]
-        return random.choices(purposes, weights=weights)[0]
-
-    occupation = str(customer_data.get("occupation", ""))
-    if "Student" in occupation:
-        return random.choice(["student_savings", "bursary_account", "pocket_money"])
-    if "Unemployed" in occupation:
-        return random.choice(["social_grants", "savings", "family_support"])
-
-    if account_type in ["premium", "gold", "platinum"]:
-        purposes = ["wealth_management", "investment", "salary", "savings"]
-        weights = [0.3, 0.3, 0.25, 0.15]
-    else:
-        purposes = ["salary", "savings", "daily_transactions", "emergency_fund", "side_income"]
-        weights = [0.4, 0.25, 0.2, 0.1, 0.05]
-
-    return random.choices(purposes, weights=weights)[0]
+def generate_card_history(account_type, opening_date, history_end=date(2025, 12, 31)):
+    card = generate_card_number(account_type)
+    if card is None:
+        return None, None, None, None
+    card_number, card_type = card
+    issue_date = opening_date if random.random() < 0.8 else opening_date + timedelta(days=random.randint(7, 21))
+    expiry_date = date(opening_date.year + random.randint(3, 5), opening_date.month, 1)
+    history = [(card_number, card_type, issue_date, expiry_date)]
+    while history[-1][3] <= history_end:
+        next_issue = history[-1][3] - timedelta(days=21)
+        next_card, next_type = generate_card_number(account_type)
+        history.append((next_card, next_type, next_issue, date(next_issue.year + 4, next_issue.month, 1)))
+    return (
+        ",".join(item[0] for item in history),
+        ",".join(item[1] for item in history),
+        ",".join(item[2].isoformat() for item in history),
+        ",".join(item[3].isoformat() for item in history),
+    )
 
 
 def generate_beneficiaries(customer_data, fake):
-    if random.random() < 0.4:
+    customer_type = customer_data.get("customer_type")
+    probability = 0.38 if customer_type == "Organization" else 0.45 if customer_type == "Company" else 0.20
+    if random.random() >= probability:
         return None
 
-    num_beneficiaries = random.choices([1, 2, 3], weights=[0.6, 0.3, 0.1])[0]
-    beneficiaries = []
-    for _ in range(num_beneficiaries):
-        name = fake.name()
-        relationship = random.choice(["Spouse", "Child", "Parent", "Sibling", "Other"])
-        percentage = random.randint(10, 100)
-        beneficiaries.append(f"{name}|{relationship}|{percentage}%")
-    return ";".join(beneficiaries)
+    num_beneficiaries = random.choices([1, 2, 3, 4], weights=[0.58, 0.27, 0.11, 0.04])[0]
+    return ",".join(fake.name() for _ in range(num_beneficiaries))
 
 
 def should_reject_application(customer_data, account_type):
@@ -474,7 +468,7 @@ def generate_bundled_products(account_type, customer_data, bundled_products_avai
     if not available_products:
         return None
 
-    num_products = random.choices([0, 1, 2, 3], weights=[0.2, 0.4, 0.3, 0.1])[0]
+    num_products = random.choices([0, 1, 2], weights=[0.62, 0.31, 0.07])[0]
     if num_products == 0:
         return None
 
@@ -487,9 +481,18 @@ def generate_bundled_products(account_type, customer_data, bundled_products_avai
     return ";".join(selected_products) if selected_products else None
 
 
-def determine_opening_channel_and_details():
-    channels = ["branch", "online", "mobile_app", "phone", "agent"]
-    weights = [0.50, 0.30, 0.15, 0.03, 0.02]
+def determine_opening_channel_and_details(customer_data, year):
+    capture = str(customer_data.get("capture_channel", "Branch")).lower()
+    choices = {
+        "branch": (["branch", "agent", "phone", "online"], [0.91, 0.05, 0.03, 0.01]),
+        "mobile": (["mobile_app", "online", "branch"], [0.86, 0.09, 0.05]),
+        "online": (["online", "mobile_app", "branch"], [0.86, 0.08, 0.06]),
+        "call center": (["phone", "branch", "online"], [0.72, 0.20, 0.08]),
+    }
+    channels, weights = choices.get(capture, choices["branch"])
+    if year == 2019 and capture != "branch":
+        channels = ["branch", *channels]
+        weights = [0.45, *[weight * 0.55 for weight in weights]]
     return {"opening_channel": random.choices(channels, weights=weights)[0]}
 
 
@@ -515,9 +518,8 @@ def generate_accounts_with_relationships(customer_data, year):
 
 
 def choose_bank_and_product(account_type, products_payload, bank_names, bank_weights):
-    bank_name = random.choices(bank_names, weights=bank_weights, k=1)[0]
     options = products_payload.get("account_products_by_type", {}).get(account_type, ["Generic Account"])
-    return bank_name, random.choice(options)
+    return "Keystone Bank", random.choice(options)
 
 
 def load_customer_file(path_without_ext):
@@ -854,7 +856,7 @@ def generate_accounts(year, month=None, ultra_fast=False, counter_persist_every=
         print(f"Customers with prior accounts from earlier months: {len(customer_account_counts)}")
 
     df_individuals = df_customers[df_customers["customer_type"] == "Individual"].copy()
-    df_companies = df_customers[df_customers["customer_type"] == "Company"].copy()
+    df_companies = df_customers[df_customers["customer_type"].isin(["Company", "Organization"])].copy()
     individual_ids = df_individuals["customer_id"].values
     non_za_citizens_by_id = {
         row.customer_id: (row.citizenship != "ZA")
@@ -904,7 +906,7 @@ def generate_accounts(year, month=None, ultra_fast=False, counter_persist_every=
             account_status, status_change_date, closure_date, status_reason = determine_account_status(opening_date, row, requirements, year)
             branch_code = get_branch_code(row, branch_codes_payload, city_matchers)
             charges = account_charges.get(acc_type, account_charges.get("current", {}))
-            channel_details = determine_opening_channel_and_details()
+            channel_details = determine_opening_channel_and_details(row, year)
             currency = "ZAR" if random.random() < 0.95 else random.choice(["USD", "EUR"])
             account_tier = determine_account_tier(acc_type, income_level)
             overdraft_limit, credit_card_limit = generate_credit_limit(acc_type, income_level, annual_income)
@@ -914,14 +916,13 @@ def generate_accounts(year, month=None, ultra_fast=False, counter_persist_every=
             account_number = generate_sa_account_number(branch_code, global_id)
             swift_code = generate_swift_code(swift_by_bank.get(bank_name, "WOLZAJJ"), branch_code) if currency != "ZAR" else None
             iban = generate_iban(account_number) if currency != "ZAR" else None
-            account_purpose = determine_account_purpose(row, acc_type)
             expected_amount = round(np.random.lognormal(mean=8.5, sigma=1.2), 2)
 
             is_primary = customer_id not in customer_primary_accounts
             if is_primary:
                 customer_primary_accounts[customer_id] = f"ACC{global_id:07d}"
 
-            statement_frequency = random.choice(["monthly", "quarterly", "annually"])
+            statement_frequency = random.choices(["monthly", "quarterly", "annually"], weights=[0.55, 0.30, 0.15], k=1)[0]
             online_banking_enabled = random.random() < (0.85 if channel_details["opening_channel"] in ["online", "mobile_app"] else 0.65)
             online_banking_activation_date = (
                 opening_date
@@ -929,13 +930,7 @@ def generate_accounts(year, month=None, ultra_fast=False, counter_persist_every=
                 else opening_date + timedelta(days=random.randint(0, 30)) if online_banking_enabled else None
             )
 
-            card_info = generate_card_number(acc_type)
-            if card_info:
-                card_number, card_type = card_info
-                card_expiry_date = date(opening_date.year + random.randint(3, 5), opening_date.month, 1)
-                card_issue_date = opening_date if random.random() < 0.8 else opening_date + timedelta(days=random.randint(7, 21))
-            else:
-                card_number, card_type, card_expiry_date, card_issue_date = None, None, None, None
+            card_number, card_type, card_issue_date, card_expiry_date = generate_card_history(acc_type, opening_date)
 
             beneficiaries = generate_beneficiaries(row, fake)
             cross_border_enabled = currency != "ZAR" or random.random() < 0.3
@@ -945,10 +940,8 @@ def generate_accounts(year, month=None, ultra_fast=False, counter_persist_every=
                     "account_id": f"ACC{global_id:07d}",
                     "account_number": account_number,
                     "customer_id": customer_id,
-                    "bank_name": bank_name,
                     "bank_product_name": product_name,
                     "account_type": acc_type,
-                    "account_purpose": account_purpose,
                     "is_primary_account": is_primary,
                     "opening_date": opening_date,
                     "approval_date": approval_date,
@@ -1001,7 +994,7 @@ def generate_accounts(year, month=None, ultra_fast=False, counter_persist_every=
             account_status, status_change_date, closure_date, status_reason = determine_account_status(opening_date, row, requirements, year)
             branch_code = get_branch_code(row, branch_codes_payload, city_matchers)
             charges = account_charges.get("joint", account_charges.get("current", {}))
-            channel_details = determine_opening_channel_and_details()
+            channel_details = determine_opening_channel_and_details(row, year)
             account_tier = determine_account_tier("joint", income_level)
             overdraft_limit, credit_card_limit = generate_credit_limit("joint", income_level, annual_income)
             bank_name, product_name = choose_bank_and_product("joint", products_payload, bank_names, bank_weights)
@@ -1009,23 +1002,15 @@ def generate_accounts(year, month=None, ultra_fast=False, counter_persist_every=
 
             global_id = counter.get_next()
             account_number = generate_sa_account_number(branch_code, global_id)
-            card_info = generate_card_number("joint")
-            if card_info:
-                card_number, card_type = card_info
-                card_expiry_date = date(opening_date.year + random.randint(3, 5), opening_date.month, 1)
-                card_issue_date = opening_date if random.random() < 0.8 else opening_date + timedelta(days=random.randint(7, 21))
-            else:
-                card_number, card_type, card_expiry_date, card_issue_date = None, None, None, None
+            card_number, card_type, card_issue_date, card_expiry_date = generate_card_history("joint", opening_date)
 
             accounts.append(
                 {
                     "account_id": f"ACC{global_id:07d}",
                     "account_number": account_number,
                     "customer_id": customer_id,
-                    "bank_name": bank_name,
                     "bank_product_name": product_name,
                     "account_type": "joint",
-                    "account_purpose": "joint_savings",
                     "is_primary_account": False,
                     "opening_date": opening_date,
                     "approval_date": approval_date,
@@ -1102,7 +1087,7 @@ def generate_accounts(year, month=None, ultra_fast=False, counter_persist_every=
             account_status, status_change_date, closure_date, status_reason = determine_account_status(opening_date, row, requirements, year)
             branch_code = get_branch_code(row, branch_codes_payload, city_matchers)
             charges = account_charges.get(acc_type, account_charges.get("business", {}))
-            channel_details = determine_opening_channel_and_details()
+            channel_details = determine_opening_channel_and_details(row, year)
             currency = "ZAR" if random.random() < 0.9 else random.choice(["USD", "EUR"])
             account_tier = determine_account_tier(acc_type, income_level)
             overdraft_limit, credit_card_limit = generate_credit_limit(acc_type, income_level, annual_income)
@@ -1112,30 +1097,21 @@ def generate_accounts(year, month=None, ultra_fast=False, counter_persist_every=
             account_number = generate_sa_account_number(branch_code, global_id)
             swift_code = generate_swift_code(swift_by_bank.get(bank_name, "WOLZAJJ"), branch_code) if currency != "ZAR" else None
             iban = generate_iban(account_number) if currency != "ZAR" else None
-            account_purpose = determine_account_purpose(row, acc_type)
             expected_amount = round(random.uniform(10000, 1000000), 2)
 
             is_primary = customer_id not in customer_primary_accounts
             if is_primary:
                 customer_primary_accounts[customer_id] = f"ACC{global_id:07d}"
 
-            card_info = generate_card_number(acc_type)
-            if card_info:
-                card_number, card_type = card_info
-                card_expiry_date = date(opening_date.year + random.randint(3, 5), opening_date.month, 1)
-                card_issue_date = opening_date if random.random() < 0.8 else opening_date + timedelta(days=random.randint(7, 21))
-            else:
-                card_number, card_type, card_expiry_date, card_issue_date = None, None, None, None
+            card_number, card_type, card_issue_date, card_expiry_date = generate_card_history(acc_type, opening_date)
 
             accounts.append(
                 {
                     "account_id": f"ACC{global_id:07d}",
                     "account_number": account_number,
                     "customer_id": customer_id,
-                    "bank_name": bank_name,
                     "bank_product_name": product_name,
                     "account_type": acc_type,
-                    "account_purpose": account_purpose,
                     "is_primary_account": is_primary,
                     "opening_date": opening_date,
                     "approval_date": approval_date,
@@ -1159,7 +1135,7 @@ def generate_accounts(year, month=None, ultra_fast=False, counter_persist_every=
                     "swift_code": swift_code,
                     "iban": iban,
                     "account_tier": account_tier,
-                    "statement_frequency": random.choice(["monthly", "quarterly"]),
+                    "statement_frequency": random.choices(["monthly", "quarterly", "annually"], weights=[0.75, 0.20, 0.05], k=1)[0],
                     "online_banking_enabled": random.random() < 0.95,
                     "online_banking_activation_date": opening_date + timedelta(days=random.randint(0, 14)),
                     "card_number": card_number,

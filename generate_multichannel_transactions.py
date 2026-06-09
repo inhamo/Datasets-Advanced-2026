@@ -19,8 +19,10 @@ DATA_DIR = BASE_DIR / "banking_data"
 COMMONS_DIR = BASE_DIR / "commons"
 
 TRANSACTION_OUTPUT_DROP_COLUMNS = {
+    "bank_name",
     "batch_id",
     "generation_timestamp",
+    "record_last_updated_at",
     "customer_id",
     "customer_session_id",
     "customer_device_fingerprint",
@@ -38,14 +40,28 @@ TRANSACTION_OUTPUT_DROP_COLUMNS = {
     "daily_total_amount_so_far",
     "monthly_transaction_count_so_far",
     "network_latency_ms",
+    "authorization_time_ms",
+    "third_party_timeout",
     "source_table",
+    "source_system",
     "is_fraudulent",
     "fraud_pattern",
     "fraud_confidence",
     "fraud_metadata",
+    "transaction_date",
+    "transaction_time",
+    "has_error",
+    "error_types",
+    "error_metadata",
+    "has_data_error",
+    "data_error_types",
+    "external_context",
+    "debit_order_metadata",
+    "loan_payment_metadata",
+    "ewallet_number",
+    "is_immediate_payment",
+    "immediate_payment",
 }
-
-EXTERNAL_CONTEXT_DROP_KEYS = {"weather_condition", "load_shedding_stage"}
 
 
 # Simplified but production-usable schedule templates.
@@ -282,15 +298,7 @@ def _to_serializable(obj: Any) -> Any:
 
 
 def prune_transaction_output(row: dict[str, Any]) -> dict[str, Any]:
-    cleaned = {key: value for key, value in row.items() if key not in TRANSACTION_OUTPUT_DROP_COLUMNS}
-    external_context = cleaned.get("external_context")
-    if isinstance(external_context, dict):
-        cleaned["external_context"] = {
-            key: value
-            for key, value in external_context.items()
-            if key not in EXTERNAL_CONTEXT_DROP_KEYS
-        }
-    return cleaned
+    return {key: value for key, value in row.items() if key not in TRANSACTION_OUTPUT_DROP_COLUMNS}
 
 
 def write_jsonl(path: Path, rows: list[dict[str, Any]]) -> None:

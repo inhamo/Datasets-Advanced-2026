@@ -85,6 +85,30 @@ def hash_card(card_number: Any) -> str | None:
     return hashlib.sha256(value.encode("utf-8")).hexdigest()[:24]
 
 
+def card_for_date(account: pd.Series, event_date: date) -> tuple[str | None, str | None, str | None]:
+    def values(field: str) -> list[str]:
+        value = account.get(field)
+        if value is None or pd.isna(value):
+            return []
+        return [item.strip() for item in str(value).split(",") if item.strip()]
+
+    numbers = values("card_number")
+    types = values("card_type")
+    issue_dates = [pd.to_datetime(value, errors="coerce") for value in values("card_issue_date")]
+    expiry_dates = values("card_expiry_date")
+    if not numbers:
+        return None, None, None
+
+    selected = 0
+    for index, issued in enumerate(issue_dates):
+        if not pd.isna(issued) and issued.date() <= event_date:
+            selected = index
+    selected = min(selected, len(numbers) - 1)
+    card_type = types[min(selected, len(types) - 1)] if types else None
+    expiry = expiry_dates[min(selected, len(expiry_dates) - 1)] if expiry_dates else None
+    return numbers[selected], card_type, expiry
+
+
 def rand_timestamp(year: int, month: int, rng: random.Random, opening_date: Any = None) -> datetime:
     last = monthrange(year, month)[1]
     start_day = 1
@@ -103,7 +127,7 @@ def rand_timestamp(year: int, month: int, rng: random.Random, opening_date: Any 
 
 def generate_result(event_type: str, account: pd.Series, ts: datetime, rng: random.Random) -> tuple[str, str | None]:
     status = str(account.get("account_status") or "").lower()
-    expiry_raw = account.get("card_expiry_date")
+    _, _, expiry_raw = card_for_date(account, ts.date())
     expired = False
     if expiry_raw is not None and not pd.isna(expiry_raw):
         expired = pd.to_datetime(expiry_raw).date() < ts.date()
@@ -326,6 +350,7 @@ def transaction_log_rows(year: int, month: int, lookup: pd.DataFrame, rng: rando
         event_type = event_type_from_transaction(row)
         card_blocked = failure_reason == "blocked_card" or str(account.get("account_status")).lower() in {"restricted", "blocked", "suspended", "closed"}
 
+        card_number, card_type, card_expiry = card_for_date(account, ts.date())
         rows.append(
             {
                 "atm_log_id": f"ATMLOG-{year}{month:02d}-TX-{i:07d}",
@@ -342,10 +367,10 @@ def transaction_log_rows(year: int, month: int, lookup: pd.DataFrame, rng: rando
                 "account_id": row.get("account_id"),
                 "account_number": account.get("account_number"),
                 "account_status": account.get("account_status"),
-                "masked_card_number": mask_card(account.get("card_number")),
-                "card_number_hash": hash_card(account.get("card_number")),
-                "card_type": account.get("card_type"),
-                "card_expiry_date": None if pd.isna(account.get("card_expiry_date")) else str(account.get("card_expiry_date")),
+                "masked_card_number": mask_card(card_number),
+                "card_number_hash": hash_card(card_number),
+                "card_type": card_type,
+                "card_expiry_date": card_expiry,
                 "card_block_status": bool(card_blocked),
                 "event_type": event_type,
                 "attempt_result": result,
@@ -401,6 +426,7 @@ def generate_month(year: int, month: int) -> int:
             ew = ewallet_fields(event_type, failure_reason, rng)
             card_blocked = failure_reason in {"blocked_card", "card_reported_lost", "suspected_fraud", "too_many_pin_attempts"} or str(account.get("account_status")).lower() in {"restricted", "blocked", "suspended", "closed"}
 
+            card_number, card_type, card_expiry = card_for_date(account, ts.date())
             rows.append(
                 {
                     "atm_log_id": f"ATMLOG-{year}{month:02d}-{sequence:07d}",
@@ -417,10 +443,10 @@ def generate_month(year: int, month: int) -> int:
                     "account_id": account.get("account_id"),
                     "account_number": account.get("account_number"),
                     "account_status": account.get("account_status"),
-                    "masked_card_number": mask_card(account.get("card_number")),
-                    "card_number_hash": hash_card(account.get("card_number")),
-                    "card_type": account.get("card_type"),
-                    "card_expiry_date": None if pd.isna(account.get("card_expiry_date")) else str(account.get("card_expiry_date")),
+                    "masked_card_number": mask_card(card_number),
+                    "card_number_hash": hash_card(card_number),
+                    "card_type": card_type,
+                    "card_expiry_date": card_expiry,
                     "card_block_status": bool(card_blocked),
                     "event_type": event_type,
                     "attempt_result": result,
