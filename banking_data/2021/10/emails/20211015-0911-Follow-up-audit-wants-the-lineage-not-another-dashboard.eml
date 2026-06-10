@@ -1,0 +1,45 @@
+From: sibusiso.dube@internal.audit.keystonebank.co.za
+To: data.engineering@keystonebank.co.za, analytics.retail@keystonebank.co.za
+Cc: regulatory.reporting@keystonebank.co.za, model.risk@keystonebank.co.za
+Subject: Follow-up: audit wants the lineage, not another dashboard
+Date: Fri, 15 Oct 2021 09:11:00 -0000
+Message-ID: <535c422b72bb4b18bac4d3638bef196b@keystonebank.co.za>
+X-Keystone-Department: Internal Audit
+X-Keystone-Project-Type: risk_report_lineage
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi,
+
+This came up in a working session and nobody had the same definition.
+
+Management reports are expanding faster than the evidence showing how each nu=
+mber was sourced, transformed and approved.
+
+I do not want a dashboard that simply counts the outcome. Start with the comp=
+eting explanations: manual exclusions are changing the answer; the number can=
+ be reperformed from source; or different teams use the same label for differ=
+ent populations.
+
+Several teams are reporting more failed or retried activity than they expecte=
+d, but they do not agree on the cause. The first extracts did not reconcile, =
+which means source precedence and exclusions must be part of the answer. This=
+ has returned because the previous answer was useful but not strong enough to=
+ become a standing rule. Use October 2021 as the new evidence point rather th=
+an recycling the earlier conclusion.=20
+
+What we need to decide is which data controls must be formalised before the n=
+ext assurance review. Please bring a Power BI page with drill-through to a re=
+producible case list, including a few cases we can trace from source to concl=
+usion.
+
+The available evidence is monthly account snapshots, status events, limits, p=
+roduct enrolments and signatories; transaction-level timestamps, channels, am=
+ounts, statuses and error context; the latest closed loan files available by =
+the request date, including affordability, pricing and origination risk field=
+s; collections cases, promises to pay and recovery payments; customer contact=
+s, complaints and suggestions. Do not create a full enterprise lineage claim;=
+ reperform a defined metric and document every limitation.
+
+Thank you

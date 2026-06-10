@@ -1,0 +1,42 @@
+From: sibusiso.dube@internal.audit.keystonebank.co.za
+To: data.engineering@keystonebank.co.za, analytics.retail@keystonebank.co.za
+Cc: regulatory.reporting@keystonebank.co.za, model.risk@keystonebank.co.za
+Subject:
+ Can one management number be traced back to source? - 2023 control review
+Date: Fri, 17 Feb 2023 08:22:00 -0000
+Message-ID: <8687f6c3bc674ef7a18a807d3398a5f5@keystonebank.co.za>
+X-Keystone-Department: Internal Audit
+X-Keystone-Project-Type: risk_report_lineage
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi team,
+
+Management reports are expanding faster than the evidence showing how each nu=
+mber was sourced, transformed and approved.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use February 2023 as the new evidence point rath=
+er than recycling the earlier conclusion. Failure anecdotes are beginning to =
+drive decisions, although retries and late posting may be making the problem =
+look larger than the affected-customer population.
+
+Can you test these explanations rather than choosing one at the start?
+- manual exclusions are changing the answer
+- different teams use the same label for different populations
+- the number can be reperformed from source
+
+The decision is which data controls must be formalised before the next assura=
+nce review. Please give us a Power BI page with drill-through to a reproducib=
+le case list.
+
+You should be able to build the evidence from monthly account snapshots, stat=
+us events, limits, product enrolments and signatories; transaction-level time=
+stamps, channels, amounts, statuses and error context; the latest closed loan=
+ files available by the request date, including affordability, pricing and or=
+igination risk fields; collections cases, promises to pay and recovery paymen=
+ts; customer contacts, complaints and suggestions. Do not create a full enter=
+prise lineage claim; reperform a defined metric and document every limitation.
+
+Thanks

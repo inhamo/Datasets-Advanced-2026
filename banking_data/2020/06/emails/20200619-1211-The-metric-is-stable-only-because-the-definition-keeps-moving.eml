@@ -1,0 +1,40 @@
+From: emma.steyn@analytics.retail.keystonebank.co.za
+To: executive.office@keystonebank.co.za, data.engineering@keystonebank.co.za
+Cc: internal.audit@keystonebank.co.za, regulatory.reporting@keystonebank.co.za
+Subject: The metric is stable only because the definition keeps moving
+Date: Fri, 19 Jun 2020 12:11:00 -0000
+Message-ID: <f5c74cdb430248f1a5aa034ce4032051@keystonebank.co.za>
+X-Keystone-Department: Data and Analytics
+X-Keystone-Project-Type: metric_definition_review
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi all,
+
+I may be joining dots that do not belong together, so please challenge the pr=
+emise.
+
+Analytics is receiving requests that use the same business term for different=
+ populations, dates and customer relationships. The first extracts did not re=
+concile, which means source precedence and exclusions must be part of the ans=
+wer.
+
+Could the answer be that snapshot timing creates the difference? Or are we ac=
+tually seeing that an undocumented exclusion is changing the denominator? I a=
+lso do not want us to miss the possibility that the teams need different metr=
+ics.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use June 2020 as the new evidence point rather t=
+han recycling the earlier conclusion. The practical decision is the governed =
+definition, owner, exclusions and reconciliation bridge. Please send a contro=
+l view with the exceptions, owner and reason each item was included; I need t=
+he exceptions and counter-examples, not only an average.
+
+Work from monthly account snapshots, status events, limits, product enrolment=
+s and signatories; monthly customer and KYC snapshots; transaction-level time=
+stamps, channels, amounts, statuses and error context. A technically consiste=
+nt definition still needs business ownership and approval.
+
+Regards

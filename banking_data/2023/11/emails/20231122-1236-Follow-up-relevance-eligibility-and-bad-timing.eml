@@ -1,0 +1,42 @@
+From: farah.khan@product.fintech.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, product.fintech@keystonebank.co.za
+Cc: compliance.retail@keystonebank.co.za,
+ pricing.customer.value@keystonebank.co.za
+Subject: Follow-up: relevance, eligibility and bad timing
+Date: Wed, 22 Nov 2023 12:36:00 -0000
+Message-ID: <4e18af39869343068ddc69aa9468269d@keystonebank.co.za>
+X-Keystone-Department: Products and Remittances
+X-Keystone-Project-Type: next_best_action_design
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi team,
+
+Product wants a recommendation framework that suppresses offers after complai=
+nts, failed payments or unsuitable customer events.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use November 2023 as the new evidence point rath=
+er than recycling the earlier conclusion. The operating teams agree that more=
+ journeys are failing; they disagree on whether the customer, the bank or a d=
+ownstream party owns the failure.
+
+Can you test these explanations rather than choosing one at the start?
+- recent behaviour identifies a useful product need
+- service recovery should precede selling
+- campaign eligibility differs from likely conversion
+
+The decision is the decision rules and evaluation design for a controlled cam=
+paign. Please give us a Power BI page with drill-through to a reproducible ca=
+se list.
+
+You should be able to build the evidence from monthly account snapshots, stat=
+us events, limits, product enrolments and signatories; transaction-level time=
+stamps, channels, amounts, statuses and error context; customer contacts, com=
+plaints and suggestions; campaign design and customer responses; the latest c=
+losed loan files available by the request date, including affordability, pric=
+ing and origination risk fields. Do not train on campaign outcomes without ac=
+counting for who was selected to receive each campaign.
+
+Thanks

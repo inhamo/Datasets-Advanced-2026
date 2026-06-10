@@ -1,0 +1,41 @@
+From: emma.steyn@analytics.retail.keystonebank.co.za
+To: executive.office@keystonebank.co.za, data.engineering@keystonebank.co.za
+Cc: internal.audit@keystonebank.co.za, regulatory.reporting@keystonebank.co.za
+Subject:
+ Follow-up: the metric is stable only because the definition keeps moving
+Date: Mon, 04 Jul 2022 13:51:00 -0000
+Message-ID: <f7461dfb3abd453099c2df1d88c99700@keystonebank.co.za>
+X-Keystone-Department: Data and Analytics
+X-Keystone-Project-Type: metric_definition_review
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Team,
+
+Before this becomes another standing report, can we answer the real question?
+
+Analytics is receiving requests that use the same business term for different=
+ populations, dates and customer relationships. The possible stories are that=
+ snapshot timing creates the difference, that an undocumented exclusion is ch=
+anging the denominator, or that the teams need different metrics.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use July 2022 as the new evidence point rather t=
+han recycling the earlier conclusion. Several teams are reporting more failed=
+ or retried activity than they expected, but they do not agree on the cause. =
+Different teams have produced different answers from the same period, so popu=
+lation and timing rules need to be visible.
+
+Please prepare a working Excel file with the exception population and clear c=
+olumns. The output must help us decide the governed definition, owner, exclus=
+ions and reconciliation bridge.
+
+Data available: monthly account snapshots, status events, limits, product enr=
+olments and signatories; monthly customer and KYC snapshots; transaction-leve=
+l timestamps, channels, amounts, statuses and error context.
+
+Please state the limitation plainly: A technically consistent definition stil=
+l needs business ownership and approval.
+
+Thanks

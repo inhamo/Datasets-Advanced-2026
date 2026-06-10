@@ -1,0 +1,38 @@
+From: keegan.petersen@vendor.risk.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, infrastructure.ops@keystonebank.co.za
+Cc: banking.operations@keystonebank.co.za, legal.counsel@keystonebank.co.za
+Subject: The timeout field is not an SLA report - 2025 control review
+Date: Mon, 17 Nov 2025 10:20:00 -0000
+Message-ID: <fe4e4f8498b94c8c840521d2f08b93b9@keystonebank.co.za>
+X-Keystone-Department: Third-Party and Vendor Risk
+X-Keystone-Project-Type: third_party_timeout_review
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi team,
+
+Third-Party Risk wants to understand whether external dependencies are repeat=
+edly associated with failed or delayed customer journeys.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use November 2025 as the new evidence point rath=
+er than recycling the earlier conclusion. There is no confirmed problem yet; =
+this is a request to test an assumption before it becomes policy.
+
+Can you test these explanations rather than choosing one at the start?
+- internal latency is being attributed externally
+- repeat incidents create disproportionate customer contact
+- third-party timeouts cluster by channel
+
+The decision is which supplier relationship requires evidence gathering or a =
+formal service review. Please give us a model-ready table, data dictionary an=
+d an honest baseline.
+
+You should be able to build the evidence from transaction-level timestamps, c=
+hannels, amounts, statuses and error context; ATM attempts, host responses, P=
+IN attempts, blocked-card state and latency; customer contacts, complaints an=
+d suggestions. There is no vendor master, contract, SLA or invoice table. Tre=
+at external-context fields as indicators, not contractual proof.
+
+Thanks

@@ -1,0 +1,45 @@
+From: riaan.swanepoel@cards.operations.keystonebank.co.za
+To:
+ analytics.retail@keystonebank.co.za, customer.experience@keystonebank.co.za
+Cc: payments.ops@keystonebank.co.za
+Subject: A decline is only the first event; what did the customer do next? -
+ 2025 control review
+Date: Fri, 14 Nov 2025 16:11:00 -0000
+Message-ID: <633846d740574647b19b2d077be33b5a@keystonebank.co.za>
+X-Keystone-Department: Card Operations
+X-Keystone-Project-Type: card_decline_recovery
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi,
+
+This came up in a working session and nobody had the same definition.
+
+The same decline code can lead to a successful retry, an ATM attempt, a phone=
+ call or lost activity.
+
+I do not want a dashboard that simply counts the outcome. Start with the comp=
+eting explanations: most declines recover immediately; repeat declines cluste=
+r by card state or channel; or poor explanations drive complaints more than t=
+he decline itself.
+
+Please start with the decision we need to make, then show whether the availab=
+le evidence is strong enough to support it. This has returned because the pre=
+vious answer was useful but not strong enough to become a standing rule. Use =
+November 2025 as the new evidence point rather than recycling the earlier con=
+clusion.=20
+
+What we need to decide is which decline reasons need rule, message or service=
+ changes. Please bring a control view with the exceptions, owner and reason e=
+ach item was included, including a few cases we can trace from source to conc=
+lusion.
+
+The available evidence is transaction-level timestamps, channels, amounts, st=
+atuses and error context; ATM attempts, host responses, PIN attempts, blocked=
+-card state and latency; monthly account snapshots, status events, limits, pr=
+oduct enrolments and signatories; customer contacts, complaints and suggestio=
+ns. The data does not contain merchant terminal logs or card-scheme dispute o=
+utcomes.
+
+Thank you

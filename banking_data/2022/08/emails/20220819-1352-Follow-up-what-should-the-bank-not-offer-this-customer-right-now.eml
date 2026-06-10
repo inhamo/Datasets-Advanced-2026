@@ -1,0 +1,45 @@
+From: farah.khan@product.fintech.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, product.fintech@keystonebank.co.za
+Cc: compliance.retail@keystonebank.co.za,
+ pricing.customer.value@keystonebank.co.za
+Subject: Follow-up: what should the bank not offer this customer right now?
+Date: Fri, 19 Aug 2022 13:52:00 -0000
+Message-ID: <829bea2451c64252b4eb92394883c78d@keystonebank.co.za>
+X-Keystone-Department: Products and Remittances
+X-Keystone-Project-Type: next_best_action_design
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi,
+
+This came up in a working session and nobody had the same definition.
+
+Product wants a recommendation framework that suppresses offers after complai=
+nts, failed payments or unsuitable customer events.
+
+I do not want a dashboard that simply counts the outcome. Start with the comp=
+eting explanations: campaign eligibility differs from likely conversion; serv=
+ice recovery should precede selling; or recent behaviour identifies a useful =
+product need.
+
+The operating teams agree that more journeys are failing; they disagree on wh=
+ether the customer, the bank or a downstream party owns the failure. This has=
+ returned because the previous answer was useful but not strong enough to bec=
+ome a standing rule. Use August 2022 as the new evidence point rather than re=
+cycling the earlier conclusion.=20
+
+What we need to decide is the decision rules and evaluation design for a cont=
+rolled campaign. Please bring a control view with the exceptions, owner and r=
+eason each item was included, including a few cases we can trace from source =
+to conclusion.
+
+The available evidence is monthly account snapshots, status events, limits, p=
+roduct enrolments and signatories; transaction-level timestamps, channels, am=
+ounts, statuses and error context; customer contacts, complaints and suggesti=
+ons; campaign design and customer responses; the latest closed loan files ava=
+ilable by the request date, including affordability, pricing and origination =
+risk fields. Do not train on campaign outcomes without accounting for who was=
+ selected to receive each campaign.
+
+Thank you

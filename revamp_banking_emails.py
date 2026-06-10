@@ -17,7 +17,9 @@ import uuid
 from dataclasses import dataclass
 from datetime import date, datetime
 from calendar import monthrange
+from email import policy
 from email.message import EmailMessage
+from email.parser import BytesParser
 from pathlib import Path
 from typing import Any
 
@@ -151,6 +153,15 @@ def clean_email_dir(year: int, month: int) -> Path:
         if path.is_file() and path.suffix.lower() in {".eml", ".pdf"}:
             path.unlink()
     return out
+
+
+def existing_email_subjects(out_dir: Path) -> set[str]:
+    subjects = set()
+    for path in out_dir.glob("*.eml"):
+        message = BytesParser(policy=policy.default).parsebytes(path.read_bytes())
+        if message["Subject"]:
+            subjects.add(str(message["Subject"]))
+    return subjects
 
 
 def remove_email_dir(year: int, month: int) -> None:
@@ -961,7 +972,7 @@ def monthly_email_specs(
         if event["event_date"].year == year and event["event_date"].month == month
     ]
     context_tags = active_context_tags(sig, events, data_keys)
-    target = 5
+    target = 8
     if month in {3, 6, 9, 12}:
         target += 1
     if events or "correspondent" in data_keys:
@@ -1106,7 +1117,12 @@ def validate_no_future_references(path: Path, year: int) -> list[str]:
     return problems
 
 
-def generate(start_year: int, end_year: int, write_pdf: bool = True) -> None:
+def generate(
+    start_year: int,
+    end_year: int,
+    write_pdf: bool = True,
+    append_existing: bool = False,
+) -> None:
     write_research_backbone()
     teams = load_teams()
     signals = load_monthly_signals()
@@ -1122,13 +1138,20 @@ def generate(start_year: int, end_year: int, write_pdf: bool = True) -> None:
         print(f"Generating internal email projects for {year}...")
         for month in range(1, 13):
             if (year, month) < (FIRST_EMAIL_YEAR, FIRST_EMAIL_MONTH):
-                remove_email_dir(year, month)
+                if not append_existing:
+                    remove_email_dir(year, month)
                 continue
             sig = signals.get((year, month))
             if sig is None:
                 continue
             rng = random.Random(7100 + year * 100 + month)
-            out_dir = clean_email_dir(year, month)
+            if append_existing:
+                out_dir = BANKING_DIR / str(year) / f"{month:02d}" / "emails"
+                out_dir.mkdir(parents=True, exist_ok=True)
+                known_subjects = existing_email_subjects(out_dir)
+            else:
+                out_dir = clean_email_dir(year, month)
+                known_subjects = set()
             specs = monthly_email_specs(
                 sig,
                 teams,
@@ -1140,6 +1163,8 @@ def generate(start_year: int, end_year: int, write_pdf: bool = True) -> None:
             )
             used_days: dict[int, int] = {}
             for spec_item in specs:
+                if spec_item["subject"] in known_subjects:
+                    continue
                 base_day = nearest_business_day(year, month, min(28, int(spec_item["day"])))
                 used_days[base_day] = used_days.get(base_day, 0) + 1
                 minute_offset = used_days[base_day] * 7
@@ -1148,6 +1173,7 @@ def generate(start_year: int, end_year: int, write_pdf: bool = True) -> None:
                 name = f"{sent.strftime('%Y%m%d-%H%M')}-{safe_filename(spec_item['subject'])}.eml"
                 path = out_dir / name
                 path.write_bytes(msg.as_bytes())
+                known_subjects.add(spec_item["subject"])
                 email_count += 1
                 validation_errors.extend(validate_no_future_references(path, year))
                 if write_pdf:
@@ -1156,7 +1182,8 @@ def generate(start_year: int, end_year: int, write_pdf: bool = True) -> None:
 
     if validation_errors:
         raise RuntimeError("\n".join(validation_errors[:20]))
-    print(f"Regenerated {email_count} emails and {pdf_count} PDFs under banking_data.")
+    action = "Added" if append_existing else "Regenerated"
+    print(f"{action} {email_count} emails and {pdf_count} PDFs under banking_data.")
     print(f"Wrote research backbone: {SOURCE_NOTES_PATH}")
 
 
@@ -1165,8 +1192,18 @@ def main() -> None:
     parser.add_argument("--start-year", type=int, default=2019)
     parser.add_argument("--end-year", type=int, default=2025)
     parser.add_argument("--no-pdf", action="store_true")
+    parser.add_argument(
+        "--append",
+        action="store_true",
+        help="Keep existing emails and add only subjects not already present in each month.",
+    )
     args = parser.parse_args()
-    generate(args.start_year, args.end_year, write_pdf=not args.no_pdf)
+    generate(
+        args.start_year,
+        args.end_year,
+        write_pdf=not args.no_pdf,
+        append_existing=args.append,
+    )
 
 
 if __name__ == "__main__":

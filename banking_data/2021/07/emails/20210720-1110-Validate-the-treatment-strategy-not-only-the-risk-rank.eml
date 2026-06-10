@@ -1,0 +1,45 @@
+From: leanne.adams@model.risk.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, collections.ops@keystonebank.co.za
+Cc:
+ credit.risk.retail@keystonebank.co.za, compliance.retail@keystonebank.co.za
+Subject: Validate the treatment strategy, not only the risk rank
+Date: Tue, 20 Jul 2021 11:10:00 -0000
+Message-ID: <66bcff644bea420bbdb79629b9f3330e@keystonebank.co.za>
+X-Keystone-Department: Model Risk Management
+X-Keystone-Project-Type: collections_strategy_validation
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi,
+
+This came up in a working session and nobody had the same definition.
+
+Collections wants a prioritisation model, but validation must separate defaul=
+t risk from the effect of different contact strategies.
+
+I do not want a dashboard that simply counts the outcome. Start with the comp=
+eting explanations: some customers self-cure without intervention; high-risk =
+customers need tailored arrangements rather than more attempts; or contact ch=
+annel changes promise-kept rates.
+
+The operating teams agree that more journeys are failing; they disagree on wh=
+ether the customer, the bank or a downstream party owns the failure. There ar=
+e enough data exceptions to make a polished average dangerous; preserve the u=
+nresolved cases. We looked at a version of this before. For the July 2021 rev=
+iew, please show what changed and whether the earlier conclusion still holds.=
+=20
+
+What we need to decide is whether a model can support treatment allocation an=
+d what experiment is needed next. Please bring a Power BI page with drill-thr=
+ough to a reproducible case list, including a few cases we can trace from sou=
+rce to conclusion.
+
+The available evidence is collections cases, promises to pay and recovery pay=
+ments; customer contacts, complaints and suggestions; transaction-level times=
+tamps, channels, amounts, statuses and error context; the latest closed loan =
+files available by the request date, including affordability, pricing and ori=
+gination risk fields. Observational data cannot prove treatment causality; re=
+commend a controlled test where appropriate.
+
+Thank you

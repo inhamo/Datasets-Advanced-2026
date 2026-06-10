@@ -1,0 +1,46 @@
+From: farah.khan@product.fintech.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, product.fintech@keystonebank.co.za
+Cc: compliance.retail@keystonebank.co.za,
+ pricing.customer.value@keystonebank.co.za
+Subject: Quick question: next best action starts with next best silence
+Date: Thu, 15 Jul 2021 13:32:00 -0000
+Message-ID: <f712975c670846fb9166c03e49a61a3a@keystonebank.co.za>
+X-Keystone-Department: Products and Remittances
+X-Keystone-Project-Type: next_best_action_design
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Morning,
+
+I need help with something that sounds simple but probably is not.
+
+Product wants a recommendation framework that suppresses offers after complai=
+nts, failed payments or unsuitable customer events. The operating teams agree=
+ that more journeys are failing; they disagree on whether the customer, the b=
+ank or a downstream party owns the failure. Different teams have produced dif=
+ferent answers from the same period, so population and timing rules need to b=
+e visible.
+
+The questions I would ask in the room are:
+1. What would we expect to see if recent behaviour identifies a useful produc=
+t need?
+2. What evidence would instead support that campaign eligibility differs from=
+ likely conversion?
+3. How do we rule out that service recovery should precede selling?
+
+We looked at a version of this before. For the July 2021 review, please show =
+what changed and whether the earlier conclusion still holds. Please work towa=
+rds the decision rules and evaluation design for a controlled campaign. A use=
+ful output would be a Power BI page with drill-through to a reproducible case=
+ list.
+
+Use monthly account snapshots, status events, limits, product enrolments and =
+signatories; transaction-level timestamps, channels, amounts, statuses and er=
+ror context; customer contacts, complaints and suggestions; campaign design a=
+nd customer responses; the latest closed loan files available by the request =
+date, including affordability, pricing and origination risk fields. One cauti=
+on: Do not train on campaign outcomes without accounting for who was selected=
+ to receive each campaign.
+
+Regards

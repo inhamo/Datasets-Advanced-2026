@@ -1,0 +1,40 @@
+From: david.fourie@infrastructure.ops.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, banking.operations@keystonebank.co.za
+Cc: customer.experience@keystonebank.co.za, cyber.security@keystonebank.co.za
+Subject: Follow-up: which technical failures actually harmed customers?
+Date: Fri, 03 Jun 2022 13:35:00 -0000
+Message-ID: <e50de62b52804bb5ba294b250daee062@keystonebank.co.za>
+X-Keystone-Department: IT Infrastructure
+X-Keystone-Project-Type: incident_customer_impact
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi all,
+
+I may be joining dots that do not belong together, so please challenge the pr=
+emise.
+
+Infrastructure can see technical symptoms, but incident severity should refle=
+ct failed customer journeys and repeat attempts rather than machine alerts al=
+one. The operating teams agree that more journeys are failing; they disagree =
+on whether the customer, the bank or a downstream party owns the failure.
+
+Could the answer be that latency rises before visible failure? Or are we actu=
+ally seeing that customers retry across channels and create duplicates? I als=
+o do not want us to miss the possibility that a small terminal or channel gro=
+up creates most harm.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use June 2022 as the new evidence point rather t=
+han recycling the earlier conclusion. The practical decision is incident prio=
+rity, root-cause ownership and the customer-remediation population. Please se=
+nd a Power BI page with drill-through to a reproducible case list; I need the=
+ exceptions and counter-examples, not only an average.
+
+Work from transaction-level timestamps, channels, amounts, statuses and error=
+ context; ATM attempts, host responses, PIN attempts, blocked-card state and =
+latency; customer contacts, complaints and suggestions. The dataset has chann=
+el and ATM telemetry, not complete application, server or network logs.
+
+Regards

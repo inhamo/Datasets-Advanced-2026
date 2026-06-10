@@ -1,0 +1,40 @@
+From: riaan.swanepoel@cards.operations.keystonebank.co.za
+To:
+ analytics.retail@keystonebank.co.za, customer.experience@keystonebank.co.za
+Cc: payments.ops@keystonebank.co.za
+Subject: Which card declines become complaints?
+Date: Mon, 16 Mar 2020 13:40:00 -0000
+Message-ID: <d49d6ed9d37e40c594478b2d79e1f87b@keystonebank.co.za>
+X-Keystone-Department: Card Operations
+X-Keystone-Project-Type: card_decline_recovery
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Team,
+
+Before this becomes another standing report, can we answer the real question?
+
+The same decline code can lead to a successful retry, an ATM attempt, a phone=
+ call or lost activity. The possible stories are that most declines recover i=
+mmediately, that poor explanations drive complaints more than the decline its=
+elf, or that repeat declines cluster by card state or channel.
+
+We looked at a version of this before. For the March 2020 review, please show=
+ what changed and whether the earlier conclusion still holds. The operating t=
+eams agree that more journeys are failing; they disagree on whether the custo=
+mer, the bank or a downstream party owns the failure.
+
+Please prepare a short decision pack with no more than five slides and an att=
+ached evidence table. The output must help us decide which decline reasons ne=
+ed rule, message or service changes.
+
+Data available: transaction-level timestamps, channels, amounts, statuses and=
+ error context; ATM attempts, host responses, PIN attempts, blocked-card stat=
+e and latency; monthly account snapshots, status events, limits, product enro=
+lments and signatories; customer contacts, complaints and suggestions.
+
+Please state the limitation plainly: The data does not contain merchant termi=
+nal logs or card-scheme dispute outcomes.
+
+Thanks

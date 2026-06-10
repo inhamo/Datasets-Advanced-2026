@@ -1,0 +1,42 @@
+From: gugu.mabena@finance.recon.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za
+Cc: collections.ops@keystonebank.co.za, credit.risk.retail@keystonebank.co.za
+Subject: Promise-to-pay cash is not matching cleanly
+Date: Thu, 09 Jul 2020 11:16:00 -0000
+Message-ID: <4c54e7adc40847268e10e6bc729dde49@keystonebank.co.za>
+X-Keystone-Department: Finance Reconciliation
+X-Keystone-Project-Type: collections_cash_reconciliation
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi,
+
+This came up in a working session and nobody had the same definition.
+
+Collections and Finance are using different notions of a successful recovery,=
+ especially when payments arrive after the promised date or through another c=
+hannel.
+
+I do not want a dashboard that simply counts the outcome. Start with the comp=
+eting explanations: late payments are being treated as broken promises; parti=
+al cures are being reported as full cures; or a payment reaches the account b=
+ut not the collections case.
+
+There is no confirmed problem yet; this is a request to test an assumption be=
+fore it becomes policy. We looked at a version of this before. For the July 2=
+020 review, please show what changed and whether the earlier conclusion still=
+ holds.=20
+
+What we need to decide is the definition of cure and the exception queue that=
+ Finance and Collections will both use. Please bring a working Excel file wit=
+h the exception population and clear columns, including a few cases we can tr=
+ace from source to conclusion.
+
+The available evidence is collections cases, promises to pay and recovery pay=
+ments; transaction-level timestamps, channels, amounts, statuses and error co=
+ntext; the latest closed loan files available by the request date, including =
+affordability, pricing and origination risk fields. The data can reconcile cu=
+stomer and case activity, but not the accounting ledger entry.
+
+Thank you

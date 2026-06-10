@@ -1,0 +1,41 @@
+From: sarah.pillay@analytics.retail.keystonebank.co.za
+To: executive.office@keystonebank.co.za, data.engineering@keystonebank.co.za
+Cc: internal.audit@keystonebank.co.za, regulatory.reporting@keystonebank.co.za
+Subject: Before we publish, who owns this denominator?
+Date: Fri, 06 Dec 2019 13:30:00 -0000
+Message-ID: <957ecd21414b4f29b2b7081f8d892c8c@keystonebank.co.za>
+X-Keystone-Department: Data and Analytics
+X-Keystone-Project-Type: metric_definition_review
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi all,
+
+I may be joining dots that do not belong together, so please challenge the pr=
+emise.
+
+Analytics is receiving requests that use the same business term for different=
+ populations, dates and customer relationships. Failure anecdotes are beginni=
+ng to drive decisions, although retries and late posting may be making the pr=
+oblem look larger than the affected-customer population. The first extracts d=
+id not reconcile, which means source precedence and exclusions must be part o=
+f the answer.
+
+Could the answer be that snapshot timing creates the difference? Or are we ac=
+tually seeing that the teams need different metrics? I also do not want us to=
+ miss the possibility that an undocumented exclusion is changing the denomina=
+tor.
+
+We looked at a version of this before. For the December 2019 review, please s=
+how what changed and whether the earlier conclusion still holds. The practica=
+l decision is the governed definition, owner, exclusions and reconciliation b=
+ridge. Please send a working Excel file with the exception population and cle=
+ar columns; I need the exceptions and counter-examples, not only an average.
+
+Work from monthly account snapshots, status events, limits, product enrolment=
+s and signatories; monthly customer and KYC snapshots; transaction-level time=
+stamps, channels, amounts, statuses and error context. A technically consiste=
+nt definition still needs business ownership and approval.
+
+Regards

@@ -1,0 +1,41 @@
+From: aisha.patel@fraud.ops.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, data.engineering@keystonebank.co.za
+Cc: banking.operations@keystonebank.co.za, model.risk@keystonebank.co.za
+Subject:
+ Follow-up: late posting, retries and unusual behaviour are being mixed
+Date: Thu, 04 Aug 2022 11:41:00 -0000
+Message-ID: <72602d9c9a2f427090e39fca3e7938c4@keystonebank.co.za>
+X-Keystone-Department: Financial Crime
+X-Keystone-Project-Type: alert_false_positive
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi team,
+
+Investigators report that some suspicious patterns disappear once transaction=
+ timing, retries and customer contacts are reconstructed.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use August 2022 as the new evidence point rather=
+ than recycling the earlier conclusion. The operating teams agree that more j=
+ourneys are failing; they disagree on whether the customer, the bank or a dow=
+nstream party owns the failure.
+
+Can you test these explanations rather than choosing one at the start?
+- repeated attempts inflate velocity
+- bank-side delay creates impossible sequences
+- a known service interaction explains the change
+
+The decision is which alert features should be corrected, retained or routed =
+elsewhere. Please give us a Power BI page with drill-through to a reproducibl=
+e case list.
+
+You should be able to build the evidence from transaction-level timestamps, c=
+hannels, amounts, statuses and error context; ATM attempts, host responses, P=
+IN attempts, blocked-card state and latency; customer contacts, complaints an=
+d suggestions; monthly account snapshots, status events, limits, product enro=
+lments and signatories. A plausible explanation is not automatic clearance; i=
+nvestigators still own the decision.
+
+Thanks

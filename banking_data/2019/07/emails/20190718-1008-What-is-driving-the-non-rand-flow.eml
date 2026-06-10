@@ -1,0 +1,37 @@
+From: naledi.mokoena@treasury.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za
+Cc: cfo.office@keystonebank.co.za, payments.ops@keystonebank.co.za
+Subject: What is driving the non-rand flow?
+Date: Thu, 18 Jul 2019 10:08:00 -0000
+Message-ID: <615fe24fc327496987934f9ad44df24d@keystonebank.co.za>
+X-Keystone-Department: Treasury
+X-Keystone-Project-Type: currency_flow_monitoring
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi team,
+
+Treasury sees non-rand activity but needs to separate stable customer behavio=
+ur from isolated transactions and data artefacts.
+
+The operating teams agree that more journeys are failing; they disagree on wh=
+ether the customer, the bank or a downstream party owns the failure.
+
+Can you test these explanations rather than choosing one at the start?
+- cross-border-enabled accounts are not the same as active cross-border users
+- a small group of customers drives most foreign-currency activity
+- loan participations explain part of the flow
+
+The decision is whether to improve forecasting assumptions or investigate spe=
+cific flow concentrations. Please give us a one-page finding note plus the un=
+derlying CSV for our own review.
+
+You should be able to build the evidence from monthly account snapshots, stat=
+us events, limits, product enrolments and signatories; transaction-level time=
+stamps, channels, amounts, statuses and error context; loan participation and=
+ servicing records available by the request date. This data does not contain =
+market positions, hedges or intraday liquidity; report customer-flow concentr=
+ation only.
+
+Thanks

@@ -1,0 +1,44 @@
+From: gugu.mabena@finance.recon.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za
+Cc: collections.ops@keystonebank.co.za, credit.risk.retail@keystonebank.co.za
+Subject: Follow-up: promise-to-pay cash is not matching cleanly
+Date: Wed, 20 Jul 2022 13:34:00 -0000
+Message-ID: <7e7aa92928c744d4aa40fbb64e04da41@keystonebank.co.za>
+X-Keystone-Department: Finance Reconciliation
+X-Keystone-Project-Type: collections_cash_reconciliation
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi,
+
+This came up in a working session and nobody had the same definition.
+
+Collections and Finance are using different notions of a successful recovery,=
+ especially when payments arrive after the promised date or through another c=
+hannel.
+
+I do not want a dashboard that simply counts the outcome. Start with the comp=
+eting explanations: late payments are being treated as broken promises; a pay=
+ment reaches the account but not the collections case; or partial cures are b=
+eing reported as full cures.
+
+Several teams are reporting more failed or retried activity than they expecte=
+d, but they do not agree on the cause. Different teams have produced differen=
+t answers from the same period, so population and timing rules need to be vis=
+ible. This has returned because the previous answer was useful but not strong=
+ enough to become a standing rule. Use July 2022 as the new evidence point ra=
+ther than recycling the earlier conclusion.=20
+
+What we need to decide is the definition of cure and the exception queue that=
+ Finance and Collections will both use. Please bring a control view with the =
+exceptions, owner and reason each item was included, including a few cases we=
+ can trace from source to conclusion.
+
+The available evidence is collections cases, promises to pay and recovery pay=
+ments; transaction-level timestamps, channels, amounts, statuses and error co=
+ntext; the latest closed loan files available by the request date, including =
+affordability, pricing and origination risk fields. The data can reconcile cu=
+stomer and case activity, but not the accounting ledger entry.
+
+Thank you

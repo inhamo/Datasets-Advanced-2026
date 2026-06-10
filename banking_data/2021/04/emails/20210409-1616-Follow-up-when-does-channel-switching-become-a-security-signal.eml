@@ -1,0 +1,42 @@
+From: musa.khumalo@cyber.security.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, fraud.ops@keystonebank.co.za
+Cc:
+ infrastructure.ops@keystonebank.co.za, customer.experience@keystonebank.co.za
+Subject: Follow-up: when does channel switching become a security signal?
+Date: Fri, 09 Apr 2021 16:16:00 -0000
+Message-ID: <31b5267539f2441183ebe49e4d61b1b5@keystonebank.co.za>
+X-Keystone-Department: Cyber Security
+X-Keystone-Project-Type: cross_channel_anomaly
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi team,
+
+A rapid move between transaction channels can indicate account takeover, cust=
+omer recovery behaviour or an operational workaround.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use April 2021 as the new evidence point rather =
+than recycling the earlier conclusion. Several teams are reporting more faile=
+d or retried activity than they expected, but they do not agree on the cause.=
+ There are enough data exceptions to make a polished average dangerous; prese=
+rve the unresolved cases.
+
+Can you test these explanations rather than choosing one at the start?
+- security events drive channel switching
+- service failure explains most switches
+- newly opened accounts have a different normal pattern
+
+The decision is which patterns belong in cyber monitoring and which belong in=
+ service monitoring. Please give us a model-ready table, data dictionary and =
+an honest baseline.
+
+You should be able to build the evidence from transaction-level timestamps, c=
+hannels, amounts, statuses and error context; ATM attempts, host responses, P=
+IN attempts, blocked-card state and latency; monthly account snapshots, statu=
+s events, limits, product enrolments and signatories; customer contacts, comp=
+laints and suggestions. No device identity or IP address is available; do not=
+ describe a new channel as a new device.
+
+Thanks

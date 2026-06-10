@@ -1,0 +1,45 @@
+From: gugu.mabena@finance.recon.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za
+Cc: collections.ops@keystonebank.co.za, credit.risk.retail@keystonebank.co.za
+Subject:
+ Collections says paid; Finance still sees arrears - 2024 control review
+Date: Mon, 15 Jan 2024 13:25:00 -0000
+Message-ID: <5db240ecbdb14231831fa35356fb02fa@keystonebank.co.za>
+X-Keystone-Department: Finance Reconciliation
+X-Keystone-Project-Type: collections_cash_reconciliation
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Morning,
+
+I need help with something that sounds simple but probably is not.
+
+Collections and Finance are using different notions of a successful recovery,=
+ especially when payments arrive after the promised date or through another c=
+hannel. Failure anecdotes are beginning to drive decisions, although retries =
+and late posting may be making the problem look larger than the affected-cust=
+omer population.
+
+The questions I would ask in the room are:
+1. What would we expect to see if partial cures are being reported as full cu=
+res?
+2. What evidence would instead support that late payments are being treated a=
+s broken promises?
+3. How do we rule out that a payment reaches the account but not the collecti=
+ons case?
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use January 2024 as the new evidence point rathe=
+r than recycling the earlier conclusion. Please work towards the definition o=
+f cure and the exception queue that Finance and Collections will both use. A =
+useful output would be a control view with the exceptions, owner and reason e=
+ach item was included.
+
+Use collections cases, promises to pay and recovery payments; transaction-lev=
+el timestamps, channels, amounts, statuses and error context; the latest clos=
+ed loan files available by the request date, including affordability, pricing=
+ and origination risk fields. One caution: The data can reconcile customer an=
+d case activity, but not the accounting ledger entry.
+
+Regards

@@ -1,0 +1,41 @@
+From: sibusiso.dube@internal.audit.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, data.engineering@keystonebank.co.za
+Cc:
+ banking.operations@keystonebank.co.za, compliance.retail@keystonebank.co.za
+Subject: Audit sample: activity after account closure
+Date: Fri, 20 Sep 2019 09:14:00 -0000
+Message-ID: <8559f68ebc1c41539ca98280a9d22ebb@keystonebank.co.za>
+X-Keystone-Department: Internal Audit
+X-Keystone-Project-Type: closed_account_control_test
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi all,
+
+I may be joining dots that do not belong together, so please challenge the pr=
+emise.
+
+Internal Audit wants to test whether an account status change consistently st=
+ops transactions, ATM access, debit orders, collections and campaigns. There =
+is no confirmed problem yet; this is a request to test an assumption before i=
+t becomes policy.
+
+Could the answer be that controls propagate on the same day? Or are we actual=
+ly seeing that some downstream systems lag? I also do not want us to miss the=
+ possibility that manual exceptions are not documented consistently.
+
+The practical decision is whether this is an isolated exception, a design wea=
+kness or a control operating failure. Please send a model-ready table, data d=
+ictionary and an honest baseline; I need the exceptions and counter-examples,=
+ not only an average.
+
+Work from monthly account snapshots, status events, limits, product enrolment=
+s and signatories; transaction-level timestamps, channels, amounts, statuses =
+and error context; ATM attempts, host responses, PIN attempts, blocked-card s=
+tate and latency; debit-order mandates, collection dates, suspensions and can=
+cellations; collections cases, promises to pay and recovery payments; campaig=
+n design and customer responses. The result is a data-based control test and =
+still requires process-owner evidence.
+
+Regards

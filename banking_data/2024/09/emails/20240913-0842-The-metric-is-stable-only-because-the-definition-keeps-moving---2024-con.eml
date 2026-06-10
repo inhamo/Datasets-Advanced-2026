@@ -1,0 +1,40 @@
+From: emma.steyn@analytics.retail.keystonebank.co.za
+To: executive.office@keystonebank.co.za, data.engineering@keystonebank.co.za
+Cc: internal.audit@keystonebank.co.za, regulatory.reporting@keystonebank.co.za
+Subject: The metric is stable only because the definition keeps moving - 2024
+ control review
+Date: Fri, 13 Sep 2024 08:42:00 -0000
+Message-ID: <a4d56fa616b8403aab68e8d0bc62cf6b@keystonebank.co.za>
+X-Keystone-Department: Data and Analytics
+X-Keystone-Project-Type: metric_definition_review
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Team,
+
+Before this becomes another standing report, can we answer the real question?
+
+Analytics is receiving requests that use the same business term for different=
+ populations, dates and customer relationships. The possible stories are that=
+ the teams need different metrics, that snapshot timing creates the differenc=
+e, or that an undocumented exclusion is changing the denominator.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use September 2024 as the new evidence point rat=
+her than recycling the earlier conclusion. The discussion is currently being =
+driven by anecdotes, and the teams involved are describing the same customers=
+ differently.
+
+Please prepare a Power BI page with drill-through to a reproducible case list=
+. The output must help us decide the governed definition, owner, exclusions a=
+nd reconciliation bridge.
+
+Data available: monthly account snapshots, status events, limits, product enr=
+olments and signatories; monthly customer and KYC snapshots; transaction-leve=
+l timestamps, channels, amounts, statuses and error context.
+
+Please state the limitation plainly: A technically consistent definition stil=
+l needs business ownership and approval.
+
+Thanks

@@ -1,0 +1,42 @@
+From: riaan.swanepoel@cards.operations.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za
+Cc: customer.experience@keystonebank.co.za, cyber.security@keystonebank.co.za
+Subject: Reissue, activation and first-use journey
+Date: Fri, 07 Aug 2020 16:23:00 -0000
+Message-ID: <ea1bd350c5e6463cbab294f36045ddb4@keystonebank.co.za>
+X-Keystone-Department: Card Operations
+X-Keystone-Project-Type: card_reissue_journey
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Morning,
+
+I need help with something that sounds simple but probably is not.
+
+Card Operations needs to know whether replacement cards become usable quickly=
+ and whether old-card attempts continue after reissue. The discussion is curr=
+ently being driven by anecdotes, and the teams involved are describing the sa=
+me customers differently.
+
+The questions I would ask in the room are:
+1. What would we expect to see if customers resume normal use quickly?
+2. What evidence would instead support that old credentials continue to gener=
+ate declines?
+3. How do we rule out that ATM and transaction channels reflect card history =
+differently?
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use August 2020 as the new evidence point rather=
+ than recycling the earlier conclusion. Please work towards which reissue con=
+trols or customer messages need improvement. A useful output would be a Power=
+ BI page with drill-through to a reproducible case list.
+
+Use monthly account snapshots, status events, limits, product enrolments and =
+signatories; ATM attempts, host responses, PIN attempts, blocked-card state a=
+nd latency; transaction-level timestamps, channels, amounts, statuses and err=
+or context; customer contacts, complaints and suggestions. One caution: Card =
+numbers are historical lists in the account snapshot; use issue and expiry da=
+tes to determine the active card.
+
+Regards

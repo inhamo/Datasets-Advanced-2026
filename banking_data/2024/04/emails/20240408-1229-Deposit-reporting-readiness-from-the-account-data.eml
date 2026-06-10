@@ -1,0 +1,39 @@
+From: mpho.maseko@regulatory.reporting.keystonebank.co.za
+To: data.engineering@keystonebank.co.za, analytics.retail@keystonebank.co.za
+Cc: cfo.office@keystonebank.co.za, compliance.retail@keystonebank.co.za
+Subject: Deposit reporting readiness from the account data
+Date: Mon, 08 Apr 2024 12:29:00 -0000
+Message-ID: <c43b661cbbea4b50a0fa3c24ab3209b8@keystonebank.co.za>
+X-Keystone-Department: Regulatory Reporting
+X-Keystone-Project-Type: deposit_population_readiness
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Team,
+
+Before this becomes another standing report, can we answer the real question?
+
+Reporting wants to test whether customer type, account type, currency, status=
+ and ownership fields can support a future deposit population. The possible s=
+tories are that joint and company accounts need separate treatment, that miss=
+ing ownership or currency fields create the main exceptions, or that product =
+classifications are consistent.
+
+We looked at a version of this before. For the April 2024 review, please show=
+ what changed and whether the earlier conclusion still holds. The operating t=
+eams agree that more journeys are failing; they disagree on whether the custo=
+mer, the bank or a downstream party owns the failure.
+
+Please prepare a control view with the exceptions, owner and reason each item=
+ was included. The output must help us decide the data remediation backlog be=
+fore formal regulatory logic is implemented.
+
+Data available: monthly account snapshots, status events, limits, product enr=
+olments and signatories; monthly customer and KYC snapshots; account signator=
+y and ownership-role records.
+
+Please state the limitation plainly: No daily balances or official deposit-in=
+surance rules are encoded here; assess data readiness only.
+
+Thanks

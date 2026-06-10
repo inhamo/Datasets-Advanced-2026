@@ -1,0 +1,44 @@
+From: musa.khumalo@cyber.security.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za
+Cc: cards.operations@keystonebank.co.za, fraud.ops@keystonebank.co.za
+Subject:
+ Follow-up: blocked cards, PIN failures and cash attempts need one timeline
+Date: Fri, 15 Apr 2022 13:43:00 -0000
+Message-ID: <f877c639f3f448359799c4cff33869b6@keystonebank.co.za>
+X-Keystone-Department: Cyber Security
+X-Keystone-Project-Type: atm_attack_sequence
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Morning,
+
+I need help with something that sounds simple but probably is not.
+
+Cyber wants to know whether repeated PIN failures, balance enquiries and cash=
+ attempts form recognisable sequences before a card is blocked. The operating=
+ teams agree that more journeys are failing; they disagree on whether the cus=
+tomer, the bank or a downstream party owns the failure.
+
+The questions I would ask in the room are:
+1. What would we expect to see if normal forgotten-PIN behaviour dominates?
+2. What evidence would instead support that specific terminals see repeated c=
+ard testing?
+3. How do we rule out that a balance enquiry followed by rapid withdrawals ma=
+rks higher risk?
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use April 2022 as the new evidence point rather =
+than recycling the earlier conclusion. Please work towards which sequences sh=
+ould become monitoring rules and which would create unacceptable false positi=
+ves. A useful output would be a model-ready table, data dictionary and an hon=
+est baseline.
+
+Use ATM attempts, host responses, PIN attempts, blocked-card state and latenc=
+y; transaction-level timestamps, channels, amounts, statuses and error contex=
+t; monthly account snapshots, status events, limits, product enrolments and s=
+ignatories. One caution: There is no CCTV, device fingerprint or complete car=
+d-network feed, so classify behavioural patterns rather than confirmed attack=
+s.
+
+Regards

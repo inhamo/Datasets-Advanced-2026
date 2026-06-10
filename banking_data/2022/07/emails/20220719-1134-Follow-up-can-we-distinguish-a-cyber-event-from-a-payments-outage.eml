@@ -1,0 +1,42 @@
+From: musa.khumalo@cyber.security.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, infrastructure.ops@keystonebank.co.za
+Cc: fraud.ops@keystonebank.co.za, payments.ops@keystonebank.co.za
+Subject: Follow-up: can we distinguish a cyber event from a payments outage?
+Date: Tue, 19 Jul 2022 11:34:00 -0000
+Message-ID: <d6127352e0684a93bc955f7f9b1c68a1@keystonebank.co.za>
+X-Keystone-Department: Cyber Security
+X-Keystone-Project-Type: payment_cyber_resilience
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi,
+
+This came up in a working session and nobody had the same definition.
+
+Timeouts, host-response failures and repeated attempts can resemble malicious=
+ activity or ordinary service degradation.
+
+I do not want a dashboard that simply counts the outcome. Start with the comp=
+eting explanations: technical failure explains the cluster; operational retri=
+es are obscuring the original event; or a concentrated account or terminal pa=
+ttern suggests abuse.
+
+The timing also overlaps with Record Stage 6 load shedding across major metro=
+s. Treat that as context to test, not an answer. Several teams are reporting =
+more failed or retried activity than they expected, but they do not agree on =
+the cause. This has returned because the previous answer was useful but not s=
+trong enough to become a standing rule. Use July 2022 as the new evidence poi=
+nt rather than recycling the earlier conclusion.=20
+
+What we need to decide is the minimum evidence needed to route an alert to Cy=
+ber, Fraud, Payments or Infrastructure. Please bring a Power BI page with dri=
+ll-through to a reproducible case list, including a few cases we can trace fr=
+om source to conclusion.
+
+The available evidence is transaction-level timestamps, channels, amounts, st=
+atuses and error context; ATM attempts, host responses, PIN attempts, blocked=
+-card state and latency. This is triage design from available telemetry, not =
+a substitute for SOC, firewall or application logs.
+
+Thank you

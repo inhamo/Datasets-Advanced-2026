@@ -1,0 +1,44 @@
+From: priya.naidoo@payments.ops.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za
+Cc: collections.ops@keystonebank.co.za, credit.risk.retail@keystonebank.co.za
+Subject:
+ Follow-up: are we collecting on the wrong day for the customer's cash flow?
+Date: Thu, 09 Sep 2021 14:32:00 -0000
+Message-ID: <d2c6f967d6eb4d0080ebfb37e776bf7b@keystonebank.co.za>
+X-Keystone-Department: Payments Operations
+X-Keystone-Project-Type: debit_day_alignment
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi,
+
+This came up in a working session and nobody had the same definition.
+
+Payments wants to test whether collection timing, rather than inability to pa=
+y, explains repeat debit-order failure.
+
+I do not want a dashboard that simply counts the outcome. Start with the comp=
+eting explanations: collection before regular inflow drives failure; fixed co=
+llection rules work differently across customer groups; or retry timing impro=
+ves success.
+
+The operating teams agree that more journeys are failing; they disagree on wh=
+ether the customer, the bank or a downstream party owns the failure. This has=
+ returned because the previous answer was useful but not strong enough to bec=
+ome a standing rule. Use September 2021 as the new evidence point rather than=
+ recycling the earlier conclusion.=20
+
+What we need to decide is whether to test alternative debit dates or change r=
+etry logic. Please bring a control view with the exceptions, owner and reason=
+ each item was included, including a few cases we can trace from source to co=
+nclusion.
+
+The available evidence is debit-order mandates, collection dates, suspensions=
+ and cancellations; transaction-level timestamps, channels, amounts, statuses=
+ and error context; the latest closed loan files available by the request dat=
+e, including affordability, pricing and origination risk fields; collections =
+cases, promises to pay and recovery payments. Regular inflows are inferred fr=
+om transaction patterns; no verified payroll calendar is available.
+
+Thank you

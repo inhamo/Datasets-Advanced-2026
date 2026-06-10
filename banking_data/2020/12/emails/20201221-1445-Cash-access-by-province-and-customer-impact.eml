@@ -1,0 +1,38 @@
+From: nokuthula.cele@branch.network.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, infrastructure.ops@keystonebank.co.za
+Cc: cards.operations@keystonebank.co.za, banking.operations@keystonebank.co.za
+Subject: Cash access by province and customer impact
+Date: Mon, 21 Dec 2020 14:45:00 -0000
+Message-ID: <157b30d934c64e16b06939c55f305e02@keystonebank.co.za>
+X-Keystone-Department: Branch Network
+X-Keystone-Project-Type: cash_access_resilience
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi team,
+
+ATM failures and blocked-card issues can shift customers toward branches, esp=
+ecially during infrastructure disruption.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use December 2020 as the new evidence point rath=
+er than recycling the earlier conclusion. There is no confirmed problem yet; =
+this is a request to test an assumption before it becomes policy.
+
+Can you test these explanations rather than choosing one at the start?
+- specific provinces show repeat access failure
+- cash-bin or host issues dominate
+- customers switch to smaller withdrawals or branch contact
+
+The decision is where contingency communication and ATM support should be pri=
+oritised. Please give us a working Excel file with the exception population a=
+nd clear columns.
+
+You should be able to build the evidence from ATM attempts, host responses, P=
+IN attempts, blocked-card state and latency; transaction-level timestamps, ch=
+annels, amounts, statuses and error context; customer contacts, complaints an=
+d suggestions; monthly customer and KYC snapshots. The data does not contain =
+branch cash holdings or queue time.
+
+Thanks

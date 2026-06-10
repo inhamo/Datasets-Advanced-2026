@@ -1,0 +1,42 @@
+From: naledi.mokoena@treasury.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, payments.ops@keystonebank.co.za
+Cc: fraud.ops@keystonebank.co.za, finance.recon@keystonebank.co.za
+Subject: The USD settlement pattern needs a closer look
+Date: Fri, 21 Mar 2025 08:20:00 -0000
+Message-ID: <919b26df713949e0b0cf93496648fd10@keystonebank.co.za>
+X-Keystone-Department: Treasury
+X-Keystone-Project-Type: correspondent_liquidity_review
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Morning,
+
+I need help with something that sounds simple but probably is not.
+
+Correspondent payment delays and beneficiary-routing alerts may be creating b=
+oth liquidity noise and financial-crime exposure. The discussion is currently=
+ being driven by anecdotes, and the teams involved are describing the same cu=
+stomers differently.
+
+The questions I would ask in the room are:
+1. What would we expect to see if late confirmations explain most breaks?
+2. What evidence would instead support that split payments are concentrating =
+on common beneficiaries?
+3. How do we rule out that specific intermediaries create repeated settlement=
+ delay?
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use March 2025 as the new evidence point rather =
+than recycling the earlier conclusion. Please work towards whether to change =
+correspondent limits, escalate a bank relationship or tighten pre-payment rev=
+iew. A useful output would be a one-page finding note plus the underlying CSV=
+ for our own review.
+
+Use SWIFT messages, correspondent alerts and nostro breaks; transaction-level=
+ timestamps, channels, amounts, statuses and error context; monthly customer =
+and KYC snapshots; monthly account snapshots, status events, limits, product =
+enrolments and signatories. One caution: Do not infer the bank's full nostro =
+position from exception records.
+
+Regards

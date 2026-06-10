@@ -1,0 +1,41 @@
+From: priya.naidoo@payments.ops.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, banking.operations@keystonebank.co.za
+Cc: infrastructure.ops@keystonebank.co.za, collections.ops@keystonebank.co.za
+Subject:
+ Customer funds, bank timeout or downstream rejection? - 2024 control review
+Date: Fri, 12 Jul 2024 09:35:00 -0000
+Message-ID: <9205e974cef840049a8b5337b5498835@keystonebank.co.za>
+X-Keystone-Department: Payments Operations
+X-Keystone-Project-Type: payment_failure_root_cause
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Team,
+
+Before this becomes another standing report, can we answer the real question?
+
+Operations is grouping all failed payments together even though the next acti=
+on depends on the actual cause. The possible stories are that insufficient fu=
+nds explains the event, that mandate status or retry sequencing explains the =
+event, or that third-party or bank timeout explains the event.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use July 2024 as the new evidence point rather t=
+han recycling the earlier conclusion. The discussion is currently being drive=
+n by anecdotes, and the teams involved are describing the same customers diff=
+erently.
+
+Please prepare a control view with the exceptions, owner and reason each item=
+ was included. The output must help us decide the operational owner, customer=
+ message and monitoring rule for each failure family.
+
+Data available: transaction-level timestamps, channels, amounts, statuses and=
+ error context; debit-order mandates, collection dates, suspensions and cance=
+llations; ATM attempts, host responses, PIN attempts, blocked-card state and =
+latency; customer contacts, complaints and suggestions.
+
+Please state the limitation plainly: Do not infer a technical component failu=
+re beyond the error and timing fields available.
+
+Thanks

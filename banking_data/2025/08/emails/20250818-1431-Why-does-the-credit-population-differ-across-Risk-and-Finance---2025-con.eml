@@ -1,0 +1,42 @@
+From: mpho.maseko@regulatory.reporting.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, data.engineering@keystonebank.co.za
+Cc: credit.risk.retail@keystonebank.co.za, cfo.office@keystonebank.co.za
+Subject: Why does the credit population differ across Risk and Finance? - 2025
+ control review
+Date: Mon, 18 Aug 2025 14:31:00 -0000
+Message-ID: <dd526354dcd14ead9820ed259257db99@keystonebank.co.za>
+X-Keystone-Department: Regulatory Reporting
+X-Keystone-Project-Type: credit_return_reconciliation
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Morning,
+
+I need help with something that sounds simple but probably is not.
+
+Risk, Lending and Reporting are counting applications, approvals, booked loan=
+s and distressed accounts from different starting populations. There is no co=
+nfirmed problem yet; this is a request to test an assumption before it become=
+s policy.
+
+The questions I would ask in the room are:
+1. What would we expect to see if declined and withdrawn cases are mixed?
+2. What evidence would instead support that booked loans are missing from dow=
+nstream repayment views?
+3. How do we rule out that workflow timing explains most differences?
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use August 2025 as the new evidence point rather=
+ than recycling the earlier conclusion. Please work towards the canonical pop=
+ulation and exception rules for the next return. A useful output would be a o=
+ne-page finding note plus the underlying CSV for our own review.
+
+Use the latest closed loan files available by the request date, including aff=
+ordability, pricing and origination risk fields; collections cases, promises =
+to pay and recovery payments; debit-order mandates, collection dates, suspens=
+ions and cancellations; transaction-level timestamps, channels, amounts, stat=
+uses and error context. One caution: Do not present this as an official regul=
+atory return without the required regulatory taxonomy and sign-off.
+
+Regards

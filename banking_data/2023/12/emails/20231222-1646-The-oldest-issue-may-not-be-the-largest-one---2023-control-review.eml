@@ -1,0 +1,43 @@
+From: peter.jacobs@banking.operations.keystonebank.co.za
+To:
+ analytics.retail@keystonebank.co.za, customer.experience@keystonebank.co.za
+Cc: legal.counsel@keystonebank.co.za
+Subject: The oldest issue may not be the largest one - 2023 control review
+Date: Fri, 22 Dec 2023 16:46:00 -0000
+Message-ID: <25684160841c47cf97ab472ad6ea0123@keystonebank.co.za>
+X-Keystone-Department: Banking Operations
+X-Keystone-Project-Type: exception_ageing
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi all,
+
+I may be joining dots that do not belong together, so please challenge the pr=
+emise.
+
+Operations needs an ageing view that prioritises unresolved customer impact r=
+ather than raw exception count. The operating teams agree that more journeys =
+are failing; they disagree on whether the customer, the bank or a downstream =
+party owns the failure. Different teams have produced different answers from =
+the same period, so population and timing rules need to be visible.
+
+Could the answer be that status updates close records without resolving the t=
+ransaction? Or are we actually seeing that older cases cluster in one process=
+? I also do not want us to miss the possibility that small-value cases remain=
+ open because ownership is unclear.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use December 2023 as the new evidence point rath=
+er than recycling the earlier conclusion. The practical decision is the excep=
+tion priority rule and escalation threshold. Please send a model-ready table,=
+ data dictionary and an honest baseline; I need the exceptions and counter-ex=
+amples, not only an average.
+
+Work from transaction-level timestamps, channels, amounts, statuses and error=
+ context; customer contacts, complaints and suggestions; collections cases, p=
+romises to pay and recovery payments; monthly account snapshots, status event=
+s, limits, product enrolments and signatories. Use observable dates and outco=
+mes; do not infer internal queue age where no queue record exists.
+
+Regards

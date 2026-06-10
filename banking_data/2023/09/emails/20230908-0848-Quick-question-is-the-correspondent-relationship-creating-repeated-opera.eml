@@ -1,0 +1,37 @@
+From: keegan.petersen@vendor.risk.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, payments.ops@keystonebank.co.za
+Cc: treasury@keystonebank.co.za, fraud.ops@keystonebank.co.za
+Subject: Quick question: is the correspondent relationship creating repeated
+ operational risk?
+Date: Fri, 08 Sep 2023 08:48:00 -0000
+Message-ID: <2aa9e7b88ead49b1b6b097bb5e96d186@keystonebank.co.za>
+X-Keystone-Department: Third-Party and Vendor Risk
+X-Keystone-Project-Type: correspondent_service_review
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Morning,
+
+I need help with something that sounds simple but probably is not.
+
+A small set of intermediary banks appears in settlement delays and routing al=
+erts, raising both service and risk questions. There is no confirmed problem =
+yet; this is a request to test an assumption before it becomes policy.
+
+The questions I would ask in the room are:
+1. What would we expect to see if beneficiary patterns explain the alerts?
+2. What evidence would instead support that the operational and financial-cri=
+me populations overlap only partly?
+3. How do we rule out that one intermediary drives most delay?
+
+Please work towards whether to escalate the correspondent, change monitoring =
+or gather contractual evidence. A useful output would be a Power BI page with=
+ drill-through to a reproducible case list.
+
+Use SWIFT messages, correspondent alerts and nostro breaks; transaction-level=
+ timestamps, channels, amounts, statuses and error context. One caution: Exce=
+ption files do not contain the full correspondent contract or all successful =
+traffic.
+
+Regards

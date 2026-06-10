@@ -1,0 +1,45 @@
+From: musa.khumalo@cyber.security.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, fraud.ops@keystonebank.co.za
+Cc:
+ infrastructure.ops@keystonebank.co.za, customer.experience@keystonebank.co.za
+Subject: A failed digital journey followed by cash access needs context - 2024
+ control review
+Date: Thu, 11 Jan 2024 13:51:00 -0000
+Message-ID: <1b15ee7743f343f38a901c58142b18f5@keystonebank.co.za>
+X-Keystone-Department: Cyber Security
+X-Keystone-Project-Type: cross_channel_anomaly
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi,
+
+This came up in a working session and nobody had the same definition.
+
+A rapid move between transaction channels can indicate account takeover, cust=
+omer recovery behaviour or an operational workaround.
+
+I do not want a dashboard that simply counts the outcome. Start with the comp=
+eting explanations: security events drive channel switching; service failure =
+explains most switches; or newly opened accounts have a different normal patt=
+ern.
+
+Failure anecdotes are beginning to drive decisions, although retries and late=
+ posting may be making the problem look larger than the affected-customer pop=
+ulation. This has returned because the previous answer was useful but not str=
+ong enough to become a standing rule. Use January 2024 as the new evidence po=
+int rather than recycling the earlier conclusion.=20
+
+What we need to decide is which patterns belong in cyber monitoring and which=
+ belong in service monitoring. Please bring a short decision pack with no mor=
+e than five slides and an attached evidence table, including a few cases we c=
+an trace from source to conclusion.
+
+The available evidence is transaction-level timestamps, channels, amounts, st=
+atuses and error context; ATM attempts, host responses, PIN attempts, blocked=
+-card state and latency; monthly account snapshots, status events, limits, pr=
+oduct enrolments and signatories; customer contacts, complaints and suggestio=
+ns. No device identity or IP address is available; do not describe a new chan=
+nel as a new device.
+
+Thank you

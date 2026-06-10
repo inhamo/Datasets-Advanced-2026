@@ -1,0 +1,44 @@
+From: leanne.adams@model.risk.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, data.engineering@keystonebank.co.za
+Cc: credit.risk.retail@keystonebank.co.za
+Subject: Feature timing review before validation - 2025 control review
+Date: Wed, 13 Aug 2025 15:11:00 -0000
+Message-ID: <7e7cff302da8442c912dade3bc609e2a@keystonebank.co.za>
+X-Keystone-Department: Model Risk Management
+X-Keystone-Project-Type: credit_model_leakage
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi all,
+
+I may be joining dots that do not belong together, so please challenge the pr=
+emise.
+
+The proposed repayment-stress model combines monthly snapshots, and Model Ris=
+k needs proof that every feature existed at the observation date. Please star=
+t with the decision we need to make, then show whether the available evidence=
+ is strong enough to support it.
+
+Could the answer be that status or collections fields leak future outcomes? O=
+r are we actually seeing that monthly snapshots duplicate later knowledge? I =
+also do not want us to miss the possibility that performance is stable after =
+strict time-based validation.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use August 2025 as the new evidence point rather=
+ than recycling the earlier conclusion. The practical decision is whether the=
+ model can enter validation or must return to feature engineering. Please sen=
+d a one-page finding note plus the underlying CSV for our own review; I need =
+the exceptions and counter-examples, not only an average.
+
+Work from the latest closed loan files available by the request date, includi=
+ng affordability, pricing and origination risk fields; transaction-level time=
+stamps, channels, amounts, statuses and error context; debit-order mandates, =
+collection dates, suspensions and cancellations; collections cases, promises =
+to pay and recovery payments; monthly account snapshots, status events, limit=
+s, product enrolments and signatories. Use out-of-time validation and preserv=
+e event timestamps; do not random-split repeated observations of the same cus=
+tomer.
+
+Regards

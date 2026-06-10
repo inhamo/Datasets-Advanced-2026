@@ -1,0 +1,41 @@
+From: priya.naidoo@payments.ops.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za
+Cc: collections.ops@keystonebank.co.za, credit.risk.retail@keystonebank.co.za
+Subject: Debit day, salary timing and avoidable failure - 2024 control review
+Date: Fri, 07 Jun 2024 12:30:00 -0000
+Message-ID: <6ecc57f637f84395989eb40a37fb0aac@keystonebank.co.za>
+X-Keystone-Department: Payments Operations
+X-Keystone-Project-Type: debit_day_alignment
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Morning,
+
+I need help with something that sounds simple but probably is not.
+
+Payments wants to test whether collection timing, rather than inability to pa=
+y, explains repeat debit-order failure. Please start with the decision we nee=
+d to make, then show whether the available evidence is strong enough to suppo=
+rt it.
+
+The questions I would ask in the room are:
+1. What would we expect to see if retry timing improves success?
+2. What evidence would instead support that fixed collection rules work diffe=
+rently across customer groups?
+3. How do we rule out that collection before regular inflow drives failure?
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use June 2024 as the new evidence point rather t=
+han recycling the earlier conclusion. Please work towards whether to test alt=
+ernative debit dates or change retry logic. A useful output would be a workin=
+g Excel file with the exception population and clear columns.
+
+Use debit-order mandates, collection dates, suspensions and cancellations; tr=
+ansaction-level timestamps, channels, amounts, statuses and error context; th=
+e latest closed loan files available by the request date, including affordabi=
+lity, pricing and origination risk fields; collections cases, promises to pay=
+ and recovery payments. One caution: Regular inflows are inferred from transa=
+ction patterns; no verified payroll calendar is available.
+
+Regards

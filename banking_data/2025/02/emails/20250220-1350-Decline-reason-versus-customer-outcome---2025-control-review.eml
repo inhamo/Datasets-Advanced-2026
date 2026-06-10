@@ -1,0 +1,41 @@
+From: riaan.swanepoel@cards.operations.keystonebank.co.za
+To:
+ analytics.retail@keystonebank.co.za, customer.experience@keystonebank.co.za
+Cc: payments.ops@keystonebank.co.za
+Subject: Decline reason versus customer outcome - 2025 control review
+Date: Thu, 20 Feb 2025 13:50:00 -0000
+Message-ID: <ab902e25bd5445db84631cc9c718a9b5@keystonebank.co.za>
+X-Keystone-Department: Card Operations
+X-Keystone-Project-Type: card_decline_recovery
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Morning,
+
+I need help with something that sounds simple but probably is not.
+
+The same decline code can lead to a successful retry, an ATM attempt, a phone=
+ call or lost activity. The discussion is currently being driven by anecdotes=
+, and the teams involved are describing the same customers differently.
+
+The questions I would ask in the room are:
+1. What would we expect to see if repeat declines cluster by card state or ch=
+annel?
+2. What evidence would instead support that most declines recover immediately?
+3. How do we rule out that poor explanations drive complaints more than the d=
+ecline itself?
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use February 2025 as the new evidence point rath=
+er than recycling the earlier conclusion. Please work towards which decline r=
+easons need rule, message or service changes. A useful output would be a work=
+ing Excel file with the exception population and clear columns.
+
+Use transaction-level timestamps, channels, amounts, statuses and error conte=
+xt; ATM attempts, host responses, PIN attempts, blocked-card state and latenc=
+y; monthly account snapshots, status events, limits, product enrolments and s=
+ignatories; customer contacts, complaints and suggestions. One caution: The d=
+ata does not contain merchant terminal logs or card-scheme dispute outcomes.
+
+Regards

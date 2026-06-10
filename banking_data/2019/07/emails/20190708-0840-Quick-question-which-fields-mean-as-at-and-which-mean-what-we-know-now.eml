@@ -1,0 +1,39 @@
+From: sipho.nkosi@data.engineering.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, model.risk@keystonebank.co.za
+Cc: internal.audit@keystonebank.co.za
+Subject:
+ Quick question: which fields mean as-at, and which mean what we know now?
+Date: Mon, 08 Jul 2019 08:40:00 -0000
+Message-ID: <1db4a977ca924a3797cd3794d5332f3f@keystonebank.co.za>
+X-Keystone-Department: Data Engineering
+X-Keystone-Project-Type: snapshot_semantics
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Team,
+
+Before this becomes another standing report, can we answer the real question?
+
+Repeated monthly parquet snapshots contain fields that may be updated retrosp=
+ectively, creating risk for trend analysis and models. The possible stories a=
+re that records preserve true as-at state, that closure or status fields are =
+backfilled, or that CDC fragments and snapshots are being combined incorrectl=
+y.
+
+The operating teams agree that more journeys are failing; they disagree on wh=
+ether the customer, the bank or a downstream party owns the failure.
+
+Please prepare a one-page finding note plus the underlying CSV for our own re=
+view. The output must help us decide which fields need event tables, effectiv=
+e dating or restricted use.
+
+Data available: monthly account snapshots, status events, limits, product enr=
+olments and signatories; monthly customer and KYC snapshots; the latest close=
+d loan files available by the request date, including affordability, pricing =
+and origination risk fields.
+
+Please state the limitation plainly: Do not assume a file path date is the ef=
+fective date of every field.
+
+Thanks

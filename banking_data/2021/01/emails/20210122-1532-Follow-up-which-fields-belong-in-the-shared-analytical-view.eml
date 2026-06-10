@@ -1,0 +1,41 @@
+From: thabo.molefe@data.engineering.keystonebank.co.za
+To: compliance.retail@keystonebank.co.za, analytics.retail@keystonebank.co.za
+Cc: legal.counsel@keystonebank.co.za, cyber.security@keystonebank.co.za
+Subject: Follow-up: which fields belong in the shared analytical view?
+Date: Fri, 22 Jan 2021 15:32:00 -0000
+Message-ID: <05d825bbbe3548959f361c68c43dc894@keystonebank.co.za>
+X-Keystone-Department: Data Engineering
+X-Keystone-Project-Type: sensitive_data_product
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi all,
+
+I may be joining dots that do not belong together, so please challenge the pr=
+emise.
+
+Teams are asking for customer identity, risk, income and contact fields in br=
+oad analytical extracts. The operating teams agree that more journeys are fai=
+ling; they disagree on whether the customer, the bank or a downstream party o=
+wns the failure. The first extracts did not reconcile, which means source pre=
+cedence and exclusions must be part of the answer.
+
+Could the answer be that different projects require different retention and a=
+ccess? Or are we actually seeing that restricted identifiers are being copied=
+ for convenience? I also do not want us to miss the possibility that most use=
+ cases need derived or masked fields.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use January 2021 as the new evidence point rathe=
+r than recycling the earlier conclusion. The practical decision is the shared=
+ schema, restricted extension and audit trail. Please send a model-ready tabl=
+e, data dictionary and an honest baseline; I need the exceptions and counter-=
+examples, not only an average.
+
+Work from monthly customer and KYC snapshots; monthly account snapshots, stat=
+us events, limits, product enrolments and signatories; customer contacts, com=
+plaints and suggestions. Minimise access to identity, contact, protected and =
+investigation fields; usefulness alone is not a lawful purpose.
+
+Regards

@@ -1,0 +1,43 @@
+From: musa.khumalo@cyber.security.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, fraud.ops@keystonebank.co.za
+Cc:
+ infrastructure.ops@keystonebank.co.za, customer.experience@keystonebank.co.za
+Subject:
+ When does channel switching become a security signal? - 2023 control review
+Date: Mon, 10 Apr 2023 12:20:00 -0000
+Message-ID: <b396bce717e2487fbda72460bf919101@keystonebank.co.za>
+X-Keystone-Department: Cyber Security
+X-Keystone-Project-Type: cross_channel_anomaly
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi all,
+
+I may be joining dots that do not belong together, so please challenge the pr=
+emise.
+
+A rapid move between transaction channels can indicate account takeover, cust=
+omer recovery behaviour or an operational workaround. There is no confirmed p=
+roblem yet; this is a request to test an assumption before it becomes policy.
+
+Could the answer be that newly opened accounts have a different normal patter=
+n? Or are we actually seeing that security events drive channel switching? I =
+also do not want us to miss the possibility that service failure explains mos=
+t switches.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use April 2023 as the new evidence point rather =
+than recycling the earlier conclusion. The practical decision is which patter=
+ns belong in cyber monitoring and which belong in service monitoring. Please =
+send a working Excel file with the exception population and clear columns; I =
+need the exceptions and counter-examples, not only an average.
+
+Work from transaction-level timestamps, channels, amounts, statuses and error=
+ context; ATM attempts, host responses, PIN attempts, blocked-card state and =
+latency; monthly account snapshots, status events, limits, product enrolments=
+ and signatories; customer contacts, complaints and suggestions. No device id=
+entity or IP address is available; do not describe a new channel as a new dev=
+ice.
+
+Regards

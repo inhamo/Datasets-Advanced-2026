@@ -1,0 +1,40 @@
+From: lerato.khumalo@cfo.office.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, treasury@keystonebank.co.za
+Cc: data.engineering@keystonebank.co.za
+Subject:
+ Quick question: A funding-stability proxy from the data we actually have
+Date: Tue, 17 Mar 2020 14:36:00 -0000
+Message-ID: <45651bfe22b64b26a3c4070e5e0a954d@keystonebank.co.za>
+X-Keystone-Department: CFO Office / ALM
+X-Keystone-Project-Type: retail_funding_proxy
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi team,
+
+ALM wants a directional view of retail funding stability based on transaction=
+ behaviour and account persistence.
+
+We looked at a version of this before. For the March 2020 review, please show=
+ what changed and whether the earlier conclusion still holds. Failure anecdot=
+es are beginning to drive decisions, although retries and late posting may be=
+ making the problem look larger than the affected-customer population.
+
+Can you test these explanations rather than choosing one at the start?
+- large opening deposits overstate durable funding
+- customers with service problems move money out faster
+- salary-like and recurring inflows are more stable
+
+The decision is which behavioural assumptions deserve formal modelling when b=
+alance and regulatory data become available. Please give us a control view wi=
+th the exceptions, owner and reason each item was included.
+
+You should be able to build the evidence from transaction-level timestamps, c=
+hannels, amounts, statuses and error context; available initial-deposit recor=
+ds up to the request date; monthly account snapshots, status events, limits, =
+product enrolments and signatories; customer contacts, complaints and suggest=
+ions. There are no daily account balances, wholesale funding positions or reg=
+ulatory cash-flow buckets, so do not calculate LCR or NSFR.
+
+Thanks

@@ -1,0 +1,42 @@
+From: lerato.khumalo@cfo.office.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, credit.risk.retail@keystonebank.co.za
+Cc: pricing.customer.value@keystonebank.co.za, treasury@keystonebank.co.za
+Subject: Rate sensitivity without pretending we have a full ALM model
+Date: Wed, 22 Jan 2020 08:26:00 -0000
+Message-ID: <fed162e5923f45b2882da1d940828fcf@keystonebank.co.za>
+X-Keystone-Department: CFO Office / ALM
+X-Keystone-Project-Type: rate_sensitivity_proxy
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi team,
+
+The planning team needs to understand which product and customer groups are m=
+ost exposed when lending and account rates change.
+
+We looked at a version of this before. For the January 2020 review, please sh=
+ow what changed and whether the earlier conclusion still holds. Several teams=
+ are reporting more failed or retried activity than they expected, but they d=
+o not agree on the cause. Different teams have produced different answers fro=
+m the same period, so population and timing rules need to be visible.
+
+Can you test these explanations rather than choosing one at the start?
+- fee-sensitive deposit activity changes after repricing
+- repayment stress is driven more by cash flow than by nominal rate
+- variable-rate borrowers show stress before fixed-rate borrowers
+
+The decision is where product repricing, customer communication or credit mon=
+itoring should be focused. Please give us a Power BI page with drill-through =
+to a reproducible case list.
+
+You should be able to build the evidence from monthly account snapshots, stat=
+us events, limits, product enrolments and signatories; the latest closed loan=
+ files available by the request date, including affordability, pricing and or=
+igination risk fields; transaction-level timestamps, channels, amounts, statu=
+ses and error context; collections cases, promises to pay and recovery paymen=
+ts; customer contacts, complaints and suggestions. This is a behavioural sens=
+itivity study, not IRRBB, economic value of equity or a regulatory interest-r=
+ate calculation.
+
+Thanks

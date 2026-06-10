@@ -1,0 +1,44 @@
+From: naledi.mokoena@treasury.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za
+Cc: cfo.office@keystonebank.co.za, payments.ops@keystonebank.co.za
+Subject:
+ The currency exposure needs a customer-behaviour view - 2024 control review
+Date: Tue, 19 Mar 2024 16:14:00 -0000
+Message-ID: <85d9ae2d19844af7a35d251c7f815f6f@keystonebank.co.za>
+X-Keystone-Department: Treasury
+X-Keystone-Project-Type: currency_flow_monitoring
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Morning,
+
+I need help with something that sounds simple but probably is not.
+
+Treasury sees non-rand activity but needs to separate stable customer behavio=
+ur from isolated transactions and data artefacts. Several teams are reporting=
+ more failed or retried activity than they expected, but they do not agree on=
+ the cause. The first extracts did not reconcile, which means source preceden=
+ce and exclusions must be part of the answer.
+
+The questions I would ask in the room are:
+1. What would we expect to see if a small group of customers drives most fore=
+ign-currency activity?
+2. What evidence would instead support that cross-border-enabled accounts are=
+ not the same as active cross-border users?
+3. How do we rule out that loan participations explain part of the flow?
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use March 2024 as the new evidence point rather =
+than recycling the earlier conclusion. Please work towards whether to improve=
+ forecasting assumptions or investigate specific flow concentrations. A usefu=
+l output would be a short decision pack with no more than five slides and an =
+attached evidence table.
+
+Use monthly account snapshots, status events, limits, product enrolments and =
+signatories; transaction-level timestamps, channels, amounts, statuses and er=
+ror context; loan participation and servicing records available by the reques=
+t date. One caution: This data does not contain market positions, hedges or i=
+ntraday liquidity; report customer-flow concentration only.
+
+Regards

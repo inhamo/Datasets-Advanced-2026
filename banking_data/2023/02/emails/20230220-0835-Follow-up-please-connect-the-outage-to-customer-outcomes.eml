@@ -1,0 +1,43 @@
+From: david.fourie@infrastructure.ops.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, banking.operations@keystonebank.co.za
+Cc: customer.experience@keystonebank.co.za, cyber.security@keystonebank.co.za
+Subject: Follow-up: please connect the outage to customer outcomes
+Date: Mon, 20 Feb 2023 08:35:00 -0000
+Message-ID: <d3c62aede6ed47b0ba09d45b4fd37c1c@keystonebank.co.za>
+X-Keystone-Department: IT Infrastructure
+X-Keystone-Project-Type: incident_customer_impact
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi,
+
+This came up in a working session and nobody had the same definition.
+
+Infrastructure can see technical symptoms, but incident severity should refle=
+ct failed customer journeys and repeat attempts rather than machine alerts al=
+one.
+
+I do not want a dashboard that simply counts the outcome. Start with the comp=
+eting explanations: latency rises before visible failure; a small terminal or=
+ channel group creates most harm; or customers retry across channels and crea=
+te duplicates.
+
+The operating teams agree that more journeys are failing; they disagree on wh=
+ether the customer, the bank or a downstream party owns the failure. This has=
+ returned because the previous answer was useful but not strong enough to bec=
+ome a standing rule. Use February 2023 as the new evidence point rather than =
+recycling the earlier conclusion.=20
+
+What we need to decide is incident priority, root-cause ownership and the cus=
+tomer-remediation population. Please bring a control view with the exceptions=
+, owner and reason each item was included, including a few cases we can trace=
+ from source to conclusion.
+
+The available evidence is transaction-level timestamps, channels, amounts, st=
+atuses and error context; ATM attempts, host responses, PIN attempts, blocked=
+-card state and latency; customer contacts, complaints and suggestions. The d=
+ataset has channel and ATM telemetry, not complete application, server or net=
+work logs.
+
+Thank you

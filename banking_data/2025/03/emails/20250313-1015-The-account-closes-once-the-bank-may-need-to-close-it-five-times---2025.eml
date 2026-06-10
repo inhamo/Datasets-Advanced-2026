@@ -1,0 +1,44 @@
+From: sibusiso.dube@internal.audit.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, data.engineering@keystonebank.co.za
+Cc:
+ banking.operations@keystonebank.co.za, compliance.retail@keystonebank.co.za
+Subject: The account closes once; the bank may need to close it five times -
+ 2025 control review
+Date: Thu, 13 Mar 2025 10:15:00 -0000
+Message-ID: <0406110f1d0448139cac7542ae4218df@keystonebank.co.za>
+X-Keystone-Department: Internal Audit
+X-Keystone-Project-Type: closed_account_control_test
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi all,
+
+I may be joining dots that do not belong together, so please challenge the pr=
+emise.
+
+Internal Audit wants to test whether an account status change consistently st=
+ops transactions, ATM access, debit orders, collections and campaigns. There =
+is no confirmed problem yet; this is a request to test an assumption before i=
+t becomes policy.
+
+Could the answer be that manual exceptions are not documented consistently? O=
+r are we actually seeing that controls propagate on the same day? I also do n=
+ot want us to miss the possibility that some downstream systems lag.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use March 2025 as the new evidence point rather =
+than recycling the earlier conclusion. The practical decision is whether this=
+ is an isolated exception, a design weakness or a control operating failure. =
+Please send a control view with the exceptions, owner and reason each item wa=
+s included; I need the exceptions and counter-examples, not only an average.
+
+Work from monthly account snapshots, status events, limits, product enrolment=
+s and signatories; transaction-level timestamps, channels, amounts, statuses =
+and error context; ATM attempts, host responses, PIN attempts, blocked-card s=
+tate and latency; debit-order mandates, collection dates, suspensions and can=
+cellations; collections cases, promises to pay and recovery payments; campaig=
+n design and customer responses. The result is a data-based control test and =
+still requires process-owner evidence.
+
+Regards

@@ -1,0 +1,45 @@
+From: sipho.nkosi@data.engineering.keystonebank.co.za
+To:
+ analytics.retail@keystonebank.co.za, regulatory.reporting@keystonebank.co.za
+Cc: internal.audit@keystonebank.co.za, model.risk@keystonebank.co.za
+Subject: Follow-up: new column, renamed field or changed meaning?
+Date: Mon, 18 Jul 2022 16:22:00 -0000
+Message-ID: <3151853d447443f9acbebc57b808100a@keystonebank.co.za>
+X-Keystone-Department: Data Engineering
+X-Keystone-Project-Type: schema_drift_control
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi,
+
+This came up in a working session and nobody had the same definition.
+
+Data Engineering sees changing schemas and needs to distinguish safe expansio=
+n from business-definition drift.
+
+I do not want a dashboard that simply counts the outcome. Start with the comp=
+eting explanations: renamed or recoded fields break history; null patterns re=
+veal a source rollout rather than missing customer data; or new fields are ad=
+ditive.
+
+Several teams are reporting more failed or retried activity than they expecte=
+d, but they do not agree on the cause. The first extracts did not reconcile, =
+which means source precedence and exclusions must be part of the answer. This=
+ has returned because the previous answer was useful but not strong enough to=
+ become a standing rule. Use July 2022 as the new evidence point rather than =
+recycling the earlier conclusion.=20
+
+What we need to decide is the data contract, quarantine rule and backfill req=
+uirement. Please bring a control view with the exceptions, owner and reason e=
+ach item was included, including a few cases we can trace from source to conc=
+lusion.
+
+The available evidence is monthly account snapshots, status events, limits, p=
+roduct enrolments and signatories; monthly customer and KYC snapshots; transa=
+ction-level timestamps, channels, amounts, statuses and error context; the la=
+test closed loan files available by the request date, including affordability=
+, pricing and origination risk fields. A technical schema match does not prov=
+e semantic consistency; business owners must confirm meaning.
+
+Thank you

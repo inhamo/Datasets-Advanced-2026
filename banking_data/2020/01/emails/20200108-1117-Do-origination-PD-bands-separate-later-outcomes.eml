@@ -1,0 +1,42 @@
+From: leanne.adams@model.risk.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za
+Cc: credit.risk.retail@keystonebank.co.za, cfo.office@keystonebank.co.za
+Subject: Do origination PD bands separate later outcomes?
+Date: Wed, 08 Jan 2020 11:17:00 -0000
+Message-ID: <a5c5da086352448b80ad06c1c9bfaade@keystonebank.co.za>
+X-Keystone-Department: Model Risk Management
+X-Keystone-Project-Type: origination_pd_monitoring
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Team,
+
+Before this becomes another standing report, can we answer the real question?
+
+Loan files contain origination PD, LGD and ECL fields, but the bank needs to =
+know whether risk ordering survives into later repayment behaviour. The possi=
+ble stories are that product and vintage explain more than the score, that mi=
+ssing or defaulted inputs create artificial separation, or that higher PD ban=
+ds show more arrears.
+
+Several teams are reporting more failed or retried activity than they expecte=
+d, but they do not agree on the cause. Different teams have produced differen=
+t answers from the same period, so population and timing rules need to be vis=
+ible.
+
+Please prepare a control view with the exceptions, owner and reason each item=
+ was included. The output must help us decide whether recalibration, segmenta=
+tion or data remediation is the next step.
+
+Data available: the latest closed loan files available by the request date, i=
+ncluding affordability, pricing and origination risk fields; collections case=
+s, promises to pay and recovery payments; transaction-level timestamps, chann=
+els, amounts, statuses and error context; debit-order mandates, collection da=
+tes, suspensions and cancellations.
+
+Please state the limitation plainly: The data supports discrimination and out=
+come analysis, not a complete IFRS 9 validation without default definitions, =
+macro scenarios and accounting policy.
+
+Thanks

@@ -1,0 +1,46 @@
+From: sibusiso.dube@internal.audit.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, data.engineering@keystonebank.co.za
+Cc:
+ banking.operations@keystonebank.co.za, compliance.retail@keystonebank.co.za
+Subject: Audit sample: activity after account closure - 2023 control review
+Date: Mon, 16 Oct 2023 09:42:00 -0000
+Message-ID: <e0b7301acbb04bd0abf365d2976fad95@keystonebank.co.za>
+X-Keystone-Department: Internal Audit
+X-Keystone-Project-Type: closed_account_control_test
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Morning,
+
+I need help with something that sounds simple but probably is not.
+
+Internal Audit wants to test whether an account status change consistently st=
+ops transactions, ATM access, debit orders, collections and campaigns. Failur=
+e anecdotes are beginning to drive decisions, although retries and late posti=
+ng may be making the problem look larger than the affected-customer populatio=
+n. There are enough data exceptions to make a polished average dangerous; pre=
+serve the unresolved cases.
+
+The questions I would ask in the room are:
+1. What would we expect to see if manual exceptions are not documented consis=
+tently?
+2. What evidence would instead support that some downstream systems lag?
+3. How do we rule out that controls propagate on the same day?
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use October 2023 as the new evidence point rathe=
+r than recycling the earlier conclusion. Please work towards whether this is =
+an isolated exception, a design weakness or a control operating failure. A us=
+eful output would be a model-ready table, data dictionary and an honest basel=
+ine.
+
+Use monthly account snapshots, status events, limits, product enrolments and =
+signatories; transaction-level timestamps, channels, amounts, statuses and er=
+ror context; ATM attempts, host responses, PIN attempts, blocked-card state a=
+nd latency; debit-order mandates, collection dates, suspensions and cancellat=
+ions; collections cases, promises to pay and recovery payments; campaign desi=
+gn and customer responses. One caution: The result is a data-based control te=
+st and still requires process-owner evidence.
+
+Regards

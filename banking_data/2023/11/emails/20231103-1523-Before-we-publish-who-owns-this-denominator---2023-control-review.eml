@@ -1,0 +1,40 @@
+From: emma.steyn@analytics.retail.keystonebank.co.za
+To: executive.office@keystonebank.co.za, data.engineering@keystonebank.co.za
+Cc: internal.audit@keystonebank.co.za, regulatory.reporting@keystonebank.co.za
+Subject: Before we publish, who owns this denominator? - 2023 control review
+Date: Fri, 03 Nov 2023 15:23:00 -0000
+Message-ID: <abaf1378fb154aaa91dc1959439ecde7@keystonebank.co.za>
+X-Keystone-Department: Data and Analytics
+X-Keystone-Project-Type: metric_definition_review
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi,
+
+This came up in a working session and nobody had the same definition.
+
+Analytics is receiving requests that use the same business term for different=
+ populations, dates and customer relationships.
+
+I do not want a dashboard that simply counts the outcome. Start with the comp=
+eting explanations: the teams need different metrics; an undocumented exclusi=
+on is changing the denominator; or snapshot timing creates the difference.
+
+Failure anecdotes are beginning to drive decisions, although retries and late=
+ posting may be making the problem look larger than the affected-customer pop=
+ulation. This has returned because the previous answer was useful but not str=
+ong enough to become a standing rule. Use November 2023 as the new evidence p=
+oint rather than recycling the earlier conclusion.=20
+
+What we need to decide is the governed definition, owner, exclusions and reco=
+nciliation bridge. Please bring a Power BI page with drill-through to a repro=
+ducible case list, including a few cases we can trace from source to conclusi=
+on.
+
+The available evidence is monthly account snapshots, status events, limits, p=
+roduct enrolments and signatories; monthly customer and KYC snapshots; transa=
+ction-level timestamps, channels, amounts, statuses and error context. A tech=
+nically consistent definition still needs business ownership and approval.
+
+Thank you

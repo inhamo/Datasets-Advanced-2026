@@ -1,0 +1,39 @@
+From: mpho.maseko@regulatory.reporting.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, data.engineering@keystonebank.co.za
+Cc: compliance.retail@keystonebank.co.za, internal.audit@keystonebank.co.za
+Subject: The return population changes depending on which snapshot we use -
+ 2023 control review
+Date: Thu, 08 Jun 2023 12:25:00 -0000
+Message-ID: <e3c040dbd0da414b8e419e183bbf7c9f@keystonebank.co.za>
+X-Keystone-Department: Regulatory Reporting
+X-Keystone-Project-Type: kyc_completeness_return
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi team,
+
+Regulatory Reporting needs a reproducible population of active, restricted an=
+d closed accounts with the relevant customer due-diligence fields.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use June 2023 as the new evidence point rather t=
+han recycling the earlier conclusion. The operating teams agree that more jou=
+rneys are failing; they disagree on whether the customer, the bank or a downs=
+tream party owns the failure.
+
+Can you test these explanations rather than choosing one at the start?
+- snapshot timing explains the difference
+- status changes are not applied consistently
+- company and individual rules are being mixed
+
+The decision is the agreed population rule, data-quality exceptions and evide=
+nce trail. Please give us a working Excel file with the exception population =
+and clear columns.
+
+You should be able to build the evidence from monthly customer and KYC snapsh=
+ots; monthly account snapshots, status events, limits, product enrolments and=
+ signatories. The dataset can test completeness and consistency, not determin=
+e whether every document is authentic.
+
+Thanks

@@ -1,0 +1,43 @@
+From: musa.khumalo@cyber.security.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za
+Cc: cards.operations@keystonebank.co.za, fraud.ops@keystonebank.co.za
+Subject: Follow-up: are failed ATM attempts forming an attack sequence?
+Date: Mon, 09 Aug 2021 12:47:00 -0000
+Message-ID: <8c890b70ed4d4fdb85b1f9ea9f05f502@keystonebank.co.za>
+X-Keystone-Department: Cyber Security
+X-Keystone-Project-Type: atm_attack_sequence
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi,
+
+This came up in a working session and nobody had the same definition.
+
+Cyber wants to know whether repeated PIN failures, balance enquiries and cash=
+ attempts form recognisable sequences before a card is blocked.
+
+I do not want a dashboard that simply counts the outcome. Start with the comp=
+eting explanations: normal forgotten-PIN behaviour dominates; specific termin=
+als see repeated card testing; or a balance enquiry followed by rapid withdra=
+wals marks higher risk.
+
+The operating teams agree that more journeys are failing; they disagree on wh=
+ether the customer, the bank or a downstream party owns the failure. This has=
+ returned because the previous answer was useful but not strong enough to bec=
+ome a standing rule. Use August 2021 as the new evidence point rather than re=
+cycling the earlier conclusion.=20
+
+What we need to decide is which sequences should become monitoring rules and =
+which would create unacceptable false positives. Please bring a control view =
+with the exceptions, owner and reason each item was included, including a few=
+ cases we can trace from source to conclusion.
+
+The available evidence is ATM attempts, host responses, PIN attempts, blocked=
+-card state and latency; transaction-level timestamps, channels, amounts, sta=
+tuses and error context; monthly account snapshots, status events, limits, pr=
+oduct enrolments and signatories. There is no CCTV, device fingerprint or com=
+plete card-network feed, so classify behavioural patterns rather than confirm=
+ed attacks.
+
+Thank you

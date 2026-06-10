@@ -1,0 +1,43 @@
+From: sarah.pillay@analytics.retail.keystonebank.co.za
+To: data.engineering@keystonebank.co.za, banking.operations@keystonebank.co.za
+Cc: internal.audit@keystonebank.co.za
+Subject: Two source files tell different stories about the same event - 2025
+ control review
+Date: Fri, 16 May 2025 15:40:00 -0000
+Message-ID: <c99473c0daba4e4c81682deccd5c5172@keystonebank.co.za>
+X-Keystone-Department: Data and Analytics
+X-Keystone-Project-Type: source_contradiction_review
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi,
+
+This came up in a working session and nobody had the same definition.
+
+A requested analysis changes depending on whether the team starts from transa=
+ction, debit-order, account-status or customer-contact records.
+
+I do not want a dashboard that simply counts the outcome. Start with the comp=
+eting explanations: the sources record different stages of one event; one sou=
+rce is updated retrospectively; or matching logic is joining unrelated record=
+s.
+
+There is no confirmed problem yet; this is a request to test an assumption be=
+fore it becomes policy. This has returned because the previous answer was use=
+ful but not strong enough to become a standing rule. Use May 2025 as the new =
+evidence point rather than recycling the earlier conclusion.=20
+
+What we need to decide is the source precedence rule and the cases that must =
+remain explicitly unresolved. Please bring a model-ready table, data dictiona=
+ry and an honest baseline, including a few cases we can trace from source to =
+conclusion.
+
+The available evidence is transaction-level timestamps, channels, amounts, st=
+atuses and error context; debit-order mandates, collection dates, suspensions=
+ and cancellations; monthly account snapshots, status events, limits, product=
+ enrolments and signatories; customer contacts, complaints and suggestions. D=
+o not force agreement by dropping exceptions; preserve contradictory evidence=
+ for owner review.
+
+Thank you

@@ -1,0 +1,43 @@
+From: sibusiso.dube@internal.audit.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, data.engineering@keystonebank.co.za
+Cc:
+ banking.operations@keystonebank.co.za, compliance.retail@keystonebank.co.za
+Subject: Follow-up: does closure propagate to every downstream process?
+Date: Wed, 11 May 2022 16:12:00 -0000
+Message-ID: <0215ddb1ca764d0580e9eccea747338f@keystonebank.co.za>
+X-Keystone-Department: Internal Audit
+X-Keystone-Project-Type: closed_account_control_test
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Team,
+
+Before this becomes another standing report, can we answer the real question?
+
+Internal Audit wants to test whether an account status change consistently st=
+ops transactions, ATM access, debit orders, collections and campaigns. The po=
+ssible stories are that manual exceptions are not documented consistently, th=
+at some downstream systems lag, or that controls propagate on the same day.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use May 2022 as the new evidence point rather th=
+an recycling the earlier conclusion. Failure anecdotes are beginning to drive=
+ decisions, although retries and late posting may be making the problem look =
+larger than the affected-customer population.
+
+Please prepare a model-ready table, data dictionary and an honest baseline. T=
+he output must help us decide whether this is an isolated exception, a design=
+ weakness or a control operating failure.
+
+Data available: monthly account snapshots, status events, limits, product enr=
+olments and signatories; transaction-level timestamps, channels, amounts, sta=
+tuses and error context; ATM attempts, host responses, PIN attempts, blocked-=
+card state and latency; debit-order mandates, collection dates, suspensions a=
+nd cancellations; collections cases, promises to pay and recovery payments; c=
+ampaign design and customer responses.
+
+Please state the limitation plainly: The result is a data-based control test =
+and still requires process-owner evidence.
+
+Thanks

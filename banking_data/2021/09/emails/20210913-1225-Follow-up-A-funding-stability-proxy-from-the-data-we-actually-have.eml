@@ -1,0 +1,43 @@
+From: lerato.khumalo@cfo.office.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, treasury@keystonebank.co.za
+Cc: data.engineering@keystonebank.co.za
+Subject: Follow-up: A funding-stability proxy from the data we actually have
+Date: Mon, 13 Sep 2021 12:25:00 -0000
+Message-ID: <cfba75d208d94e86b3abd124e3d20717@keystonebank.co.za>
+X-Keystone-Department: CFO Office / ALM
+X-Keystone-Project-Type: retail_funding_proxy
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi,
+
+This came up in a working session and nobody had the same definition.
+
+ALM wants a directional view of retail funding stability based on transaction=
+ behaviour and account persistence.
+
+I do not want a dashboard that simply counts the outcome. Start with the comp=
+eting explanations: customers with service problems move money out faster; la=
+rge opening deposits overstate durable funding; or salary-like and recurring =
+inflows are more stable.
+
+Several teams are reporting more failed or retried activity than they expecte=
+d, but they do not agree on the cause. This has returned because the previous=
+ answer was useful but not strong enough to become a standing rule. Use Septe=
+mber 2021 as the new evidence point rather than recycling the earlier conclus=
+ion.=20
+
+What we need to decide is which behavioural assumptions deserve formal modell=
+ing when balance and regulatory data become available. Please bring a Power B=
+I page with drill-through to a reproducible case list, including a few cases =
+we can trace from source to conclusion.
+
+The available evidence is transaction-level timestamps, channels, amounts, st=
+atuses and error context; available initial-deposit records up to the request=
+ date; monthly account snapshots, status events, limits, product enrolments a=
+nd signatories; customer contacts, complaints and suggestions. There are no d=
+aily account balances, wholesale funding positions or regulatory cash-flow bu=
+ckets, so do not calculate LCR or NSFR.
+
+Thank you

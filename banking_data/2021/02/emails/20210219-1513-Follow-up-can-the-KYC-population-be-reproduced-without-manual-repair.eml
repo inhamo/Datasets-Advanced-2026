@@ -1,0 +1,40 @@
+From: mpho.maseko@regulatory.reporting.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, data.engineering@keystonebank.co.za
+Cc: compliance.retail@keystonebank.co.za, internal.audit@keystonebank.co.za
+Subject:
+ Follow-up: can the KYC population be reproduced without manual repair?
+Date: Fri, 19 Feb 2021 15:13:00 -0000
+Message-ID: <a002399d121f4bc993d32e446ba7e82d@keystonebank.co.za>
+X-Keystone-Department: Regulatory Reporting
+X-Keystone-Project-Type: kyc_completeness_return
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi team,
+
+Regulatory Reporting needs a reproducible population of active, restricted an=
+d closed accounts with the relevant customer due-diligence fields.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use February 2021 as the new evidence point rath=
+er than recycling the earlier conclusion. The operating teams agree that more=
+ journeys are failing; they disagree on whether the customer, the bank or a d=
+ownstream party owns the failure. The first extracts did not reconcile, which=
+ means source precedence and exclusions must be part of the answer.
+
+Can you test these explanations rather than choosing one at the start?
+- status changes are not applied consistently
+- company and individual rules are being mixed
+- snapshot timing explains the difference
+
+The decision is the agreed population rule, data-quality exceptions and evide=
+nce trail. Please give us a model-ready table, data dictionary and an honest =
+baseline.
+
+You should be able to build the evidence from monthly customer and KYC snapsh=
+ots; monthly account snapshots, status events, limits, product enrolments and=
+ signatories. The dataset can test completeness and consistency, not determin=
+e whether every document is authentic.
+
+Thanks

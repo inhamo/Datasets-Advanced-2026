@@ -1,0 +1,43 @@
+From: gugu.mabena@finance.recon.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, data.engineering@keystonebank.co.za
+Cc: pricing.customer.value@keystonebank.co.za,
+ customer.experience@keystonebank.co.za
+Subject: The customer statement and transaction view disagree
+Date: Mon, 07 Dec 2020 12:54:00 -0000
+Message-ID: <90ae9c8f7dee4d7c856a43c7ea0ef2ea@keystonebank.co.za>
+X-Keystone-Department: Finance Reconciliation
+X-Keystone-Project-Type: fee_interest_reconciliation
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi all,
+
+I may be joining dots that do not belong together, so please challenge the pr=
+emise.
+
+A small number of fee and interest items appear difficult to trace from the t=
+ransaction record to the customer-facing statement. The discussion is current=
+ly being driven by anecdotes, and the teams involved are describing the same =
+customers differently.
+
+Could the answer be that the issue is statement timing? Or are we actually se=
+eing that reversals are not inheriting the original reference cleanly? I also=
+ do not want us to miss the possibility that the product configuration and tr=
+ansaction description disagree.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use December 2020 as the new evidence point rath=
+er than recycling the earlier conclusion. The practical decision is whether F=
+inance needs a mapping correction, a posting control or a customer remediatio=
+n list. Please send a model-ready table, data dictionary and an honest baseli=
+ne; I need the exceptions and counter-examples, not only an average.
+
+Work from transaction-level timestamps, channels, amounts, statuses and error=
+ context; monthly account snapshots, status events, limits, product enrolment=
+s and signatories; the latest closed loan files available by the request date=
+, including affordability, pricing and origination risk fields; customer cont=
+acts, complaints and suggestions. Do not calculate general-ledger balances; n=
+o general ledger is present.
+
+Regards

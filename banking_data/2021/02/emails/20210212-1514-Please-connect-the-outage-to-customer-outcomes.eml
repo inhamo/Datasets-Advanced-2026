@@ -1,0 +1,41 @@
+From: david.fourie@infrastructure.ops.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, banking.operations@keystonebank.co.za
+Cc: customer.experience@keystonebank.co.za, cyber.security@keystonebank.co.za
+Subject: Please connect the outage to customer outcomes
+Date: Fri, 12 Feb 2021 15:14:00 -0000
+Message-ID: <f30caae86f3b48d2ba37b857aafbe563@keystonebank.co.za>
+X-Keystone-Department: IT Infrastructure
+X-Keystone-Project-Type: incident_customer_impact
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi all,
+
+I may be joining dots that do not belong together, so please challenge the pr=
+emise.
+
+Infrastructure can see technical symptoms, but incident severity should refle=
+ct failed customer journeys and repeat attempts rather than machine alerts al=
+one. Several teams are reporting more failed or retried activity than they ex=
+pected, but they do not agree on the cause. There are enough data exceptions =
+to make a polished average dangerous; preserve the unresolved cases.
+
+Could the answer be that latency rises before visible failure? Or are we actu=
+ally seeing that a small terminal or channel group creates most harm? I also =
+do not want us to miss the possibility that customers retry across channels a=
+nd create duplicates.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use February 2021 as the new evidence point rath=
+er than recycling the earlier conclusion. The practical decision is incident =
+priority, root-cause ownership and the customer-remediation population. Pleas=
+e send a one-page finding note plus the underlying CSV for our own review; I =
+need the exceptions and counter-examples, not only an average.
+
+Work from transaction-level timestamps, channels, amounts, statuses and error=
+ context; ATM attempts, host responses, PIN attempts, blocked-card state and =
+latency; customer contacts, complaints and suggestions. The dataset has chann=
+el and ATM telemetry, not complete application, server or network logs.
+
+Regards

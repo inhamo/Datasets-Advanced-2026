@@ -1,0 +1,42 @@
+From: riaan.swanepoel@cards.operations.keystonebank.co.za
+To:
+ analytics.retail@keystonebank.co.za, customer.experience@keystonebank.co.za
+Cc: payments.ops@keystonebank.co.za
+Subject: A decline is only the first event; what did the customer do next? -
+ 2023 control review
+Date: Wed, 16 Aug 2023 08:50:00 -0000
+Message-ID: <e767a18f5bd84b30b9850f16aff60056@keystonebank.co.za>
+X-Keystone-Department: Card Operations
+X-Keystone-Project-Type: card_decline_recovery
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Team,
+
+Before this becomes another standing report, can we answer the real question?
+
+The same decline code can lead to a successful retry, an ATM attempt, a phone=
+ call or lost activity. The possible stories are that repeat declines cluster=
+ by card state or channel, that most declines recover immediately, or that po=
+or explanations drive complaints more than the decline itself.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use August 2023 as the new evidence point rather=
+ than recycling the earlier conclusion. The discussion is currently being dri=
+ven by anecdotes, and the teams involved are describing the same customers di=
+fferently.
+
+Please prepare a one-page finding note plus the underlying CSV for our own re=
+view. The output must help us decide which decline reasons need rule, message=
+ or service changes.
+
+Data available: transaction-level timestamps, channels, amounts, statuses and=
+ error context; ATM attempts, host responses, PIN attempts, blocked-card stat=
+e and latency; monthly account snapshots, status events, limits, product enro=
+lments and signatories; customer contacts, complaints and suggestions.
+
+Please state the limitation plainly: The data does not contain merchant termi=
+nal logs or card-scheme dispute outcomes.
+
+Thanks

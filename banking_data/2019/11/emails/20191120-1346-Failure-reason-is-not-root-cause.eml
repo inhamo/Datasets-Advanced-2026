@@ -1,0 +1,39 @@
+From: priya.naidoo@payments.ops.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, banking.operations@keystonebank.co.za
+Cc: infrastructure.ops@keystonebank.co.za, collections.ops@keystonebank.co.za
+Subject: Failure reason is not root cause
+Date: Wed, 20 Nov 2019 13:46:00 -0000
+Message-ID: <0e1b89bec1d247f58683440c6b2ad2c5@keystonebank.co.za>
+X-Keystone-Department: Payments Operations
+X-Keystone-Project-Type: payment_failure_root_cause
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Team,
+
+Before this becomes another standing report, can we answer the real question?
+
+Operations is grouping all failed payments together even though the next acti=
+on depends on the actual cause. The possible stories are that third-party or =
+bank timeout explains the event, that insufficient funds explains the event, =
+or that mandate status or retry sequencing explains the event.
+
+We looked at a version of this before. For the November 2019 review, please s=
+how what changed and whether the earlier conclusion still holds. There is no =
+confirmed problem yet; this is a request to test an assumption before it beco=
+mes policy.
+
+Please prepare a model-ready table, data dictionary and an honest baseline. T=
+he output must help us decide the operational owner, customer message and mon=
+itoring rule for each failure family.
+
+Data available: transaction-level timestamps, channels, amounts, statuses and=
+ error context; debit-order mandates, collection dates, suspensions and cance=
+llations; ATM attempts, host responses, PIN attempts, blocked-card state and =
+latency; customer contacts, complaints and suggestions.
+
+Please state the limitation plainly: Do not infer a technical component failu=
+re beyond the error and timing fields available.
+
+Thanks

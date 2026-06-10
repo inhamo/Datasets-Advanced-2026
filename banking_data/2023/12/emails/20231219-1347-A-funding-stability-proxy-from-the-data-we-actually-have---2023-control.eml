@@ -1,0 +1,45 @@
+From: lerato.khumalo@cfo.office.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, treasury@keystonebank.co.za
+Cc: data.engineering@keystonebank.co.za
+Subject: A funding-stability proxy from the data we actually have - 2023
+ control review
+Date: Tue, 19 Dec 2023 13:47:00 -0000
+Message-ID: <7f02bfdcba374fd7814112033d7261ae@keystonebank.co.za>
+X-Keystone-Department: CFO Office / ALM
+X-Keystone-Project-Type: retail_funding_proxy
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi all,
+
+I may be joining dots that do not belong together, so please challenge the pr=
+emise.
+
+ALM wants a directional view of retail funding stability based on transaction=
+ behaviour and account persistence. Failure anecdotes are beginning to drive =
+decisions, although retries and late posting may be making the problem look l=
+arger than the affected-customer population. There are enough data exceptions=
+ to make a polished average dangerous; preserve the unresolved cases.
+
+Could the answer be that large opening deposits overstate durable funding? Or=
+ are we actually seeing that customers with service problems move money out f=
+aster? I also do not want us to miss the possibility that salary-like and rec=
+urring inflows are more stable.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use December 2023 as the new evidence point rath=
+er than recycling the earlier conclusion. The practical decision is which beh=
+avioural assumptions deserve formal modelling when balance and regulatory dat=
+a become available. Please send a Power BI page with drill-through to a repro=
+ducible case list; I need the exceptions and counter-examples, not only an av=
+erage.
+
+Work from transaction-level timestamps, channels, amounts, statuses and error=
+ context; available initial-deposit records up to the request date; monthly a=
+ccount snapshots, status events, limits, product enrolments and signatories; =
+customer contacts, complaints and suggestions. There are no daily account bal=
+ances, wholesale funding positions or regulatory cash-flow buckets, so do not=
+ calculate LCR or NSFR.
+
+Regards

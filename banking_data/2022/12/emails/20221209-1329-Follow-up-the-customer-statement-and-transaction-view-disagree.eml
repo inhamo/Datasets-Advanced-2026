@@ -1,0 +1,41 @@
+From: gugu.mabena@finance.recon.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, data.engineering@keystonebank.co.za
+Cc: pricing.customer.value@keystonebank.co.za,
+ customer.experience@keystonebank.co.za
+Subject: Follow-up: the customer statement and transaction view disagree
+Date: Fri, 09 Dec 2022 13:29:00 -0000
+Message-ID: <4507ebb83f4b457b81aa329cbfe9c7f1@keystonebank.co.za>
+X-Keystone-Department: Finance Reconciliation
+X-Keystone-Project-Type: fee_interest_reconciliation
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi team,
+
+A small number of fee and interest items appear difficult to trace from the t=
+ransaction record to the customer-facing statement.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use December 2022 as the new evidence point rath=
+er than recycling the earlier conclusion. The operating teams agree that more=
+ journeys are failing; they disagree on whether the customer, the bank or a d=
+ownstream party owns the failure.
+
+Can you test these explanations rather than choosing one at the start?
+- the issue is statement timing
+- the product configuration and transaction description disagree
+- reversals are not inheriting the original reference cleanly
+
+The decision is whether Finance needs a mapping correction, a posting control=
+ or a customer remediation list. Please give us a control view with the excep=
+tions, owner and reason each item was included.
+
+You should be able to build the evidence from transaction-level timestamps, c=
+hannels, amounts, statuses and error context; monthly account snapshots, stat=
+us events, limits, product enrolments and signatories; the latest closed loan=
+ files available by the request date, including affordability, pricing and or=
+igination risk fields; customer contacts, complaints and suggestions. Do not =
+calculate general-ledger balances; no general ledger is present.
+
+Thanks

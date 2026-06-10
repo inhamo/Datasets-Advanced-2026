@@ -1,0 +1,43 @@
+From: priya.naidoo@payments.ops.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, banking.operations@keystonebank.co.za
+Cc: infrastructure.ops@keystonebank.co.za, collections.ops@keystonebank.co.za
+Subject: Failure reason is not root cause - 2023 control review
+Date: Mon, 23 Oct 2023 11:49:00 -0000
+Message-ID: <c23cb85fc0c34c5fab19aaa66456c729@keystonebank.co.za>
+X-Keystone-Department: Payments Operations
+X-Keystone-Project-Type: payment_failure_root_cause
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Morning,
+
+I need help with something that sounds simple but probably is not.
+
+Operations is grouping all failed payments together even though the next acti=
+on depends on the actual cause. The operating teams agree that more journeys =
+are failing; they disagree on whether the customer, the bank or a downstream =
+party owns the failure. Different teams have produced different answers from =
+the same period, so population and timing rules need to be visible.
+
+The questions I would ask in the room are:
+1. What would we expect to see if third-party or bank timeout explains the ev=
+ent?
+2. What evidence would instead support that mandate status or retry sequencin=
+g explains the event?
+3. How do we rule out that insufficient funds explains the event?
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use October 2023 as the new evidence point rathe=
+r than recycling the earlier conclusion. Please work towards the operational =
+owner, customer message and monitoring rule for each failure family. A useful=
+ output would be a Power BI page with drill-through to a reproducible case li=
+st.
+
+Use transaction-level timestamps, channels, amounts, statuses and error conte=
+xt; debit-order mandates, collection dates, suspensions and cancellations; AT=
+M attempts, host responses, PIN attempts, blocked-card state and latency; cus=
+tomer contacts, complaints and suggestions. One caution: Do not infer a techn=
+ical component failure beyond the error and timing fields available.
+
+Regards

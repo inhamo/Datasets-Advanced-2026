@@ -1,0 +1,41 @@
+From: david.fourie@infrastructure.ops.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, banking.operations@keystonebank.co.za
+Cc: customer.experience@keystonebank.co.za, cyber.security@keystonebank.co.za
+Subject: The incident clock and the customer clock are not the same - 2023
+ control review
+Date: Fri, 22 Sep 2023 10:14:00 -0000
+Message-ID: <4211ab03b6014f39a3f5838496faf4da@keystonebank.co.za>
+X-Keystone-Department: IT Infrastructure
+X-Keystone-Project-Type: incident_customer_impact
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi team,
+
+Infrastructure can see technical symptoms, but incident severity should refle=
+ct failed customer journeys and repeat attempts rather than machine alerts al=
+one.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use September 2023 as the new evidence point rat=
+her than recycling the earlier conclusion. The timing also overlaps with Prol=
+onged Stage 6 load shedding returns. Treat that as context to test, not an an=
+swer.
+
+Can you test these explanations rather than choosing one at the start?
+- a small terminal or channel group creates most harm
+- customers retry across channels and create duplicates
+- latency rises before visible failure
+
+The decision is incident priority, root-cause ownership and the customer-reme=
+diation population. Please give us a control view with the exceptions, owner =
+and reason each item was included.
+
+You should be able to build the evidence from transaction-level timestamps, c=
+hannels, amounts, statuses and error context; ATM attempts, host responses, P=
+IN attempts, blocked-card state and latency; customer contacts, complaints an=
+d suggestions. The dataset has channel and ATM telemetry, not complete applic=
+ation, server or network logs.
+
+Thanks

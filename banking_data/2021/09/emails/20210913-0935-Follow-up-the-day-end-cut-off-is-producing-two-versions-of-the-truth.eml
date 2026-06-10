@@ -1,0 +1,41 @@
+From: gugu.mabena@finance.recon.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, data.engineering@keystonebank.co.za
+Cc: payments.ops@keystonebank.co.za, banking.operations@keystonebank.co.za
+Subject: Follow-up: the day-end cut-off is producing two versions of the truth
+Date: Mon, 13 Sep 2021 09:35:00 -0000
+Message-ID: <78838830ac5f4a94b759a8105fd9a30f@keystonebank.co.za>
+X-Keystone-Department: Finance Reconciliation
+X-Keystone-Project-Type: posting_cutoff_reconciliation
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi,
+
+This came up in a working session and nobody had the same definition.
+
+Finance and Operations are reconciling the same activity to different days be=
+cause authorisation, posting and statement dates do not always line up.
+
+I do not want a dashboard that simply counts the outcome. Start with the comp=
+eting explanations: most breaks are timing differences; retries or reversals =
+are being counted twice; or a specific channel is posting outside the expecte=
+d cut-off.
+
+The operating teams agree that more journeys are failing; they disagree on wh=
+ether the customer, the bank or a downstream party owns the failure. This has=
+ returned because the previous answer was useful but not strong enough to bec=
+ome a standing rule. Use September 2021 as the new evidence point rather than=
+ recycling the earlier conclusion.=20
+
+What we need to decide is whether matching rules, cut-off times or source own=
+ership must change. Please bring a control view with the exceptions, owner an=
+d reason each item was included, including a few cases we can trace from sour=
+ce to conclusion.
+
+The available evidence is transaction-level timestamps, channels, amounts, st=
+atuses and error context; debit-order mandates, collection dates, suspensions=
+ and cancellations. Statements are only available for selected accounts and m=
+onths; use them as evidence samples, not as the population denominator.
+
+Thank you

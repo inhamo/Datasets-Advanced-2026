@@ -1,0 +1,45 @@
+From: leanne.adams@model.risk.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, data.engineering@keystonebank.co.za
+Cc: credit.risk.retail@keystonebank.co.za
+Subject: The model may be learning from events that happen after prediction -
+ 2024 control review
+Date: Fri, 06 Dec 2024 11:47:00 -0000
+Message-ID: <a9ff87be57ee4cdcba6ade64a5b7f628@keystonebank.co.za>
+X-Keystone-Department: Model Risk Management
+X-Keystone-Project-Type: credit_model_leakage
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Team,
+
+Before this becomes another standing report, can we answer the real question?
+
+The proposed repayment-stress model combines monthly snapshots, and Model Ris=
+k needs proof that every feature existed at the observation date. The possibl=
+e stories are that monthly snapshots duplicate later knowledge, that performa=
+nce is stable after strict time-based validation, or that status or collectio=
+ns fields leak future outcomes.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use December 2024 as the new evidence point rath=
+er than recycling the earlier conclusion. Please start with the decision we n=
+eed to make, then show whether the available evidence is strong enough to sup=
+port it.
+
+Please prepare a Power BI page with drill-through to a reproducible case list=
+. The output must help us decide whether the model can enter validation or mu=
+st return to feature engineering.
+
+Data available: the latest closed loan files available by the request date, i=
+ncluding affordability, pricing and origination risk fields; transaction-leve=
+l timestamps, channels, amounts, statuses and error context; debit-order mand=
+ates, collection dates, suspensions and cancellations; collections cases, pro=
+mises to pay and recovery payments; monthly account snapshots, status events,=
+ limits, product enrolments and signatories.
+
+Please state the limitation plainly: Use out-of-time validation and preserve =
+event timestamps; do not random-split repeated observations of the same custo=
+mer.
+
+Thanks

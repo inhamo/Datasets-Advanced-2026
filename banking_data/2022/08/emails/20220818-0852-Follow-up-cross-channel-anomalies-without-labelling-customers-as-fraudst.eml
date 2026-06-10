@@ -1,0 +1,44 @@
+From: musa.khumalo@cyber.security.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, fraud.ops@keystonebank.co.za
+Cc:
+ infrastructure.ops@keystonebank.co.za, customer.experience@keystonebank.co.za
+Subject:
+ Follow-up: cross-channel anomalies without labelling customers as fraudsters
+Date: Thu, 18 Aug 2022 08:52:00 -0000
+Message-ID: <c94be9dfa99b4f2ab05df4a68d169871@keystonebank.co.za>
+X-Keystone-Department: Cyber Security
+X-Keystone-Project-Type: cross_channel_anomaly
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Morning,
+
+I need help with something that sounds simple but probably is not.
+
+A rapid move between transaction channels can indicate account takeover, cust=
+omer recovery behaviour or an operational workaround. Several teams are repor=
+ting more failed or retried activity than they expected, but they do not agre=
+e on the cause.
+
+The questions I would ask in the room are:
+1. What would we expect to see if security events drive channel switching?
+2. What evidence would instead support that newly opened accounts have a diff=
+erent normal pattern?
+3. How do we rule out that service failure explains most switches?
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use August 2022 as the new evidence point rather=
+ than recycling the earlier conclusion. Please work towards which patterns be=
+long in cyber monitoring and which belong in service monitoring. A useful out=
+put would be a short decision pack with no more than five slides and an attac=
+hed evidence table.
+
+Use transaction-level timestamps, channels, amounts, statuses and error conte=
+xt; ATM attempts, host responses, PIN attempts, blocked-card state and latenc=
+y; monthly account snapshots, status events, limits, product enrolments and s=
+ignatories; customer contacts, complaints and suggestions. One caution: No de=
+vice identity or IP address is available; do not describe a new channel as a =
+new device.
+
+Regards

@@ -1,0 +1,44 @@
+From: thabo.molefe@data.engineering.keystonebank.co.za
+To:
+ analytics.retail@keystonebank.co.za, regulatory.reporting@keystonebank.co.za
+Cc: internal.audit@keystonebank.co.za, model.risk@keystonebank.co.za
+Subject: Follow-up: which source change silently changed the business answer?
+Date: Mon, 12 Apr 2021 15:49:00 -0000
+Message-ID: <6fa2bf9471ad40748ea56a4c17e3654e@keystonebank.co.za>
+X-Keystone-Department: Data Engineering
+X-Keystone-Project-Type: schema_drift_control
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi,
+
+This came up in a working session and nobody had the same definition.
+
+Data Engineering sees changing schemas and needs to distinguish safe expansio=
+n from business-definition drift.
+
+I do not want a dashboard that simply counts the outcome. Start with the comp=
+eting explanations: new fields are additive; null patterns reveal a source ro=
+llout rather than missing customer data; or renamed or recoded fields break h=
+istory.
+
+The operating teams agree that more journeys are failing; they disagree on wh=
+ether the customer, the bank or a downstream party owns the failure. Differen=
+t teams have produced different answers from the same period, so population a=
+nd timing rules need to be visible. This has returned because the previous an=
+swer was useful but not strong enough to become a standing rule. Use April 20=
+21 as the new evidence point rather than recycling the earlier conclusion.=20
+
+What we need to decide is the data contract, quarantine rule and backfill req=
+uirement. Please bring a Power BI page with drill-through to a reproducible c=
+ase list, including a few cases we can trace from source to conclusion.
+
+The available evidence is monthly account snapshots, status events, limits, p=
+roduct enrolments and signatories; monthly customer and KYC snapshots; transa=
+ction-level timestamps, channels, amounts, statuses and error context; the la=
+test closed loan files available by the request date, including affordability=
+, pricing and origination risk fields. A technical schema match does not prov=
+e semantic consistency; business owners must confirm meaning.
+
+Thank you

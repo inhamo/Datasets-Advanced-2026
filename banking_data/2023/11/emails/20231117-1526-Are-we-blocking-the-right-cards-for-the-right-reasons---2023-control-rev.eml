@@ -1,0 +1,42 @@
+From: riaan.swanepoel@cards.operations.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, fraud.ops@keystonebank.co.za
+Cc: cyber.security@keystonebank.co.za, customer.experience@keystonebank.co.za
+Subject:
+ Are we blocking the right cards for the right reasons? - 2023 control review
+Date: Fri, 17 Nov 2023 15:26:00 -0000
+Message-ID: <6c1d8e7999144bf092e9d8126ad0ea90@keystonebank.co.za>
+X-Keystone-Department: Card Operations
+X-Keystone-Project-Type: card_block_review
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Morning,
+
+I need help with something that sounds simple but probably is not.
+
+Card blocking protects customers, but repeated legitimate attempts and later =
+complaints may reveal controls that are too blunt. Several teams are reportin=
+g more failed or retried activity than they expected, but they do not agree o=
+n the cause.
+
+The questions I would ask in the room are:
+1. What would we expect to see if ordinary PIN errors create avoidable blocks?
+2. What evidence would instead support that blocked cards follow genuinely un=
+usual sequences?
+3. How do we rule out that customers receive inconsistent recovery paths?
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use November 2023 as the new evidence point rath=
+er than recycling the earlier conclusion. Please work towards where threshold=
+s, escalation or customer communication should change. A useful output would =
+be a model-ready table, data dictionary and an honest baseline.
+
+Use ATM attempts, host responses, PIN attempts, blocked-card state and latenc=
+y; transaction-level timestamps, channels, amounts, statuses and error contex=
+t; monthly account snapshots, status events, limits, product enrolments and s=
+ignatories; customer contacts, complaints and suggestions. One caution: Do no=
+t label a block as incorrect without the rule decision and investigation outc=
+ome.
+
+Regards

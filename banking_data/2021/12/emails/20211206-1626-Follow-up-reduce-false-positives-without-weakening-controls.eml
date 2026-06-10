@@ -1,0 +1,44 @@
+From: aisha.patel@fraud.ops.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, data.engineering@keystonebank.co.za
+Cc: banking.operations@keystonebank.co.za, model.risk@keystonebank.co.za
+Subject: Follow-up: reduce false positives without weakening controls
+Date: Mon, 06 Dec 2021 16:26:00 -0000
+Message-ID: <27163416300f43daada46108babb2a70@keystonebank.co.za>
+X-Keystone-Department: Financial Crime
+X-Keystone-Project-Type: alert_false_positive
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Morning,
+
+I need help with something that sounds simple but probably is not.
+
+Investigators report that some suspicious patterns disappear once transaction=
+ timing, retries and customer contacts are reconstructed. The operating teams=
+ agree that more journeys are failing; they disagree on whether the customer,=
+ the bank or a downstream party owns the failure. Different teams have produc=
+ed different answers from the same period, so population and timing rules nee=
+d to be visible.
+
+The questions I would ask in the room are:
+1. What would we expect to see if repeated attempts inflate velocity?
+2. What evidence would instead support that a known service interaction expla=
+ins the change?
+3. How do we rule out that bank-side delay creates impossible sequences?
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use December 2021 as the new evidence point rath=
+er than recycling the earlier conclusion. Please work towards which alert fea=
+tures should be corrected, retained or routed elsewhere. A useful output woul=
+d be a control view with the exceptions, owner and reason each item was inclu=
+ded.
+
+Use transaction-level timestamps, channels, amounts, statuses and error conte=
+xt; ATM attempts, host responses, PIN attempts, blocked-card state and latenc=
+y; customer contacts, complaints and suggestions; monthly account snapshots, =
+status events, limits, product enrolments and signatories. One caution: A pla=
+usible explanation is not automatic clearance; investigators still own the de=
+cision.
+
+Regards

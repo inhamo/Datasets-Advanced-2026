@@ -1,0 +1,41 @@
+From: musa.khumalo@cyber.security.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, infrastructure.ops@keystonebank.co.za
+Cc: fraud.ops@keystonebank.co.za, payments.ops@keystonebank.co.za
+Subject: Quick question: the same symptom can belong to Cyber or Operations
+Date: Fri, 16 Jul 2021 09:09:00 -0000
+Message-ID: <751bd841f90f4828adf78569d8b3a2ba@keystonebank.co.za>
+X-Keystone-Department: Cyber Security
+X-Keystone-Project-Type: payment_cyber_resilience
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi all,
+
+I may be joining dots that do not belong together, so please challenge the pr=
+emise.
+
+Timeouts, host-response failures and repeated attempts can resemble malicious=
+ activity or ordinary service degradation. The timing also overlaps with Civi=
+l unrest and logistics disruption in KZN and Gauteng. Treat that as context t=
+o test, not an answer. Several teams are reporting more failed or retried act=
+ivity than they expected, but they do not agree on the cause.
+
+Could the answer be that operational retries are obscuring the original event=
+? Or are we actually seeing that a concentrated account or terminal pattern s=
+uggests abuse? I also do not want us to miss the possibility that technical f=
+ailure explains the cluster.
+
+We looked at a version of this before. For the July 2021 review, please show =
+what changed and whether the earlier conclusion still holds. The practical de=
+cision is the minimum evidence needed to route an alert to Cyber, Fraud, Paym=
+ents or Infrastructure. Please send a Power BI page with drill-through to a r=
+eproducible case list; I need the exceptions and counter-examples, not only a=
+n average.
+
+Work from transaction-level timestamps, channels, amounts, statuses and error=
+ context; ATM attempts, host responses, PIN attempts, blocked-card state and =
+latency. This is triage design from available telemetry, not a substitute for=
+ SOC, firewall or application logs.
+
+Regards

@@ -1,0 +1,42 @@
+From: gugu.mabena@finance.recon.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, data.engineering@keystonebank.co.za
+Cc: payments.ops@keystonebank.co.za, banking.operations@keystonebank.co.za
+Subject: Follow-up: can we isolate genuine breaks from posting delay?
+Date: Fri, 10 Jun 2022 12:45:00 -0000
+Message-ID: <d3b30a96ed494797b170868bd2df50c7@keystonebank.co.za>
+X-Keystone-Department: Finance Reconciliation
+X-Keystone-Project-Type: posting_cutoff_reconciliation
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Morning,
+
+I need help with something that sounds simple but probably is not.
+
+Finance and Operations are reconciling the same activity to different days be=
+cause authorisation, posting and statement dates do not always line up. Failu=
+re anecdotes are beginning to drive decisions, although retries and late post=
+ing may be making the problem look larger than the affected-customer populati=
+on.
+
+The questions I would ask in the room are:
+1. What would we expect to see if a specific channel is posting outside the e=
+xpected cut-off?
+2. What evidence would instead support that retries or reversals are being co=
+unted twice?
+3. How do we rule out that most breaks are timing differences?
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use June 2022 as the new evidence point rather t=
+han recycling the earlier conclusion. Please work towards whether matching ru=
+les, cut-off times or source ownership must change. A useful output would be =
+a one-page finding note plus the underlying CSV for our own review.
+
+Use transaction-level timestamps, channels, amounts, statuses and error conte=
+xt; debit-order mandates, collection dates, suspensions and cancellations; av=
+ailable customer bank statements. One caution: Statements are only available =
+for selected accounts and months; use them as evidence samples, not as the po=
+pulation denominator.
+
+Regards

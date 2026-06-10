@@ -1,0 +1,41 @@
+From: keegan.petersen@vendor.risk.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, infrastructure.ops@keystonebank.co.za
+Cc: banking.operations@keystonebank.co.za, legal.counsel@keystonebank.co.za
+Subject: Vendor performance without a vendor master
+Date: Mon, 04 Nov 2019 10:18:00 -0000
+Message-ID: <f9b057e6e390498895603c97d5d6c735@keystonebank.co.za>
+X-Keystone-Department: Third-Party and Vendor Risk
+X-Keystone-Project-Type: third_party_timeout_review
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Morning,
+
+I need help with something that sounds simple but probably is not.
+
+Third-Party Risk wants to understand whether external dependencies are repeat=
+edly associated with failed or delayed customer journeys. Please start with t=
+he decision we need to make, then show whether the available evidence is stro=
+ng enough to support it.
+
+The questions I would ask in the room are:
+1. What would we expect to see if internal latency is being attributed extern=
+ally?
+2. What evidence would instead support that repeat incidents create dispropor=
+tionate customer contact?
+3. How do we rule out that third-party timeouts cluster by channel?
+
+We looked at a version of this before. For the November 2019 review, please s=
+how what changed and whether the earlier conclusion still holds. Please work =
+towards which supplier relationship requires evidence gathering or a formal s=
+ervice review. A useful output would be a one-page finding note plus the unde=
+rlying CSV for our own review.
+
+Use transaction-level timestamps, channels, amounts, statuses and error conte=
+xt; ATM attempts, host responses, PIN attempts, blocked-card state and latenc=
+y; customer contacts, complaints and suggestions. One caution: There is no ve=
+ndor master, contract, SLA or invoice table. Treat external-context fields as=
+ indicators, not contractual proof.
+
+Regards

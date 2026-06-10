@@ -1,0 +1,45 @@
+From: farah.khan@product.fintech.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, product.fintech@keystonebank.co.za
+Cc: compliance.retail@keystonebank.co.za,
+ pricing.customer.value@keystonebank.co.za
+Subject: Relevance, eligibility and bad timing
+Date: Mon, 17 Jan 2022 12:50:00 -0000
+Message-ID: <625cb238a9ec4746ac1e9f721c48440b@keystonebank.co.za>
+X-Keystone-Department: Products and Remittances
+X-Keystone-Project-Type: next_best_action_design
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi,
+
+This came up in a working session and nobody had the same definition.
+
+Product wants a recommendation framework that suppresses offers after complai=
+nts, failed payments or unsuitable customer events.
+
+I do not want a dashboard that simply counts the outcome. Start with the comp=
+eting explanations: campaign eligibility differs from likely conversion; rece=
+nt behaviour identifies a useful product need; or service recovery should pre=
+cede selling.
+
+Several teams are reporting more failed or retried activity than they expecte=
+d, but they do not agree on the cause. This has returned because the previous=
+ answer was useful but not strong enough to become a standing rule. Use Janua=
+ry 2022 as the new evidence point rather than recycling the earlier conclusio=
+n.=20
+
+What we need to decide is the decision rules and evaluation design for a cont=
+rolled campaign. Please bring a working Excel file with the exception populat=
+ion and clear columns, including a few cases we can trace from source to conc=
+lusion.
+
+The available evidence is monthly account snapshots, status events, limits, p=
+roduct enrolments and signatories; transaction-level timestamps, channels, am=
+ounts, statuses and error context; customer contacts, complaints and suggesti=
+ons; campaign design and customer responses; the latest closed loan files ava=
+ilable by the request date, including affordability, pricing and origination =
+risk fields. Do not train on campaign outcomes without accounting for who was=
+ selected to receive each campaign.
+
+Thank you

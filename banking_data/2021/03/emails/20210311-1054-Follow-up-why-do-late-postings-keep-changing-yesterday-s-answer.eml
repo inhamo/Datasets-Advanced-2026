@@ -1,0 +1,39 @@
+From: gugu.mabena@finance.recon.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, data.engineering@keystonebank.co.za
+Cc: payments.ops@keystonebank.co.za, banking.operations@keystonebank.co.za
+Subject: Follow-up: why do late postings keep changing yesterday's answer?
+Date: Thu, 11 Mar 2021 10:54:00 -0000
+Message-ID: <81ebe0300aba440a8589a5df4713b6f8@keystonebank.co.za>
+X-Keystone-Department: Finance Reconciliation
+X-Keystone-Project-Type: posting_cutoff_reconciliation
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi team,
+
+Finance and Operations are reconciling the same activity to different days be=
+cause authorisation, posting and statement dates do not always line up.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use March 2021 as the new evidence point rather =
+than recycling the earlier conclusion. Failure anecdotes are beginning to dri=
+ve decisions, although retries and late posting may be making the problem loo=
+k larger than the affected-customer population.
+
+Can you test these explanations rather than choosing one at the start?
+- most breaks are timing differences
+- retries or reversals are being counted twice
+- a specific channel is posting outside the expected cut-off
+
+The decision is whether matching rules, cut-off times or source ownership mus=
+t change. Please give us a model-ready table, data dictionary and an honest b=
+aseline.
+
+You should be able to build the evidence from transaction-level timestamps, c=
+hannels, amounts, statuses and error context; debit-order mandates, collectio=
+n dates, suspensions and cancellations; available customer bank statements. S=
+tatements are only available for selected accounts and months; use them as ev=
+idence samples, not as the population denominator.
+
+Thanks

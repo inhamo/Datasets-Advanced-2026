@@ -1,0 +1,42 @@
+From: musa.khumalo@cyber.security.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, infrastructure.ops@keystonebank.co.za
+Cc: fraud.ops@keystonebank.co.za, payments.ops@keystonebank.co.za
+Subject:
+ Build the triage bridge between the SOC and Payments - 2025 control review
+Date: Fri, 11 Jul 2025 09:36:00 -0000
+Message-ID: <312b4f8348a64a5fac21ea5056c0a857@keystonebank.co.za>
+X-Keystone-Department: Cyber Security
+X-Keystone-Project-Type: payment_cyber_resilience
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi,
+
+This came up in a working session and nobody had the same definition.
+
+Timeouts, host-response failures and repeated attempts can resemble malicious=
+ activity or ordinary service degradation.
+
+I do not want a dashboard that simply counts the outcome. Start with the comp=
+eting explanations: a concentrated account or terminal pattern suggests abuse=
+; technical failure explains the cluster; or operational retries are obscurin=
+g the original event.
+
+The discussion is currently being driven by anecdotes, and the teams involved=
+ are describing the same customers differently. This has returned because the=
+ previous answer was useful but not strong enough to become a standing rule. =
+Use July 2025 as the new evidence point rather than recycling the earlier con=
+clusion.=20
+
+What we need to decide is the minimum evidence needed to route an alert to Cy=
+ber, Fraud, Payments or Infrastructure. Please bring a working Excel file wit=
+h the exception population and clear columns, including a few cases we can tr=
+ace from source to conclusion.
+
+The available evidence is transaction-level timestamps, channels, amounts, st=
+atuses and error context; ATM attempts, host responses, PIN attempts, blocked=
+-card state and latency. This is triage design from available telemetry, not =
+a substitute for SOC, firewall or application logs.
+
+Thank you

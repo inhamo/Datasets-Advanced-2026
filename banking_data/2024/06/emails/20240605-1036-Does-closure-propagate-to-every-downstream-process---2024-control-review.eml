@@ -1,0 +1,44 @@
+From: sibusiso.dube@internal.audit.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, data.engineering@keystonebank.co.za
+Cc:
+ banking.operations@keystonebank.co.za, compliance.retail@keystonebank.co.za
+Subject:
+ Does closure propagate to every downstream process? - 2024 control review
+Date: Wed, 05 Jun 2024 10:36:00 -0000
+Message-ID: <71da6a27c4524375ae622ccf9716e068@keystonebank.co.za>
+X-Keystone-Department: Internal Audit
+X-Keystone-Project-Type: closed_account_control_test
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Team,
+
+Before this becomes another standing report, can we answer the real question?
+
+Internal Audit wants to test whether an account status change consistently st=
+ops transactions, ATM access, debit orders, collections and campaigns. The po=
+ssible stories are that controls propagate on the same day, that some downstr=
+eam systems lag, or that manual exceptions are not documented consistently.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use June 2024 as the new evidence point rather t=
+han recycling the earlier conclusion. Please start with the decision we need =
+to make, then show whether the available evidence is strong enough to support=
+ it.
+
+Please prepare a Power BI page with drill-through to a reproducible case list=
+. The output must help us decide whether this is an isolated exception, a des=
+ign weakness or a control operating failure.
+
+Data available: monthly account snapshots, status events, limits, product enr=
+olments and signatories; transaction-level timestamps, channels, amounts, sta=
+tuses and error context; ATM attempts, host responses, PIN attempts, blocked-=
+card state and latency; debit-order mandates, collection dates, suspensions a=
+nd cancellations; collections cases, promises to pay and recovery payments; c=
+ampaign design and customer responses.
+
+Please state the limitation plainly: The result is a data-based control test =
+and still requires process-owner evidence.
+
+Thanks

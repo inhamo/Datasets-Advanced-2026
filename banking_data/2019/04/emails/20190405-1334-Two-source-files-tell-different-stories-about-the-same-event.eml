@@ -1,0 +1,39 @@
+From: emma.steyn@analytics.retail.keystonebank.co.za
+To: data.engineering@keystonebank.co.za, banking.operations@keystonebank.co.za
+Cc: internal.audit@keystonebank.co.za
+Subject: Two source files tell different stories about the same event
+Date: Fri, 05 Apr 2019 13:34:00 -0000
+Message-ID: <18b70b0e79364030a5e5dce555aa1351@keystonebank.co.za>
+X-Keystone-Department: Data and Analytics
+X-Keystone-Project-Type: source_contradiction_review
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Morning,
+
+I need help with something that sounds simple but probably is not.
+
+A requested analysis changes depending on whether the team starts from transa=
+ction, debit-order, account-status or customer-contact records. The discussio=
+n is currently being driven by anecdotes, and the teams involved are describi=
+ng the same customers differently.
+
+The questions I would ask in the room are:
+1. What would we expect to see if one source is updated retrospectively?
+2. What evidence would instead support that the sources record different stag=
+es of one event?
+3. How do we rule out that matching logic is joining unrelated records?
+
+Please work towards the source precedence rule and the cases that must remain=
+ explicitly unresolved. A useful output would be a model-ready table, data di=
+ctionary and an honest baseline.
+
+Use transaction-level timestamps, channels, amounts, statuses and error conte=
+xt; debit-order mandates, collection dates, suspensions and cancellations; mo=
+nthly account snapshots, status events, limits, product enrolments and signat=
+ories; customer contacts, complaints and suggestions. One caution: Do not for=
+ce agreement by dropping exceptions; preserve contradictory evidence for owne=
+r review.
+
+Regards

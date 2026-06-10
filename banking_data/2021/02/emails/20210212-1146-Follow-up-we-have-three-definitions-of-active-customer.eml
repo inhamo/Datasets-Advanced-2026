@@ -1,0 +1,40 @@
+From: sarah.pillay@analytics.retail.keystonebank.co.za
+To: executive.office@keystonebank.co.za, data.engineering@keystonebank.co.za
+Cc: internal.audit@keystonebank.co.za, regulatory.reporting@keystonebank.co.za
+Subject: Follow-up: we have three definitions of active customer
+Date: Fri, 12 Feb 2021 11:46:00 -0000
+Message-ID: <483f5b1ffc89427598fcaa510d40f53d@keystonebank.co.za>
+X-Keystone-Department: Data and Analytics
+X-Keystone-Project-Type: metric_definition_review
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi team,
+
+Analytics is receiving requests that use the same business term for different=
+ populations, dates and customer relationships.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use February 2021 as the new evidence point rath=
+er than recycling the earlier conclusion. Several teams are reporting more fa=
+iled or retried activity than they expected, but they do not agree on the cau=
+se. Different teams have produced different answers from the same period, so =
+population and timing rules need to be visible.
+
+Can you test these explanations rather than choosing one at the start?
+- an undocumented exclusion is changing the denominator
+- snapshot timing creates the difference
+- the teams need different metrics
+
+The decision is the governed definition, owner, exclusions and reconciliation=
+ bridge. Please give us a Power BI page with drill-through to a reproducible =
+case list.
+
+You should be able to build the evidence from monthly account snapshots, stat=
+us events, limits, product enrolments and signatories; monthly customer and K=
+YC snapshots; transaction-level timestamps, channels, amounts, statuses and e=
+rror context. A technically consistent definition still needs business owners=
+hip and approval.
+
+Thanks

@@ -1,0 +1,47 @@
+From: leanne.adams@model.risk.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, data.engineering@keystonebank.co.za
+Cc: credit.risk.retail@keystonebank.co.za
+Subject:
+ Prove the early-warning model cannot see the future - 2024 control review
+Date: Thu, 07 Mar 2024 14:20:00 -0000
+Message-ID: <790829351b004f36b7675349567fcb1a@keystonebank.co.za>
+X-Keystone-Department: Model Risk Management
+X-Keystone-Project-Type: credit_model_leakage
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi,
+
+This came up in a working session and nobody had the same definition.
+
+The proposed repayment-stress model combines monthly snapshots, and Model Ris=
+k needs proof that every feature existed at the observation date.
+
+I do not want a dashboard that simply counts the outcome. Start with the comp=
+eting explanations: status or collections fields leak future outcomes; perfor=
+mance is stable after strict time-based validation; or monthly snapshots dupl=
+icate later knowledge.
+
+Failure anecdotes are beginning to drive decisions, although retries and late=
+ posting may be making the problem look larger than the affected-customer pop=
+ulation. There are enough data exceptions to make a polished average dangerou=
+s; preserve the unresolved cases. This has returned because the previous answ=
+er was useful but not strong enough to become a standing rule. Use March 2024=
+ as the new evidence point rather than recycling the earlier conclusion.=20
+
+What we need to decide is whether the model can enter validation or must retu=
+rn to feature engineering. Please bring a short decision pack with no more th=
+an five slides and an attached evidence table, including a few cases we can t=
+race from source to conclusion.
+
+The available evidence is the latest closed loan files available by the reque=
+st date, including affordability, pricing and origination risk fields; transa=
+ction-level timestamps, channels, amounts, statuses and error context; debit-=
+order mandates, collection dates, suspensions and cancellations; collections =
+cases, promises to pay and recovery payments; monthly account snapshots, stat=
+us events, limits, product enrolments and signatories. Use out-of-time valida=
+tion and preserve event timestamps; do not random-split repeated observations=
+ of the same customer.
+
+Thank you

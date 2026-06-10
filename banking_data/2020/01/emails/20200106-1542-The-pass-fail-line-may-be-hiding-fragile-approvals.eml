@@ -1,0 +1,43 @@
+From: johan.vanwyk@credit.risk.retail.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za
+Cc: model.risk@keystonebank.co.za, loan.products@keystonebank.co.za
+Subject: The pass/fail line may be hiding fragile approvals
+Date: Mon, 06 Jan 2020 15:42:00 -0000
+Message-ID: <657b4f01aa9248dc804bf205104a670f@keystonebank.co.za>
+X-Keystone-Department: Retail Credit Risk
+X-Keystone-Project-Type: affordability_edge_analysis
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi,
+
+This came up in a working session and nobody had the same definition.
+
+Credit Risk wants to study borrowers approved close to affordability limits r=
+ather than compare only approvals and declines.
+
+I do not want a dashboard that simply counts the outcome. Start with the comp=
+eting explanations: product and term explain the outcome; thin discretionary =
+income predicts later stress; or verified expenses or income quality create t=
+he main uncertainty.
+
+Failure anecdotes are beginning to drive decisions, although retries and late=
+ posting may be making the problem look larger than the affected-customer pop=
+ulation. There are enough data exceptions to make a polished average dangerou=
+s; preserve the unresolved cases. We looked at a version of this before. For =
+the January 2020 review, please show what changed and whether the earlier con=
+clusion still holds.=20
+
+What we need to decide is whether policy buffers, verification or monitoring =
+should change. Please bring a model-ready table, data dictionary and an hones=
+t baseline, including a few cases we can trace from source to conclusion.
+
+The available evidence is the latest closed loan files available by the reque=
+st date, including affordability, pricing and origination risk fields; collec=
+tions cases, promises to pay and recovery payments; transaction-level timesta=
+mps, channels, amounts, statuses and error context; debit-order mandates, col=
+lection dates, suspensions and cancellations. The analysis can observe record=
+ed affordability inputs, not every household obligation or later income shock.
+
+Thank you
