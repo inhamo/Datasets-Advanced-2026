@@ -1,0 +1,40 @@
+From: leanne.adams@model.risk.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, compliance.retail@keystonebank.co.za
+Cc: credit.risk.retail@keystonebank.co.za, legal.counsel@keystonebank.co.za
+Subject: Fairness review: risk signal or missing-data signal?
+Date: Fri, 21 Jan 2022 15:55:00 -0000
+Message-ID: <f299fc7179ce4b06843326ac4c25938e@keystonebank.co.za>
+X-Keystone-Department: Model Risk Management
+X-Keystone-Project-Type: model_fairness_review
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi team,
+
+Model Risk is concerned that channel, document availability and data complete=
+ness may become proxies for customer groups rather than genuine risk.
+
+We looked at a version of this before. For the January 2022 review, please sh=
+ow what changed and whether the earlier conclusion still holds. Failure anecd=
+otes are beginning to drive decisions, although retries and late posting may =
+be making the problem look larger than the affected-customer population.
+
+Can you test these explanations rather than choosing one at the start?
+- performance gaps disappear after controlling for product and income
+- branch and digital populations differ before modelling
+- missing documents drive predictions
+
+The decision is which features need restriction, monitoring or clearer busine=
+ss justification. Please give us a control view with the exceptions, owner an=
+d reason each item was included.
+
+You should be able to build the evidence from monthly customer and KYC snapsh=
+ots; monthly account snapshots, status events, limits, product enrolments and=
+ signatories; the latest closed loan files available by the request date, inc=
+luding affordability, pricing and origination risk fields; collections cases,=
+ promises to pay and recovery payments. Protected-attribute analysis must be =
+governed and access-controlled; do not use ethnicity or gender for targeting =
+or adverse treatment.
+
+Thanks

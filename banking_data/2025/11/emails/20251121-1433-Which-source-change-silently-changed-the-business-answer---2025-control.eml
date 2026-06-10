@@ -1,0 +1,43 @@
+From: sipho.nkosi@data.engineering.keystonebank.co.za
+To:
+ analytics.retail@keystonebank.co.za, regulatory.reporting@keystonebank.co.za
+Cc: internal.audit@keystonebank.co.za, model.risk@keystonebank.co.za
+Subject: Which source change silently changed the business answer? - 2025
+ control review
+Date: Fri, 21 Nov 2025 14:33:00 -0000
+Message-ID: <53421cd872664c8fbd68f3168839faad@keystonebank.co.za>
+X-Keystone-Department: Data Engineering
+X-Keystone-Project-Type: schema_drift_control
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Team,
+
+Before this becomes another standing report, can we answer the real question?
+
+Data Engineering sees changing schemas and needs to distinguish safe expansio=
+n from business-definition drift. The possible stories are that new fields ar=
+e additive, that renamed or recoded fields break history, or that null patter=
+ns reveal a source rollout rather than missing customer data.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use November 2025 as the new evidence point rath=
+er than recycling the earlier conclusion. The discussion is currently being d=
+riven by anecdotes, and the teams involved are describing the same customers =
+differently.
+
+Please prepare a short decision pack with no more than five slides and an att=
+ached evidence table. The output must help us decide the data contract, quara=
+ntine rule and backfill requirement.
+
+Data available: monthly account snapshots, status events, limits, product enr=
+olments and signatories; monthly customer and KYC snapshots; transaction-leve=
+l timestamps, channels, amounts, statuses and error context; the latest close=
+d loan files available by the request date, including affordability, pricing =
+and origination risk fields.
+
+Please state the limitation plainly: A technical schema match does not prove =
+semantic consistency; business owners must confirm meaning.
+
+Thanks

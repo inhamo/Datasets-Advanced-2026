@@ -1,0 +1,42 @@
+From: sibusiso.dube@internal.audit.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, data.engineering@keystonebank.co.za
+Cc:
+ banking.operations@keystonebank.co.za, compliance.retail@keystonebank.co.za
+Subject: Follow-up: audit sample: activity after account closure
+Date: Wed, 22 Mar 2023 12:40:00 -0000
+Message-ID: <ce77cea54b4f4b5589eb41fa56905b5c@keystonebank.co.za>
+X-Keystone-Department: Internal Audit
+X-Keystone-Project-Type: closed_account_control_test
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi team,
+
+Internal Audit wants to test whether an account status change consistently st=
+ops transactions, ATM access, debit orders, collections and campaigns.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use March 2023 as the new evidence point rather =
+than recycling the earlier conclusion. The operating teams agree that more jo=
+urneys are failing; they disagree on whether the customer, the bank or a down=
+stream party owns the failure.
+
+Can you test these explanations rather than choosing one at the start?
+- manual exceptions are not documented consistently
+- some downstream systems lag
+- controls propagate on the same day
+
+The decision is whether this is an isolated exception, a design weakness or a=
+ control operating failure. Please give us a one-page finding note plus the u=
+nderlying CSV for our own review.
+
+You should be able to build the evidence from monthly account snapshots, stat=
+us events, limits, product enrolments and signatories; transaction-level time=
+stamps, channels, amounts, statuses and error context; ATM attempts, host res=
+ponses, PIN attempts, blocked-card state and latency; debit-order mandates, c=
+ollection dates, suspensions and cancellations; collections cases, promises t=
+o pay and recovery payments; campaign design and customer responses. The resu=
+lt is a data-based control test and still requires process-owner evidence.
+
+Thanks

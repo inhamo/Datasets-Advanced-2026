@@ -1,0 +1,43 @@
+From: musa.khumalo@cyber.security.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za
+Cc: cards.operations@keystonebank.co.za, fraud.ops@keystonebank.co.za
+Subject:
+ Follow-up: blocked cards, PIN failures and cash attempts need one timeline
+Date: Thu, 17 Aug 2023 13:09:00 -0000
+Message-ID: <eeb718e8abe84b37bd505a96154b1059@keystonebank.co.za>
+X-Keystone-Department: Cyber Security
+X-Keystone-Project-Type: atm_attack_sequence
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi all,
+
+I may be joining dots that do not belong together, so please challenge the pr=
+emise.
+
+Cyber wants to know whether repeated PIN failures, balance enquiries and cash=
+ attempts form recognisable sequences before a card is blocked. Please start =
+with the decision we need to make, then show whether the available evidence i=
+s strong enough to support it.
+
+Could the answer be that a balance enquiry followed by rapid withdrawals mark=
+s higher risk? Or are we actually seeing that normal forgotten-PIN behaviour =
+dominates? I also do not want us to miss the possibility that specific termin=
+als see repeated card testing.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use August 2023 as the new evidence point rather=
+ than recycling the earlier conclusion. The practical decision is which seque=
+nces should become monitoring rules and which would create unacceptable false=
+ positives. Please send a short decision pack with no more than five slides a=
+nd an attached evidence table; I need the exceptions and counter-examples, no=
+t only an average.
+
+Work from ATM attempts, host responses, PIN attempts, blocked-card state and =
+latency; transaction-level timestamps, channels, amounts, statuses and error =
+context; monthly account snapshots, status events, limits, product enrolments=
+ and signatories. There is no CCTV, device fingerprint or complete card-netwo=
+rk feed, so classify behavioural patterns rather than confirmed attacks.
+
+Regards

@@ -1,0 +1,37 @@
+From: peter.jacobs@banking.operations.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za
+Cc: customer.experience@keystonebank.co.za, finance.recon@keystonebank.co.za
+Subject: Which exceptions create the most manual work?
+Date: Fri, 05 Jul 2019 15:25:00 -0000
+Message-ID: <026ef3b2fca549ab915b7e69c77589d4@keystonebank.co.za>
+X-Keystone-Department: Banking Operations
+X-Keystone-Project-Type: manual_work_proxy
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Team,
+
+Before this becomes another standing report, can we answer the real question?
+
+Operations wants a proxy for cases repeatedly touched across Payments, Collec=
+tions, Customer Experience and Finance. The possible stories are that unclear=
+ ownership keeps cases open, that late posting generates downstream work, or =
+that a small set of exception types creates most hand-offs.
+
+Several teams are reporting more failed or retried activity than they expecte=
+d, but they do not agree on the cause.
+
+Please prepare a Power BI page with drill-through to a reproducible case list=
+. The output must help us decide which process should be redesigned and where=
+ ownership should sit.
+
+Data available: transaction-level timestamps, channels, amounts, statuses and=
+ error context; customer contacts, complaints and suggestions; collections ca=
+ses, promises to pay and recovery payments; debit-order mandates, collection =
+dates, suspensions and cancellations.
+
+Please state the limitation plainly: There is no work-queue or staff-time tab=
+le, so report observable hand-offs and repeat events rather than labour hours.
+
+Thanks

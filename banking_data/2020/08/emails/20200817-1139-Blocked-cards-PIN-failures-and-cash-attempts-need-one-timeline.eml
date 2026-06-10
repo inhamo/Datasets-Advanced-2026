@@ -1,0 +1,42 @@
+From: musa.khumalo@cyber.security.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za
+Cc: cards.operations@keystonebank.co.za, fraud.ops@keystonebank.co.za
+Subject: Blocked cards, PIN failures and cash attempts need one timeline
+Date: Mon, 17 Aug 2020 11:39:00 -0000
+Message-ID: <cc31a4282b8e49fb868ae777e2b77a72@keystonebank.co.za>
+X-Keystone-Department: Cyber Security
+X-Keystone-Project-Type: atm_attack_sequence
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi,
+
+This came up in a working session and nobody had the same definition.
+
+Cyber wants to know whether repeated PIN failures, balance enquiries and cash=
+ attempts form recognisable sequences before a card is blocked.
+
+I do not want a dashboard that simply counts the outcome. Start with the comp=
+eting explanations: a balance enquiry followed by rapid withdrawals marks hig=
+her risk; specific terminals see repeated card testing; or normal forgotten-P=
+IN behaviour dominates.
+
+There is no confirmed problem yet; this is a request to test an assumption be=
+fore it becomes policy. We looked at a version of this before. For the August=
+ 2020 review, please show what changed and whether the earlier conclusion sti=
+ll holds.=20
+
+What we need to decide is which sequences should become monitoring rules and =
+which would create unacceptable false positives. Please bring a working Excel=
+ file with the exception population and clear columns, including a few cases =
+we can trace from source to conclusion.
+
+The available evidence is ATM attempts, host responses, PIN attempts, blocked=
+-card state and latency; transaction-level timestamps, channels, amounts, sta=
+tuses and error context; monthly account snapshots, status events, limits, pr=
+oduct enrolments and signatories. There is no CCTV, device fingerprint or com=
+plete card-network feed, so classify behavioural patterns rather than confirm=
+ed attacks.
+
+Thank you

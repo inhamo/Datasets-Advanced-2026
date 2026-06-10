@@ -1,0 +1,40 @@
+From: sibusiso.dube@internal.audit.keystonebank.co.za
+To: data.engineering@keystonebank.co.za, analytics.retail@keystonebank.co.za
+Cc: regulatory.reporting@keystonebank.co.za, model.risk@keystonebank.co.za
+Subject: Can one management number be traced back to source?
+Date: Mon, 06 May 2019 12:33:00 -0000
+Message-ID: <42f7efdb86d84149a5bdae1766fb4021@keystonebank.co.za>
+X-Keystone-Department: Internal Audit
+X-Keystone-Project-Type: risk_report_lineage
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Team,
+
+Before this becomes another standing report, can we answer the real question?
+
+Management reports are expanding faster than the evidence showing how each nu=
+mber was sourced, transformed and approved. The possible stories are that the=
+ number can be reperformed from source, that manual exclusions are changing t=
+he answer, or that different teams use the same label for different populatio=
+ns.
+
+Please start with the decision we need to make, then show whether the availab=
+le evidence is strong enough to support it.
+
+Please prepare a model-ready table, data dictionary and an honest baseline. T=
+he output must help us decide which data controls must be formalised before t=
+he next assurance review.
+
+Data available: monthly account snapshots, status events, limits, product enr=
+olments and signatories; transaction-level timestamps, channels, amounts, sta=
+tuses and error context; the latest closed loan files available by the reques=
+t date, including affordability, pricing and origination risk fields; collect=
+ions cases, promises to pay and recovery payments; customer contacts, complai=
+nts and suggestions.
+
+Please state the limitation plainly: Do not create a full enterprise lineage =
+claim; reperform a defined metric and document every limitation.
+
+Thanks

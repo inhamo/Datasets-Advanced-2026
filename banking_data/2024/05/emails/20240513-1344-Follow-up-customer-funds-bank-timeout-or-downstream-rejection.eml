@@ -1,0 +1,42 @@
+From: priya.naidoo@payments.ops.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, banking.operations@keystonebank.co.za
+Cc: infrastructure.ops@keystonebank.co.za, collections.ops@keystonebank.co.za
+Subject: Follow-up: customer funds, bank timeout or downstream rejection?
+Date: Mon, 13 May 2024 13:44:00 -0000
+Message-ID: <9d5f07a7e0ce45eabda0b43df1ac9c1a@keystonebank.co.za>
+X-Keystone-Department: Payments Operations
+X-Keystone-Project-Type: payment_failure_root_cause
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Morning,
+
+I need help with something that sounds simple but probably is not.
+
+Operations is grouping all failed payments together even though the next acti=
+on depends on the actual cause. Please start with the decision we need to mak=
+e, then show whether the available evidence is strong enough to support it.
+
+The questions I would ask in the room are:
+1. What would we expect to see if third-party or bank timeout explains the ev=
+ent?
+2. What evidence would instead support that insufficient funds explains the e=
+vent?
+3. How do we rule out that mandate status or retry sequencing explains the ev=
+ent?
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use May 2024 as the new evidence point rather th=
+an recycling the earlier conclusion. Please work towards the operational owne=
+r, customer message and monitoring rule for each failure family. A useful out=
+put would be a short decision pack with no more than five slides and an attac=
+hed evidence table.
+
+Use transaction-level timestamps, channels, amounts, statuses and error conte=
+xt; debit-order mandates, collection dates, suspensions and cancellations; AT=
+M attempts, host responses, PIN attempts, blocked-card state and latency; cus=
+tomer contacts, complaints and suggestions. One caution: Do not infer a techn=
+ical component failure beyond the error and timing fields available.
+
+Regards

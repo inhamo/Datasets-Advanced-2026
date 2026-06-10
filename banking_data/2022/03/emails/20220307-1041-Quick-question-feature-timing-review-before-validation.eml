@@ -1,0 +1,43 @@
+From: leanne.adams@model.risk.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, data.engineering@keystonebank.co.za
+Cc: credit.risk.retail@keystonebank.co.za
+Subject: Quick question: feature timing review before validation
+Date: Mon, 07 Mar 2022 10:41:00 -0000
+Message-ID: <7447ed3f9f2149959450ff902f45e1ca@keystonebank.co.za>
+X-Keystone-Department: Model Risk Management
+X-Keystone-Project-Type: credit_model_leakage
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Morning,
+
+I need help with something that sounds simple but probably is not.
+
+The proposed repayment-stress model combines monthly snapshots, and Model Ris=
+k needs proof that every feature existed at the observation date. Several tea=
+ms are reporting more failed or retried activity than they expected, but they=
+ do not agree on the cause.
+
+The questions I would ask in the room are:
+1. What would we expect to see if monthly snapshots duplicate later knowledge?
+2. What evidence would instead support that performance is stable after stric=
+t time-based validation?
+3. How do we rule out that status or collections fields leak future outcomes?
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use March 2022 as the new evidence point rather =
+than recycling the earlier conclusion. Please work towards whether the model =
+can enter validation or must return to feature engineering. A useful output w=
+ould be a model-ready table, data dictionary and an honest baseline.
+
+Use the latest closed loan files available by the request date, including aff=
+ordability, pricing and origination risk fields; transaction-level timestamps=
+, channels, amounts, statuses and error context; debit-order mandates, collec=
+tion dates, suspensions and cancellations; collections cases, promises to pay=
+ and recovery payments; monthly account snapshots, status events, limits, pro=
+duct enrolments and signatories. One caution: Use out-of-time validation and =
+preserve event timestamps; do not random-split repeated observations of the s=
+ame customer.
+
+Regards

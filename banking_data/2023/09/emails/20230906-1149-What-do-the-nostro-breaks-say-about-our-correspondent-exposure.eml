@@ -1,0 +1,36 @@
+From: naledi.mokoena@treasury.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, payments.ops@keystonebank.co.za
+Cc: fraud.ops@keystonebank.co.za, finance.recon@keystonebank.co.za
+Subject: What do the nostro breaks say about our correspondent exposure?
+Date: Wed, 06 Sep 2023 11:49:00 -0000
+Message-ID: <86c9bfc25a2341328a7b7514eec8583b@keystonebank.co.za>
+X-Keystone-Department: Treasury
+X-Keystone-Project-Type: correspondent_liquidity_review
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi team,
+
+Correspondent payment delays and beneficiary-routing alerts may be creating b=
+oth liquidity noise and financial-crime exposure.
+
+Please start with the decision we need to make, then show whether the availab=
+le evidence is strong enough to support it.
+
+Can you test these explanations rather than choosing one at the start?
+- specific intermediaries create repeated settlement delay
+- late confirmations explain most breaks
+- split payments are concentrating on common beneficiaries
+
+The decision is whether to change correspondent limits, escalate a bank relat=
+ionship or tighten pre-payment review. Please give us a control view with the=
+ exceptions, owner and reason each item was included.
+
+You should be able to build the evidence from SWIFT messages, correspondent a=
+lerts and nostro breaks; transaction-level timestamps, channels, amounts, sta=
+tuses and error context; monthly customer and KYC snapshots; monthly account =
+snapshots, status events, limits, product enrolments and signatories. Do not =
+infer the bank's full nostro position from exception records.
+
+Thanks

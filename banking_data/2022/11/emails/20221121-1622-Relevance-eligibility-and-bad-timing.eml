@@ -1,0 +1,45 @@
+From: farah.khan@product.fintech.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, product.fintech@keystonebank.co.za
+Cc: compliance.retail@keystonebank.co.za,
+ pricing.customer.value@keystonebank.co.za
+Subject: Relevance, eligibility and bad timing
+Date: Mon, 21 Nov 2022 16:22:00 -0000
+Message-ID: <36992d5db75b4d71a28594daa2222e0b@keystonebank.co.za>
+X-Keystone-Department: Products and Remittances
+X-Keystone-Project-Type: next_best_action_design
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi all,
+
+I may be joining dots that do not belong together, so please challenge the pr=
+emise.
+
+Product wants a recommendation framework that suppresses offers after complai=
+nts, failed payments or unsuitable customer events. Several teams are reporti=
+ng more failed or retried activity than they expected, but they do not agree =
+on the cause. The first extracts did not reconcile, which means source preced=
+ence and exclusions must be part of the answer.
+
+Could the answer be that service recovery should precede selling? Or are we a=
+ctually seeing that campaign eligibility differs from likely conversion? I al=
+so do not want us to miss the possibility that recent behaviour identifies a =
+useful product need.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use November 2022 as the new evidence point rath=
+er than recycling the earlier conclusion. The practical decision is the decis=
+ion rules and evaluation design for a controlled campaign. Please send a work=
+ing Excel file with the exception population and clear columns; I need the ex=
+ceptions and counter-examples, not only an average.
+
+Work from monthly account snapshots, status events, limits, product enrolment=
+s and signatories; transaction-level timestamps, channels, amounts, statuses =
+and error context; customer contacts, complaints and suggestions; campaign de=
+sign and customer responses; the latest closed loan files available by the re=
+quest date, including affordability, pricing and origination risk fields. Do =
+not train on campaign outcomes without accounting for who was selected to rec=
+eive each campaign.
+
+Regards

@@ -1,0 +1,39 @@
+From: emma.steyn@analytics.retail.keystonebank.co.za
+To: executive.office@keystonebank.co.za, data.engineering@keystonebank.co.za
+Cc: internal.audit@keystonebank.co.za, regulatory.reporting@keystonebank.co.za
+Subject: We have three definitions of active customer - 2025 control review
+Date: Mon, 22 Dec 2025 09:29:00 -0000
+Message-ID: <07bb9a85e9884924a27bcc084a22c0e2@keystonebank.co.za>
+X-Keystone-Department: Data and Analytics
+X-Keystone-Project-Type: metric_definition_review
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Morning,
+
+I need help with something that sounds simple but probably is not.
+
+Analytics is receiving requests that use the same business term for different=
+ populations, dates and customer relationships. Please start with the decisio=
+n we need to make, then show whether the available evidence is strong enough =
+to support it.
+
+The questions I would ask in the room are:
+1. What would we expect to see if snapshot timing creates the difference?
+2. What evidence would instead support that an undocumented exclusion is chan=
+ging the denominator?
+3. How do we rule out that the teams need different metrics?
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use December 2025 as the new evidence point rath=
+er than recycling the earlier conclusion. Please work towards the governed de=
+finition, owner, exclusions and reconciliation bridge. A useful output would =
+be a Power BI page with drill-through to a reproducible case list.
+
+Use monthly account snapshots, status events, limits, product enrolments and =
+signatories; monthly customer and KYC snapshots; transaction-level timestamps=
+, channels, amounts, statuses and error context. One caution: A technically c=
+onsistent definition still needs business ownership and approval.
+
+Regards

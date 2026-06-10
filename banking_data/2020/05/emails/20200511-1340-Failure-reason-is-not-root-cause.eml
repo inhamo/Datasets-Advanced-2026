@@ -1,0 +1,41 @@
+From: priya.naidoo@payments.ops.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, banking.operations@keystonebank.co.za
+Cc: infrastructure.ops@keystonebank.co.za, collections.ops@keystonebank.co.za
+Subject: Failure reason is not root cause
+Date: Mon, 11 May 2020 13:40:00 -0000
+Message-ID: <94f91e44b20d4900bbbc72b7f6b0aa6f@keystonebank.co.za>
+X-Keystone-Department: Payments Operations
+X-Keystone-Project-Type: payment_failure_root_cause
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi,
+
+This came up in a working session and nobody had the same definition.
+
+Operations is grouping all failed payments together even though the next acti=
+on depends on the actual cause.
+
+I do not want a dashboard that simply counts the outcome. Start with the comp=
+eting explanations: mandate status or retry sequencing explains the event; th=
+ird-party or bank timeout explains the event; or insufficient funds explains =
+the event.
+
+Several teams are reporting more failed or retried activity than they expecte=
+d, but they do not agree on the cause. We looked at a version of this before.=
+ For the May 2020 review, please show what changed and whether the earlier co=
+nclusion still holds.=20
+
+What we need to decide is the operational owner, customer message and monitor=
+ing rule for each failure family. Please bring a one-page finding note plus t=
+he underlying CSV for our own review, including a few cases we can trace from=
+ source to conclusion.
+
+The available evidence is transaction-level timestamps, channels, amounts, st=
+atuses and error context; debit-order mandates, collection dates, suspensions=
+ and cancellations; ATM attempts, host responses, PIN attempts, blocked-card =
+state and latency; customer contacts, complaints and suggestions. Do not infe=
+r a technical component failure beyond the error and timing fields available.
+
+Thank you

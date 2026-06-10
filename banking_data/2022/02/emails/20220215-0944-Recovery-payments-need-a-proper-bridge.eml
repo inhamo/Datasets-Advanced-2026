@@ -1,0 +1,42 @@
+From: gugu.mabena@finance.recon.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za
+Cc: collections.ops@keystonebank.co.za, credit.risk.retail@keystonebank.co.za
+Subject: Recovery payments need a proper bridge
+Date: Tue, 15 Feb 2022 09:44:00 -0000
+Message-ID: <8733550a8cca405993f12219f2bc67a3@keystonebank.co.za>
+X-Keystone-Department: Finance Reconciliation
+X-Keystone-Project-Type: collections_cash_reconciliation
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Team,
+
+Before this becomes another standing report, can we answer the real question?
+
+Collections and Finance are using different notions of a successful recovery,=
+ especially when payments arrive after the promised date or through another c=
+hannel. The possible stories are that partial cures are being reported as ful=
+l cures, that a payment reaches the account but not the collections case, or =
+that late payments are being treated as broken promises.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use February 2022 as the new evidence point rath=
+er than recycling the earlier conclusion. Several teams are reporting more fa=
+iled or retried activity than they expected, but they do not agree on the cau=
+se. The first extracts did not reconcile, which means source precedence and e=
+xclusions must be part of the answer.
+
+Please prepare a short decision pack with no more than five slides and an att=
+ached evidence table. The output must help us decide the definition of cure a=
+nd the exception queue that Finance and Collections will both use.
+
+Data available: collections cases, promises to pay and recovery payments; tra=
+nsaction-level timestamps, channels, amounts, statuses and error context; the=
+ latest closed loan files available by the request date, including affordabil=
+ity, pricing and origination risk fields.
+
+Please state the limitation plainly: The data can reconcile customer and case=
+ activity, but not the accounting ledger entry.
+
+Thanks

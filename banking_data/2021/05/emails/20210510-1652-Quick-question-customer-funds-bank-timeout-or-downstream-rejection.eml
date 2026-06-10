@@ -1,0 +1,41 @@
+From: priya.naidoo@payments.ops.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, banking.operations@keystonebank.co.za
+Cc: infrastructure.ops@keystonebank.co.za, collections.ops@keystonebank.co.za
+Subject: Quick question: customer funds, bank timeout or downstream rejection?
+Date: Mon, 10 May 2021 16:52:00 -0000
+Message-ID: <d4be7b2125d142d1a0753bff3d370936@keystonebank.co.za>
+X-Keystone-Department: Payments Operations
+X-Keystone-Project-Type: payment_failure_root_cause
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi team,
+
+Operations is grouping all failed payments together even though the next acti=
+on depends on the actual cause.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use May 2021 as the new evidence point rather th=
+an recycling the earlier conclusion. Failure anecdotes are beginning to drive=
+ decisions, although retries and late posting may be making the problem look =
+larger than the affected-customer population. There are enough data exception=
+s to make a polished average dangerous; preserve the unresolved cases.
+
+Can you test these explanations rather than choosing one at the start?
+- insufficient funds explains the event
+- third-party or bank timeout explains the event
+- mandate status or retry sequencing explains the event
+
+The decision is the operational owner, customer message and monitoring rule f=
+or each failure family. Please give us a one-page finding note plus the under=
+lying CSV for our own review.
+
+You should be able to build the evidence from transaction-level timestamps, c=
+hannels, amounts, statuses and error context; debit-order mandates, collectio=
+n dates, suspensions and cancellations; ATM attempts, host responses, PIN att=
+empts, blocked-card state and latency; customer contacts, complaints and sugg=
+estions. Do not infer a technical component failure beyond the error and timi=
+ng fields available.
+
+Thanks

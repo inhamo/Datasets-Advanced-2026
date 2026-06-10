@@ -1,0 +1,40 @@
+From: sibusiso.dube@internal.audit.keystonebank.co.za
+To: data.engineering@keystonebank.co.za, analytics.retail@keystonebank.co.za
+Cc: regulatory.reporting@keystonebank.co.za, model.risk@keystonebank.co.za
+Subject: Audit wants the lineage, not another dashboard
+Date: Wed, 20 May 2020 15:37:00 -0000
+Message-ID: <569a1740c9614070abdf5bd3cf24f06d@keystonebank.co.za>
+X-Keystone-Department: Internal Audit
+X-Keystone-Project-Type: risk_report_lineage
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi team,
+
+Management reports are expanding faster than the evidence showing how each nu=
+mber was sourced, transformed and approved.
+
+We looked at a version of this before. For the May 2020 review, please show w=
+hat changed and whether the earlier conclusion still holds. The operating tea=
+ms agree that more journeys are failing; they disagree on whether the custome=
+r, the bank or a downstream party owns the failure.
+
+Can you test these explanations rather than choosing one at the start?
+- the number can be reperformed from source
+- different teams use the same label for different populations
+- manual exclusions are changing the answer
+
+The decision is which data controls must be formalised before the next assura=
+nce review. Please give us a model-ready table, data dictionary and an honest=
+ baseline.
+
+You should be able to build the evidence from monthly account snapshots, stat=
+us events, limits, product enrolments and signatories; transaction-level time=
+stamps, channels, amounts, statuses and error context; the latest closed loan=
+ files available by the request date, including affordability, pricing and or=
+igination risk fields; collections cases, promises to pay and recovery paymen=
+ts; customer contacts, complaints and suggestions. Do not create a full enter=
+prise lineage claim; reperform a defined metric and document every limitation.
+
+Thanks

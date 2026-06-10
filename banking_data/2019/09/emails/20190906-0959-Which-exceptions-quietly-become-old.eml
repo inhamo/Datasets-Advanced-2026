@@ -1,0 +1,40 @@
+From: peter.jacobs@banking.operations.keystonebank.co.za
+To:
+ analytics.retail@keystonebank.co.za, customer.experience@keystonebank.co.za
+Cc: legal.counsel@keystonebank.co.za
+Subject: Which exceptions quietly become old?
+Date: Fri, 06 Sep 2019 09:59:00 -0000
+Message-ID: <e8e794d0d5504d1ebcb37977d032467c@keystonebank.co.za>
+X-Keystone-Department: Banking Operations
+X-Keystone-Project-Type: exception_ageing
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi,
+
+This came up in a working session and nobody had the same definition.
+
+Operations needs an ageing view that prioritises unresolved customer impact r=
+ather than raw exception count.
+
+I do not want a dashboard that simply counts the outcome. Start with the comp=
+eting explanations: older cases cluster in one process; small-value cases rem=
+ain open because ownership is unclear; or status updates close records withou=
+t resolving the transaction.
+
+There is no confirmed problem yet; this is a request to test an assumption be=
+fore it becomes policy.=20
+
+What we need to decide is the exception priority rule and escalation threshol=
+d. Please bring a working Excel file with the exception population and clear =
+columns, including a few cases we can trace from source to conclusion.
+
+The available evidence is transaction-level timestamps, channels, amounts, st=
+atuses and error context; customer contacts, complaints and suggestions; coll=
+ections cases, promises to pay and recovery payments; monthly account snapsho=
+ts, status events, limits, product enrolments and signatories. Use observable=
+ dates and outcomes; do not infer internal queue age where no queue record ex=
+ists.
+
+Thank you

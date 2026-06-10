@@ -1,0 +1,38 @@
+From: david.fourie@infrastructure.ops.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, data.engineering@keystonebank.co.za
+Cc: payments.ops@keystonebank.co.za
+Subject: Are customer retries making incidents worse?
+Date: Mon, 20 May 2019 09:37:00 -0000
+Message-ID: <759bcf4462794fb78deff0cd51e7d4ea@keystonebank.co.za>
+X-Keystone-Department: IT Infrastructure
+X-Keystone-Project-Type: retry_storm_analysis
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi,
+
+This came up in a working session and nobody had the same definition.
+
+During service degradation, repeated attempts can inflate volume and obscure =
+the number of customers actually affected.
+
+I do not want a dashboard that simply counts the outcome. Start with the comp=
+eting explanations: customers retry the same action within minutes; channel s=
+witching follows a timeout; or automatic retry and human retry are being mixe=
+d.
+
+There is no confirmed problem yet; this is a request to test an assumption be=
+fore it becomes policy.=20
+
+What we need to decide is how monitoring should count affected customers and =
+when retry controls should activate. Please bring a short decision pack with =
+no more than five slides and an attached evidence table, including a few case=
+s we can trace from source to conclusion.
+
+The available evidence is transaction-level timestamps, channels, amounts, st=
+atuses and error context; ATM attempts, host responses, PIN attempts, blocked=
+-card state and latency. Without application session IDs, use account, amount=
+, channel and time proximity as an explicit matching heuristic.
+
+Thank you

@@ -1,0 +1,39 @@
+From: riaan.swanepoel@cards.operations.keystonebank.co.za
+To:
+ analytics.retail@keystonebank.co.za, customer.experience@keystonebank.co.za
+Cc: payments.ops@keystonebank.co.za
+Subject: A decline is only the first event; what did the customer do next?
+Date: Wed, 14 Aug 2019 16:51:00 -0000
+Message-ID: <265e9ebfc01d446698eecdbf4846679a@keystonebank.co.za>
+X-Keystone-Department: Card Operations
+X-Keystone-Project-Type: card_decline_recovery
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi all,
+
+I may be joining dots that do not belong together, so please challenge the pr=
+emise.
+
+The same decline code can lead to a successful retry, an ATM attempt, a phone=
+ call or lost activity. There is no confirmed problem yet; this is a request =
+to test an assumption before it becomes policy.
+
+Could the answer be that most declines recover immediately? Or are we actuall=
+y seeing that poor explanations drive complaints more than the decline itself=
+? I also do not want us to miss the possibility that repeat declines cluster =
+by card state or channel.
+
+The practical decision is which decline reasons need rule, message or service=
+ changes. Please send a control view with the exceptions, owner and reason ea=
+ch item was included; I need the exceptions and counter-examples, not only an=
+ average.
+
+Work from transaction-level timestamps, channels, amounts, statuses and error=
+ context; ATM attempts, host responses, PIN attempts, blocked-card state and =
+latency; monthly account snapshots, status events, limits, product enrolments=
+ and signatories; customer contacts, complaints and suggestions. The data doe=
+s not contain merchant terminal logs or card-scheme dispute outcomes.
+
+Regards

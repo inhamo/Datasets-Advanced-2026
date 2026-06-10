@@ -1,0 +1,39 @@
+From: mpho.maseko@regulatory.reporting.keystonebank.co.za
+To: data.engineering@keystonebank.co.za, analytics.retail@keystonebank.co.za
+Cc: cfo.office@keystonebank.co.za, compliance.retail@keystonebank.co.za
+Subject: Which account classifications will break the return?
+Date: Mon, 16 Jun 2025 10:39:00 -0000
+Message-ID: <3f7fe26f868640da8a8f5b07e9b8e110@keystonebank.co.za>
+X-Keystone-Department: Regulatory Reporting
+X-Keystone-Project-Type: deposit_population_readiness
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi team,
+
+Reporting wants to test whether customer type, account type, currency, status=
+ and ownership fields can support a future deposit population.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use June 2025 as the new evidence point rather t=
+han recycling the earlier conclusion. The discussion is currently being drive=
+n by anecdotes, and the teams involved are describing the same customers diff=
+erently.
+
+Can you test these explanations rather than choosing one at the start?
+- joint and company accounts need separate treatment
+- missing ownership or currency fields create the main exceptions
+- product classifications are consistent
+
+The decision is the data remediation backlog before formal regulatory logic i=
+s implemented. Please give us a one-page finding note plus the underlying CSV=
+ for our own review.
+
+You should be able to build the evidence from monthly account snapshots, stat=
+us events, limits, product enrolments and signatories; monthly customer and K=
+YC snapshots; account signatory and ownership-role records. No daily balances=
+ or official deposit-insurance rules are encoded here; assess data readiness =
+only.
+
+Thanks

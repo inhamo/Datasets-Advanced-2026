@@ -1,0 +1,43 @@
+From: david.fourie@infrastructure.ops.keystonebank.co.za
+To: banking.operations@keystonebank.co.za, analytics.retail@keystonebank.co.za
+Cc: internal.audit@keystonebank.co.za, vendor.risk@keystonebank.co.za
+Subject: The recovery sequence needs evidence
+Date: Wed, 20 Oct 2021 15:48:00 -0000
+Message-ID: <6eee64dd9fd34285a653188d012654d3@keystonebank.co.za>
+X-Keystone-Department: IT Infrastructure
+X-Keystone-Project-Type: resilience_scenario
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Morning,
+
+I need help with something that sounds simple but probably is not.
+
+The resilience plan lists systems, but customers experience end-to-end servic=
+es that cross ATM, card, transaction and communication processes. Failure ane=
+cdotes are beginning to drive decisions, although retries and late posting ma=
+y be making the problem look larger than the affected-customer population. Th=
+ere are enough data exceptions to make a polished average dangerous; preserve=
+ the unresolved cases.
+
+The questions I would ask in the room are:
+1. What would we expect to see if manual workarounds create later reconciliat=
+ion breaks?
+2. What evidence would instead support that recovery restores authorisation b=
+efore posting catches up?
+3. How do we rule out that cash access degrades before account servicing?
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use October 2021 as the new evidence point rathe=
+r than recycling the earlier conclusion. Please work towards the order in whi=
+ch critical services should be recovered and tested. A useful output would be=
+ a Power BI page with drill-through to a reproducible case list.
+
+Use transaction-level timestamps, channels, amounts, statuses and error conte=
+xt; ATM attempts, host responses, PIN attempts, blocked-card state and latenc=
+y; customer contacts, complaints and suggestions; debit-order mandates, colle=
+ction dates, suspensions and cancellations. One caution: Treat this as a hist=
+orical service-impact rehearsal, not proof of infrastructure capacity.
+
+Regards

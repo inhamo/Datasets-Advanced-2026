@@ -1,0 +1,41 @@
+From: keegan.petersen@vendor.risk.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, infrastructure.ops@keystonebank.co.za
+Cc: banking.operations@keystonebank.co.za, legal.counsel@keystonebank.co.za
+Subject: Vendor performance without a vendor master - 2025 control review
+Date: Fri, 05 Sep 2025 08:27:00 -0000
+Message-ID: <8ee2b1e8d1eb4b4ba40d75f10abcd051@keystonebank.co.za>
+X-Keystone-Department: Third-Party and Vendor Risk
+X-Keystone-Project-Type: third_party_timeout_review
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi all,
+
+I may be joining dots that do not belong together, so please challenge the pr=
+emise.
+
+Third-Party Risk wants to understand whether external dependencies are repeat=
+edly associated with failed or delayed customer journeys. The discussion is c=
+urrently being driven by anecdotes, and the teams involved are describing the=
+ same customers differently.
+
+Could the answer be that third-party timeouts cluster by channel? Or are we a=
+ctually seeing that internal latency is being attributed externally? I also d=
+o not want us to miss the possibility that repeat incidents create disproport=
+ionate customer contact.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use September 2025 as the new evidence point rat=
+her than recycling the earlier conclusion. The practical decision is which su=
+pplier relationship requires evidence gathering or a formal service review. P=
+lease send a working Excel file with the exception population and clear colum=
+ns; I need the exceptions and counter-examples, not only an average.
+
+Work from transaction-level timestamps, channels, amounts, statuses and error=
+ context; ATM attempts, host responses, PIN attempts, blocked-card state and =
+latency; customer contacts, complaints and suggestions. There is no vendor ma=
+ster, contract, SLA or invoice table. Treat external-context fields as indica=
+tors, not contractual proof.
+
+Regards

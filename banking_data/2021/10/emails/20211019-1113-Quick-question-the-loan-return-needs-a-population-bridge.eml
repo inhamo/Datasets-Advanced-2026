@@ -1,0 +1,42 @@
+From: mpho.maseko@regulatory.reporting.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, data.engineering@keystonebank.co.za
+Cc: credit.risk.retail@keystonebank.co.za, cfo.office@keystonebank.co.za
+Subject: Quick question: the loan return needs a population bridge
+Date: Tue, 19 Oct 2021 11:13:00 -0000
+Message-ID: <f7a9d405fd1f4fb6bdc40866844e4c42@keystonebank.co.za>
+X-Keystone-Department: Regulatory Reporting
+X-Keystone-Project-Type: credit_return_reconciliation
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi team,
+
+Risk, Lending and Reporting are counting applications, approvals, booked loan=
+s and distressed accounts from different starting populations.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use October 2021 as the new evidence point rathe=
+r than recycling the earlier conclusion. The operating teams agree that more =
+journeys are failing; they disagree on whether the customer, the bank or a do=
+wnstream party owns the failure. There are enough data exceptions to make a p=
+olished average dangerous; preserve the unresolved cases.
+
+Can you test these explanations rather than choosing one at the start?
+- booked loans are missing from downstream repayment views
+- workflow timing explains most differences
+- declined and withdrawn cases are mixed
+
+The decision is the canonical population and exception rules for the next ret=
+urn. Please give us a model-ready table, data dictionary and an honest baseli=
+ne.
+
+You should be able to build the evidence from the latest closed loan files av=
+ailable by the request date, including affordability, pricing and origination=
+ risk fields; collections cases, promises to pay and recovery payments; debit=
+-order mandates, collection dates, suspensions and cancellations; transaction=
+-level timestamps, channels, amounts, statuses and error context. Do not pres=
+ent this as an official regulatory return without the required regulatory tax=
+onomy and sign-off.
+
+Thanks

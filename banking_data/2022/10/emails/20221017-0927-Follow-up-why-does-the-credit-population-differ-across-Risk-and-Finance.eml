@@ -1,0 +1,42 @@
+From: mpho.maseko@regulatory.reporting.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, data.engineering@keystonebank.co.za
+Cc: credit.risk.retail@keystonebank.co.za, cfo.office@keystonebank.co.za
+Subject:
+ Follow-up: why does the credit population differ across Risk and Finance?
+Date: Mon, 17 Oct 2022 09:27:00 -0000
+Message-ID: <a6d6593dc2654471924b10575c7ac422@keystonebank.co.za>
+X-Keystone-Department: Regulatory Reporting
+X-Keystone-Project-Type: credit_return_reconciliation
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi team,
+
+Risk, Lending and Reporting are counting applications, approvals, booked loan=
+s and distressed accounts from different starting populations.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use October 2022 as the new evidence point rathe=
+r than recycling the earlier conclusion. Several teams are reporting more fai=
+led or retried activity than they expected, but they do not agree on the caus=
+e.
+
+Can you test these explanations rather than choosing one at the start?
+- declined and withdrawn cases are mixed
+- booked loans are missing from downstream repayment views
+- workflow timing explains most differences
+
+The decision is the canonical population and exception rules for the next ret=
+urn. Please give us a control view with the exceptions, owner and reason each=
+ item was included.
+
+You should be able to build the evidence from the latest closed loan files av=
+ailable by the request date, including affordability, pricing and origination=
+ risk fields; collections cases, promises to pay and recovery payments; debit=
+-order mandates, collection dates, suspensions and cancellations; transaction=
+-level timestamps, channels, amounts, statuses and error context. Do not pres=
+ent this as an official regulatory return without the required regulatory tax=
+onomy and sign-off.
+
+Thanks

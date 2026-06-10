@@ -1,0 +1,41 @@
+From: mpho.maseko@regulatory.reporting.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, data.engineering@keystonebank.co.za
+Cc: compliance.retail@keystonebank.co.za, internal.audit@keystonebank.co.za
+Subject: Follow-up: KYC completeness and account status need one rule
+Date: Mon, 18 Mar 2024 13:17:00 -0000
+Message-ID: <6473b72e64154d4784b81dbcfe1f6bc1@keystonebank.co.za>
+X-Keystone-Department: Regulatory Reporting
+X-Keystone-Project-Type: kyc_completeness_return
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Team,
+
+Before this becomes another standing report, can we answer the real question?
+
+Regulatory Reporting needs a reproducible population of active, restricted an=
+d closed accounts with the relevant customer due-diligence fields. The possib=
+le stories are that company and individual rules are being mixed, that snapsh=
+ot timing explains the difference, or that status changes are not applied con=
+sistently.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use March 2024 as the new evidence point rather =
+than recycling the earlier conclusion. Failure anecdotes are beginning to dri=
+ve decisions, although retries and late posting may be making the problem loo=
+k larger than the affected-customer population. Different teams have produced=
+ different answers from the same period, so population and timing rules need =
+to be visible.
+
+Please prepare a model-ready table, data dictionary and an honest baseline. T=
+he output must help us decide the agreed population rule, data-quality except=
+ions and evidence trail.
+
+Data available: monthly customer and KYC snapshots; monthly account snapshots=
+, status events, limits, product enrolments and signatories.
+
+Please state the limitation plainly: The dataset can test completeness and co=
+nsistency, not determine whether every document is authentic.
+
+Thanks

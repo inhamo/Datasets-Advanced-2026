@@ -1,0 +1,43 @@
+From: farah.khan@product.fintech.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, product.fintech@keystonebank.co.za
+Cc: compliance.retail@keystonebank.co.za,
+ pricing.customer.value@keystonebank.co.za
+Subject: Follow-up: next best action starts with next best silence
+Date: Fri, 20 Sep 2024 12:40:00 -0000
+Message-ID: <ab93db3a69f540f59fe94dc453c1a746@keystonebank.co.za>
+X-Keystone-Department: Products and Remittances
+X-Keystone-Project-Type: next_best_action_design
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Team,
+
+Before this becomes another standing report, can we answer the real question?
+
+Product wants a recommendation framework that suppresses offers after complai=
+nts, failed payments or unsuitable customer events. The possible stories are =
+that campaign eligibility differs from likely conversion, that recent behavio=
+ur identifies a useful product need, or that service recovery should precede =
+selling.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use September 2024 as the new evidence point rat=
+her than recycling the earlier conclusion. There is no confirmed problem yet;=
+ this is a request to test an assumption before it becomes policy.
+
+Please prepare a model-ready table, data dictionary and an honest baseline. T=
+he output must help us decide the decision rules and evaluation design for a =
+controlled campaign.
+
+Data available: monthly account snapshots, status events, limits, product enr=
+olments and signatories; transaction-level timestamps, channels, amounts, sta=
+tuses and error context; customer contacts, complaints and suggestions; campa=
+ign design and customer responses; the latest closed loan files available by =
+the request date, including affordability, pricing and origination risk field=
+s.
+
+Please state the limitation plainly: Do not train on campaign outcomes withou=
+t accounting for who was selected to receive each campaign.
+
+Thanks

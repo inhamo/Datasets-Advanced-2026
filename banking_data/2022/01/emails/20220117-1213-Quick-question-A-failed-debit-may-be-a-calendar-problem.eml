@@ -1,0 +1,42 @@
+From: priya.naidoo@payments.ops.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za
+Cc: collections.ops@keystonebank.co.za, credit.risk.retail@keystonebank.co.za
+Subject: Quick question: A failed debit may be a calendar problem
+Date: Mon, 17 Jan 2022 12:13:00 -0000
+Message-ID: <12183866b2944d50a2943e37ba291322@keystonebank.co.za>
+X-Keystone-Department: Payments Operations
+X-Keystone-Project-Type: debit_day_alignment
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi all,
+
+I may be joining dots that do not belong together, so please challenge the pr=
+emise.
+
+Payments wants to test whether collection timing, rather than inability to pa=
+y, explains repeat debit-order failure. The operating teams agree that more j=
+ourneys are failing; they disagree on whether the customer, the bank or a dow=
+nstream party owns the failure.
+
+Could the answer be that fixed collection rules work differently across custo=
+mer groups? Or are we actually seeing that collection before regular inflow d=
+rives failure? I also do not want us to miss the possibility that retry timin=
+g improves success.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use January 2022 as the new evidence point rathe=
+r than recycling the earlier conclusion. The practical decision is whether to=
+ test alternative debit dates or change retry logic. Please send a Power BI p=
+age with drill-through to a reproducible case list; I need the exceptions and=
+ counter-examples, not only an average.
+
+Work from debit-order mandates, collection dates, suspensions and cancellatio=
+ns; transaction-level timestamps, channels, amounts, statuses and error conte=
+xt; the latest closed loan files available by the request date, including aff=
+ordability, pricing and origination risk fields; collections cases, promises =
+to pay and recovery payments. Regular inflows are inferred from transaction p=
+atterns; no verified payroll calendar is available.
+
+Regards

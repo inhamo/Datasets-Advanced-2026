@@ -1,0 +1,38 @@
+From: nokuthula.cele@branch.network.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, infrastructure.ops@keystonebank.co.za
+Cc: cards.operations@keystonebank.co.za, banking.operations@keystonebank.co.za
+Subject: Where does cash access fail when customers need it most?
+Date: Thu, 18 Jul 2019 14:49:00 -0000
+Message-ID: <fa8de9dfe47d43a39dc9d408443932e4@keystonebank.co.za>
+X-Keystone-Department: Branch Network
+X-Keystone-Project-Type: cash_access_resilience
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Morning,
+
+I need help with something that sounds simple but probably is not.
+
+ATM failures and blocked-card issues can shift customers toward branches, esp=
+ecially during infrastructure disruption. Several teams are reporting more fa=
+iled or retried activity than they expected, but they do not agree on the cau=
+se.
+
+The questions I would ask in the room are:
+1. What would we expect to see if customers switch to smaller withdrawals or =
+branch contact?
+2. What evidence would instead support that cash-bin or host issues dominate?
+3. How do we rule out that specific provinces show repeat access failure?
+
+Please work towards where contingency communication and ATM support should be=
+ prioritised. A useful output would be a control view with the exceptions, ow=
+ner and reason each item was included.
+
+Use ATM attempts, host responses, PIN attempts, blocked-card state and latenc=
+y; transaction-level timestamps, channels, amounts, statuses and error contex=
+t; customer contacts, complaints and suggestions; monthly customer and KYC sn=
+apshots. One caution: The data does not contain branch cash holdings or queue=
+ time.
+
+Regards

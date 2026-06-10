@@ -1,0 +1,44 @@
+From: riaan.swanepoel@cards.operations.keystonebank.co.za
+To:
+ analytics.retail@keystonebank.co.za, customer.experience@keystonebank.co.za
+Cc: payments.ops@keystonebank.co.za
+Subject:
+ Follow-up: A decline is only the first event; what did the customer do next?
+Date: Mon, 18 Jul 2022 14:51:00 -0000
+Message-ID: <10c15a779d2d4b3f9f6fea5039ca121f@keystonebank.co.za>
+X-Keystone-Department: Card Operations
+X-Keystone-Project-Type: card_decline_recovery
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Team,
+
+Before this becomes another standing report, can we answer the real question?
+
+The same decline code can lead to a successful retry, an ATM attempt, a phone=
+ call or lost activity. The possible stories are that most declines recover i=
+mmediately, that poor explanations drive complaints more than the decline its=
+elf, or that repeat declines cluster by card state or channel.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use July 2022 as the new evidence point rather t=
+han recycling the earlier conclusion. Failure anecdotes are beginning to driv=
+e decisions, although retries and late posting may be making the problem look=
+ larger than the affected-customer population. Different teams have produced =
+different answers from the same period, so population and timing rules need t=
+o be visible.
+
+Please prepare a short decision pack with no more than five slides and an att=
+ached evidence table. The output must help us decide which decline reasons ne=
+ed rule, message or service changes.
+
+Data available: transaction-level timestamps, channels, amounts, statuses and=
+ error context; ATM attempts, host responses, PIN attempts, blocked-card stat=
+e and latency; monthly account snapshots, status events, limits, product enro=
+lments and signatories; customer contacts, complaints and suggestions.
+
+Please state the limitation plainly: The data does not contain merchant termi=
+nal logs or card-scheme dispute outcomes.
+
+Thanks

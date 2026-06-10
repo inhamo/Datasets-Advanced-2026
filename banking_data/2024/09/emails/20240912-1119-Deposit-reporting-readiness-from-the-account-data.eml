@@ -1,0 +1,41 @@
+From: mpho.maseko@regulatory.reporting.keystonebank.co.za
+To: data.engineering@keystonebank.co.za, analytics.retail@keystonebank.co.za
+Cc: cfo.office@keystonebank.co.za, compliance.retail@keystonebank.co.za
+Subject: Deposit reporting readiness from the account data
+Date: Thu, 12 Sep 2024 11:19:00 -0000
+Message-ID: <6b3e881a52fe4da88411e99b25667c99@keystonebank.co.za>
+X-Keystone-Department: Regulatory Reporting
+X-Keystone-Project-Type: deposit_population_readiness
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Morning,
+
+I need help with something that sounds simple but probably is not.
+
+Reporting wants to test whether customer type, account type, currency, status=
+ and ownership fields can support a future deposit population. There is no co=
+nfirmed problem yet; this is a request to test an assumption before it become=
+s policy.
+
+The questions I would ask in the room are:
+1. What would we expect to see if joint and company accounts need separate tr=
+eatment?
+2. What evidence would instead support that product classifications are consi=
+stent?
+3. How do we rule out that missing ownership or currency fields create the ma=
+in exceptions?
+
+We looked at a version of this before. For the September 2024 review, please =
+show what changed and whether the earlier conclusion still holds. Please work=
+ towards the data remediation backlog before formal regulatory logic is imple=
+mented. A useful output would be a short decision pack with no more than five=
+ slides and an attached evidence table.
+
+Use monthly account snapshots, status events, limits, product enrolments and =
+signatories; monthly customer and KYC snapshots; account signatory and owners=
+hip-role records. One caution: No daily balances or official deposit-insuranc=
+e rules are encoded here; assess data readiness only.
+
+Regards

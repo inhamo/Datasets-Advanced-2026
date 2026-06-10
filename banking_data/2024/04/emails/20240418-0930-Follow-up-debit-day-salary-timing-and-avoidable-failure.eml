@@ -1,0 +1,41 @@
+From: priya.naidoo@payments.ops.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za
+Cc: collections.ops@keystonebank.co.za, credit.risk.retail@keystonebank.co.za
+Subject: Follow-up: debit day, salary timing and avoidable failure
+Date: Thu, 18 Apr 2024 09:30:00 -0000
+Message-ID: <90a3fa64b4924fd687de338bbd6c6b24@keystonebank.co.za>
+X-Keystone-Department: Payments Operations
+X-Keystone-Project-Type: debit_day_alignment
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Morning,
+
+I need help with something that sounds simple but probably is not.
+
+Payments wants to test whether collection timing, rather than inability to pa=
+y, explains repeat debit-order failure. Several teams are reporting more fail=
+ed or retried activity than they expected, but they do not agree on the cause.
+
+The questions I would ask in the room are:
+1. What would we expect to see if fixed collection rules work differently acr=
+oss customer groups?
+2. What evidence would instead support that collection before regular inflow =
+drives failure?
+3. How do we rule out that retry timing improves success?
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use April 2024 as the new evidence point rather =
+than recycling the earlier conclusion. Please work towards whether to test al=
+ternative debit dates or change retry logic. A useful output would be a model=
+-ready table, data dictionary and an honest baseline.
+
+Use debit-order mandates, collection dates, suspensions and cancellations; tr=
+ansaction-level timestamps, channels, amounts, statuses and error context; th=
+e latest closed loan files available by the request date, including affordabi=
+lity, pricing and origination risk fields; collections cases, promises to pay=
+ and recovery payments. One caution: Regular inflows are inferred from transa=
+ction patterns; no verified payroll calendar is available.
+
+Regards

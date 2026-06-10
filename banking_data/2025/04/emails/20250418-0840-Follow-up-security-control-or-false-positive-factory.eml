@@ -1,0 +1,41 @@
+From: riaan.swanepoel@cards.operations.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, fraud.ops@keystonebank.co.za
+Cc: cyber.security@keystonebank.co.za, customer.experience@keystonebank.co.za
+Subject: Follow-up: security control or false-positive factory?
+Date: Fri, 18 Apr 2025 08:40:00 -0000
+Message-ID: <2263c9e731c546b38c4a27dece08b8cd@keystonebank.co.za>
+X-Keystone-Department: Card Operations
+X-Keystone-Project-Type: card_block_review
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Team,
+
+Before this becomes another standing report, can we answer the real question?
+
+Card blocking protects customers, but repeated legitimate attempts and later =
+complaints may reveal controls that are too blunt. The possible stories are t=
+hat blocked cards follow genuinely unusual sequences, that customers receive =
+inconsistent recovery paths, or that ordinary PIN errors create avoidable blo=
+cks.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use April 2025 as the new evidence point rather =
+than recycling the earlier conclusion. The discussion is currently being driv=
+en by anecdotes, and the teams involved are describing the same customers dif=
+ferently.
+
+Please prepare a model-ready table, data dictionary and an honest baseline. T=
+he output must help us decide where thresholds, escalation or customer commun=
+ication should change.
+
+Data available: ATM attempts, host responses, PIN attempts, blocked-card stat=
+e and latency; transaction-level timestamps, channels, amounts, statuses and =
+error context; monthly account snapshots, status events, limits, product enro=
+lments and signatories; customer contacts, complaints and suggestions.
+
+Please state the limitation plainly: Do not label a block as incorrect withou=
+t the rule decision and investigation outcome.
+
+Thanks

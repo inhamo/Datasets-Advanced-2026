@@ -1,0 +1,41 @@
+From: priya.naidoo@payments.ops.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, data.engineering@keystonebank.co.za
+Cc: finance.recon@keystonebank.co.za, customer.experience@keystonebank.co.za
+Subject: Follow-up: one obligation, several attempts, unclear customer impact
+Date: Thu, 06 Mar 2025 15:57:00 -0000
+Message-ID: <9baa168df267462c96fc2bccf11d9e84@keystonebank.co.za>
+X-Keystone-Department: Payments Operations
+X-Keystone-Project-Type: duplicate_retry_control
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Morning,
+
+I need help with something that sounds simple but probably is not.
+
+Payment attempts, reversals and late postings can create apparent duplicates =
+or genuine duplicate customer impact. The discussion is currently being drive=
+n by anecdotes, and the teams involved are describing the same customers diff=
+erently.
+
+The questions I would ask in the room are:
+1. What would we expect to see if some customers were debited more than once =
+before reversal?
+2. What evidence would instead support that late settlement creates false dup=
+licates?
+3. How do we rule out that retries are correctly linked?
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use March 2025 as the new evidence point rather =
+than recycling the earlier conclusion. Please work towards the matching rule,=
+ customer-impact list and preventive control. A useful output would be a one-=
+page finding note plus the underlying CSV for our own review.
+
+Use transaction-level timestamps, channels, amounts, statuses and error conte=
+xt; debit-order mandates, collection dates, suspensions and cancellations; cu=
+stomer contacts, complaints and suggestions; available customer bank statemen=
+ts. One caution: Statement evidence is available only for selected accounts; =
+use transaction identifiers and timing for the full population.
+
+Regards

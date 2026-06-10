@@ -1,0 +1,44 @@
+From: david.fourie@infrastructure.ops.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, banking.operations@keystonebank.co.za
+Cc: customer.experience@keystonebank.co.za, cyber.security@keystonebank.co.za
+Subject: Follow-up: the incident clock and the customer clock are not the same
+Date: Thu, 04 May 2023 15:17:00 -0000
+Message-ID: <90ead61ae26540beb94020077e66a650@keystonebank.co.za>
+X-Keystone-Department: IT Infrastructure
+X-Keystone-Project-Type: incident_customer_impact
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi,
+
+This came up in a working session and nobody had the same definition.
+
+Infrastructure can see technical symptoms, but incident severity should refle=
+ct failed customer journeys and repeat attempts rather than machine alerts al=
+one.
+
+I do not want a dashboard that simply counts the outcome. Start with the comp=
+eting explanations: a small terminal or channel group creates most harm; cust=
+omers retry across channels and create duplicates; or latency rises before vi=
+sible failure.
+
+Several teams are reporting more failed or retried activity than they expecte=
+d, but they do not agree on the cause. The first extracts did not reconcile, =
+which means source precedence and exclusions must be part of the answer. This=
+ has returned because the previous answer was useful but not strong enough to=
+ become a standing rule. Use May 2023 as the new evidence point rather than r=
+ecycling the earlier conclusion.=20
+
+What we need to decide is incident priority, root-cause ownership and the cus=
+tomer-remediation population. Please bring a control view with the exceptions=
+, owner and reason each item was included, including a few cases we can trace=
+ from source to conclusion.
+
+The available evidence is transaction-level timestamps, channels, amounts, st=
+atuses and error context; ATM attempts, host responses, PIN attempts, blocked=
+-card state and latency; customer contacts, complaints and suggestions. The d=
+ataset has channel and ATM telemetry, not complete application, server or net=
+work logs.
+
+Thank you

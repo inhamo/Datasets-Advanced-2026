@@ -1,0 +1,41 @@
+From: david.fourie@infrastructure.ops.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, banking.operations@keystonebank.co.za
+Cc: customer.experience@keystonebank.co.za, cyber.security@keystonebank.co.za
+Subject: Follow-up: which technical failures actually harmed customers?
+Date: Mon, 10 Jun 2024 11:25:00 -0000
+Message-ID: <3e5a0a61e5d24264b5a9061e85c31abd@keystonebank.co.za>
+X-Keystone-Department: IT Infrastructure
+X-Keystone-Project-Type: incident_customer_impact
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Morning,
+
+I need help with something that sounds simple but probably is not.
+
+Infrastructure can see technical symptoms, but incident severity should refle=
+ct failed customer journeys and repeat attempts rather than machine alerts al=
+one. The discussion is currently being driven by anecdotes, and the teams inv=
+olved are describing the same customers differently.
+
+The questions I would ask in the room are:
+1. What would we expect to see if latency rises before visible failure?
+2. What evidence would instead support that customers retry across channels a=
+nd create duplicates?
+3. How do we rule out that a small terminal or channel group creates most har=
+m?
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use June 2024 as the new evidence point rather t=
+han recycling the earlier conclusion. Please work towards incident priority, =
+root-cause ownership and the customer-remediation population. A useful output=
+ would be a control view with the exceptions, owner and reason each item was =
+included.
+
+Use transaction-level timestamps, channels, amounts, statuses and error conte=
+xt; ATM attempts, host responses, PIN attempts, blocked-card state and latenc=
+y; customer contacts, complaints and suggestions. One caution: The dataset ha=
+s channel and ATM telemetry, not complete application, server or network logs.
+
+Regards

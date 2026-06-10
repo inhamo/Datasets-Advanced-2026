@@ -1,0 +1,39 @@
+From: mpho.maseko@regulatory.reporting.keystonebank.co.za
+To: data.engineering@keystonebank.co.za, analytics.retail@keystonebank.co.za
+Cc: cfo.office@keystonebank.co.za, compliance.retail@keystonebank.co.za
+Subject:
+ Can we identify the deposit population before the formal return build?
+Date: Tue, 09 Jan 2024 11:12:00 -0000
+Message-ID: <91b19769a1e04875a4c0f38035a57429@keystonebank.co.za>
+X-Keystone-Department: Regulatory Reporting
+X-Keystone-Project-Type: deposit_population_readiness
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Morning,
+
+I need help with something that sounds simple but probably is not.
+
+Reporting wants to test whether customer type, account type, currency, status=
+ and ownership fields can support a future deposit population. The operating =
+teams agree that more journeys are failing; they disagree on whether the cust=
+omer, the bank or a downstream party owns the failure.
+
+The questions I would ask in the room are:
+1. What would we expect to see if joint and company accounts need separate tr=
+eatment?
+2. What evidence would instead support that missing ownership or currency fie=
+lds create the main exceptions?
+3. How do we rule out that product classifications are consistent?
+
+Please work towards the data remediation backlog before formal regulatory log=
+ic is implemented. A useful output would be a model-ready table, data diction=
+ary and an honest baseline.
+
+Use monthly account snapshots, status events, limits, product enrolments and =
+signatories; monthly customer and KYC snapshots; account signatory and owners=
+hip-role records. One caution: No daily balances or official deposit-insuranc=
+e rules are encoded here; assess data readiness only.
+
+Regards

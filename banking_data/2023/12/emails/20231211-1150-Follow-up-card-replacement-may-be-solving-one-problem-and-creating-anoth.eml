@@ -1,0 +1,44 @@
+From: riaan.swanepoel@cards.operations.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za
+Cc: customer.experience@keystonebank.co.za, cyber.security@keystonebank.co.za
+Subject:
+ Follow-up: card replacement may be solving one problem and creating another
+Date: Mon, 11 Dec 2023 11:50:00 -0000
+Message-ID: <9c554a6ce04246ae8c2462a497284388@keystonebank.co.za>
+X-Keystone-Department: Card Operations
+X-Keystone-Project-Type: card_reissue_journey
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Morning,
+
+I need help with something that sounds simple but probably is not.
+
+Card Operations needs to know whether replacement cards become usable quickly=
+ and whether old-card attempts continue after reissue. The operating teams ag=
+ree that more journeys are failing; they disagree on whether the customer, th=
+e bank or a downstream party owns the failure. There are enough data exceptio=
+ns to make a polished average dangerous; preserve the unresolved cases.
+
+The questions I would ask in the room are:
+1. What would we expect to see if old credentials continue to generate declin=
+es?
+2. What evidence would instead support that ATM and transaction channels refl=
+ect card history differently?
+3. How do we rule out that customers resume normal use quickly?
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use December 2023 as the new evidence point rath=
+er than recycling the earlier conclusion. Please work towards which reissue c=
+ontrols or customer messages need improvement. A useful output would be a con=
+trol view with the exceptions, owner and reason each item was included.
+
+Use monthly account snapshots, status events, limits, product enrolments and =
+signatories; ATM attempts, host responses, PIN attempts, blocked-card state a=
+nd latency; transaction-level timestamps, channels, amounts, statuses and err=
+or context; customer contacts, complaints and suggestions. One caution: Card =
+numbers are historical lists in the account snapshot; use issue and expiry da=
+tes to determine the active card.
+
+Regards

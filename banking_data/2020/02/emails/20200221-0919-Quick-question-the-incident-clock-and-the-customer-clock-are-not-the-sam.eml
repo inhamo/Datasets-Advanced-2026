@@ -1,0 +1,39 @@
+From: david.fourie@infrastructure.ops.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, banking.operations@keystonebank.co.za
+Cc: customer.experience@keystonebank.co.za, cyber.security@keystonebank.co.za
+Subject:
+ Quick question: the incident clock and the customer clock are not the same
+Date: Fri, 21 Feb 2020 09:19:00 -0000
+Message-ID: <939c6a1e7f7f4c72b71dbcde034db7f4@keystonebank.co.za>
+X-Keystone-Department: IT Infrastructure
+X-Keystone-Project-Type: incident_customer_impact
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi team,
+
+Infrastructure can see technical symptoms, but incident severity should refle=
+ct failed customer journeys and repeat attempts rather than machine alerts al=
+one.
+
+Failure anecdotes are beginning to drive decisions, although retries and late=
+ posting may be making the problem look larger than the affected-customer pop=
+ulation.
+
+Can you test these explanations rather than choosing one at the start?
+- latency rises before visible failure
+- a small terminal or channel group creates most harm
+- customers retry across channels and create duplicates
+
+The decision is incident priority, root-cause ownership and the customer-reme=
+diation population. Please give us a one-page finding note plus the underlyin=
+g CSV for our own review.
+
+You should be able to build the evidence from transaction-level timestamps, c=
+hannels, amounts, statuses and error context; ATM attempts, host responses, P=
+IN attempts, blocked-card state and latency; customer contacts, complaints an=
+d suggestions. The dataset has channel and ATM telemetry, not complete applic=
+ation, server or network logs.
+
+Thanks

@@ -1,0 +1,44 @@
+From: thabo.molefe@data.engineering.keystonebank.co.za
+To:
+ analytics.retail@keystonebank.co.za, regulatory.reporting@keystonebank.co.za
+Cc: internal.audit@keystonebank.co.za, model.risk@keystonebank.co.za
+Subject: New column, renamed field or changed meaning?
+Date: Wed, 14 Apr 2021 15:32:00 -0000
+Message-ID: <4a0c0e36f2bb4fedacdbb90321771cbd@keystonebank.co.za>
+X-Keystone-Department: Data Engineering
+X-Keystone-Project-Type: schema_drift_control
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi all,
+
+I may be joining dots that do not belong together, so please challenge the pr=
+emise.
+
+Data Engineering sees changing schemas and needs to distinguish safe expansio=
+n from business-definition drift. Several teams are reporting more failed or =
+retried activity than they expected, but they do not agree on the cause. Diff=
+erent teams have produced different answers from the same period, so populati=
+on and timing rules need to be visible.
+
+Could the answer be that null patterns reveal a source rollout rather than mi=
+ssing customer data? Or are we actually seeing that renamed or recoded fields=
+ break history? I also do not want us to miss the possibility that new fields=
+ are additive.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use April 2021 as the new evidence point rather =
+than recycling the earlier conclusion. The practical decision is the data con=
+tract, quarantine rule and backfill requirement. Please send a short decision=
+ pack with no more than five slides and an attached evidence table; I need th=
+e exceptions and counter-examples, not only an average.
+
+Work from monthly account snapshots, status events, limits, product enrolment=
+s and signatories; monthly customer and KYC snapshots; transaction-level time=
+stamps, channels, amounts, statuses and error context; the latest closed loan=
+ files available by the request date, including affordability, pricing and or=
+igination risk fields. A technical schema match does not prove semantic consi=
+stency; business owners must confirm meaning.
+
+Regards

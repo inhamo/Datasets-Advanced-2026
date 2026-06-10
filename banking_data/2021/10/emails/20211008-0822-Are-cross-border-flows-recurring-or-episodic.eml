@@ -1,0 +1,45 @@
+From: naledi.mokoena@treasury.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za
+Cc: cfo.office@keystonebank.co.za, payments.ops@keystonebank.co.za
+Subject: Are cross-border flows recurring or episodic?
+Date: Fri, 08 Oct 2021 08:22:00 -0000
+Message-ID: <44701c79c9ca45998fa9d45e1424b11b@keystonebank.co.za>
+X-Keystone-Department: Treasury
+X-Keystone-Project-Type: currency_flow_monitoring
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Morning,
+
+I need help with something that sounds simple but probably is not.
+
+Treasury sees non-rand activity but needs to separate stable customer behavio=
+ur from isolated transactions and data artefacts. Failure anecdotes are begin=
+ning to drive decisions, although retries and late posting may be making the =
+problem look larger than the affected-customer population. Different teams ha=
+ve produced different answers from the same period, so population and timing =
+rules need to be visible.
+
+The questions I would ask in the room are:
+1. What would we expect to see if loan participations explain part of the flo=
+w?
+2. What evidence would instead support that a small group of customers drives=
+ most foreign-currency activity?
+3. How do we rule out that cross-border-enabled accounts are not the same as =
+active cross-border users?
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use October 2021 as the new evidence point rathe=
+r than recycling the earlier conclusion. Please work towards whether to impro=
+ve forecasting assumptions or investigate specific flow concentrations. A use=
+ful output would be a short decision pack with no more than five slides and a=
+n attached evidence table.
+
+Use monthly account snapshots, status events, limits, product enrolments and =
+signatories; transaction-level timestamps, channels, amounts, statuses and er=
+ror context; loan participation and servicing records available by the reques=
+t date. One caution: This data does not contain market positions, hedges or i=
+ntraday liquidity; report customer-flow concentration only.
+
+Regards

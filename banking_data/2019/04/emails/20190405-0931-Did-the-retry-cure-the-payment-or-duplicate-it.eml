@@ -1,0 +1,38 @@
+From: priya.naidoo@payments.ops.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, data.engineering@keystonebank.co.za
+Cc: finance.recon@keystonebank.co.za, customer.experience@keystonebank.co.za
+Subject: Did the retry cure the payment or duplicate it?
+Date: Fri, 05 Apr 2019 09:31:00 -0000
+Message-ID: <ec1fc3700732485b8e8d14703ba28b79@keystonebank.co.za>
+X-Keystone-Department: Payments Operations
+X-Keystone-Project-Type: duplicate_retry_control
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi,
+
+This came up in a working session and nobody had the same definition.
+
+Payment attempts, reversals and late postings can create apparent duplicates =
+or genuine duplicate customer impact.
+
+I do not want a dashboard that simply counts the outcome. Start with the comp=
+eting explanations: late settlement creates false duplicates; retries are cor=
+rectly linked; or some customers were debited more than once before reversal.
+
+Please start with the decision we need to make, then show whether the availab=
+le evidence is strong enough to support it.=20
+
+What we need to decide is the matching rule, customer-impact list and prevent=
+ive control. Please bring a control view with the exceptions, owner and reaso=
+n each item was included, including a few cases we can trace from source to c=
+onclusion.
+
+The available evidence is transaction-level timestamps, channels, amounts, st=
+atuses and error context; debit-order mandates, collection dates, suspensions=
+ and cancellations; customer contacts, complaints and suggestions. Statement =
+evidence is available only for selected accounts; use transaction identifiers=
+ and timing for the full population.
+
+Thank you

@@ -1,0 +1,42 @@
+From: riaan.swanepoel@cards.operations.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za
+Cc: customer.experience@keystonebank.co.za, cyber.security@keystonebank.co.za
+Subject: Quick question: card replacement may be solving one problem and
+ creating another
+Date: Fri, 09 Oct 2020 11:22:00 -0000
+Message-ID: <ef42e1f5d6424fbba0a71b7b444530bf@keystonebank.co.za>
+X-Keystone-Department: Card Operations
+X-Keystone-Project-Type: card_reissue_journey
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi team,
+
+Card Operations needs to know whether replacement cards become usable quickly=
+ and whether old-card attempts continue after reissue.
+
+We looked at a version of this before. For the October 2020 review, please sh=
+ow what changed and whether the earlier conclusion still holds. Failure anecd=
+otes are beginning to drive decisions, although retries and late posting may =
+be making the problem look larger than the affected-customer population. Ther=
+e are enough data exceptions to make a polished average dangerous; preserve t=
+he unresolved cases.
+
+Can you test these explanations rather than choosing one at the start?
+- customers resume normal use quickly
+- old credentials continue to generate declines
+- ATM and transaction channels reflect card history differently
+
+The decision is which reissue controls or customer messages need improvement.=
+ Please give us a Power BI page with drill-through to a reproducible case lis=
+t.
+
+You should be able to build the evidence from monthly account snapshots, stat=
+us events, limits, product enrolments and signatories; ATM attempts, host res=
+ponses, PIN attempts, blocked-card state and latency; transaction-level times=
+tamps, channels, amounts, statuses and error context; customer contacts, comp=
+laints and suggestions. Card numbers are historical lists in the account snap=
+shot; use issue and expiry dates to determine the active card.
+
+Thanks

@@ -1,0 +1,42 @@
+From: peter.jacobs@banking.operations.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za
+Cc: customer.experience@keystonebank.co.za, finance.recon@keystonebank.co.za
+Subject: Find the cases that cross too many teams
+Date: Wed, 21 Jul 2021 10:13:00 -0000
+Message-ID: <856625ecc6b54a03b47f8c6759236bff@keystonebank.co.za>
+X-Keystone-Department: Banking Operations
+X-Keystone-Project-Type: manual_work_proxy
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi all,
+
+I may be joining dots that do not belong together, so please challenge the pr=
+emise.
+
+Operations wants a proxy for cases repeatedly touched across Payments, Collec=
+tions, Customer Experience and Finance. The operating teams agree that more j=
+ourneys are failing; they disagree on whether the customer, the bank or a dow=
+nstream party owns the failure. Different teams have produced different answe=
+rs from the same period, so population and timing rules need to be visible.
+
+Could the answer be that late posting generates downstream work? Or are we ac=
+tually seeing that unclear ownership keeps cases open? I also do not want us =
+to miss the possibility that a small set of exception types creates most hand=
+-offs.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use July 2021 as the new evidence point rather t=
+han recycling the earlier conclusion. The practical decision is which process=
+ should be redesigned and where ownership should sit. Please send a working E=
+xcel file with the exception population and clear columns; I need the excepti=
+ons and counter-examples, not only an average.
+
+Work from transaction-level timestamps, channels, amounts, statuses and error=
+ context; customer contacts, complaints and suggestions; collections cases, p=
+romises to pay and recovery payments; debit-order mandates, collection dates,=
+ suspensions and cancellations. There is no work-queue or staff-time table, s=
+o report observable hand-offs and repeat events rather than labour hours.
+
+Regards

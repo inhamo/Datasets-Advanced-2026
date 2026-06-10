@@ -1,0 +1,44 @@
+From: musa.khumalo@cyber.security.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za
+Cc: cards.operations@keystonebank.co.za, fraud.ops@keystonebank.co.za
+Subject:
+ Follow-up: the ATM pattern may be customer error or coordinated testing
+Date: Wed, 11 Dec 2024 14:46:00 -0000
+Message-ID: <1cbcb98440cd43dd9d5ab67340efe645@keystonebank.co.za>
+X-Keystone-Department: Cyber Security
+X-Keystone-Project-Type: atm_attack_sequence
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi,
+
+This came up in a working session and nobody had the same definition.
+
+Cyber wants to know whether repeated PIN failures, balance enquiries and cash=
+ attempts form recognisable sequences before a card is blocked.
+
+I do not want a dashboard that simply counts the outcome. Start with the comp=
+eting explanations: normal forgotten-PIN behaviour dominates; a balance enqui=
+ry followed by rapid withdrawals marks higher risk; or specific terminals see=
+ repeated card testing.
+
+Please start with the decision we need to make, then show whether the availab=
+le evidence is strong enough to support it. This has returned because the pre=
+vious answer was useful but not strong enough to become a standing rule. Use =
+December 2024 as the new evidence point rather than recycling the earlier con=
+clusion.=20
+
+What we need to decide is which sequences should become monitoring rules and =
+which would create unacceptable false positives. Please bring a short decisio=
+n pack with no more than five slides and an attached evidence table, includin=
+g a few cases we can trace from source to conclusion.
+
+The available evidence is ATM attempts, host responses, PIN attempts, blocked=
+-card state and latency; transaction-level timestamps, channels, amounts, sta=
+tuses and error context; monthly account snapshots, status events, limits, pr=
+oduct enrolments and signatories. There is no CCTV, device fingerprint or com=
+plete card-network feed, so classify behavioural patterns rather than confirm=
+ed attacks.
+
+Thank you

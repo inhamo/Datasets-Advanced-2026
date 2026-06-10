@@ -1,0 +1,44 @@
+From: sibusiso.dube@internal.audit.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, data.engineering@keystonebank.co.za
+Cc:
+ banking.operations@keystonebank.co.za, compliance.retail@keystonebank.co.za
+Subject: The account closes once; the bank may need to close it five times
+Date: Fri, 18 Mar 2022 15:26:00 -0000
+Message-ID: <c4f7caf5e3aa43c79eedb747838a3dce@keystonebank.co.za>
+X-Keystone-Department: Internal Audit
+X-Keystone-Project-Type: closed_account_control_test
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi,
+
+This came up in a working session and nobody had the same definition.
+
+Internal Audit wants to test whether an account status change consistently st=
+ops transactions, ATM access, debit orders, collections and campaigns.
+
+I do not want a dashboard that simply counts the outcome. Start with the comp=
+eting explanations: controls propagate on the same day; some downstream syste=
+ms lag; or manual exceptions are not documented consistently.
+
+The operating teams agree that more journeys are failing; they disagree on wh=
+ether the customer, the bank or a downstream party owns the failure. This has=
+ returned because the previous answer was useful but not strong enough to bec=
+ome a standing rule. Use March 2022 as the new evidence point rather than rec=
+ycling the earlier conclusion.=20
+
+What we need to decide is whether this is an isolated exception, a design wea=
+kness or a control operating failure. Please bring a model-ready table, data =
+dictionary and an honest baseline, including a few cases we can trace from so=
+urce to conclusion.
+
+The available evidence is monthly account snapshots, status events, limits, p=
+roduct enrolments and signatories; transaction-level timestamps, channels, am=
+ounts, statuses and error context; ATM attempts, host responses, PIN attempts=
+, blocked-card state and latency; debit-order mandates, collection dates, sus=
+pensions and cancellations; collections cases, promises to pay and recovery p=
+ayments; campaign design and customer responses. The result is a data-based c=
+ontrol test and still requires process-owner evidence.
+
+Thank you

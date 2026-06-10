@@ -1,0 +1,40 @@
+From: priya.naidoo@payments.ops.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, banking.operations@keystonebank.co.za
+Cc: infrastructure.ops@keystonebank.co.za, collections.ops@keystonebank.co.za
+Subject: Why did the payment fail, and who owns the fix? - 2025 control review
+Date: Mon, 19 May 2025 13:36:00 -0000
+Message-ID: <5dae666803074b20a286d7aac4d78750@keystonebank.co.za>
+X-Keystone-Department: Payments Operations
+X-Keystone-Project-Type: payment_failure_root_cause
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi all,
+
+I may be joining dots that do not belong together, so please challenge the pr=
+emise.
+
+Operations is grouping all failed payments together even though the next acti=
+on depends on the actual cause. There is no confirmed problem yet; this is a =
+request to test an assumption before it becomes policy.
+
+Could the answer be that insufficient funds explains the event? Or are we act=
+ually seeing that mandate status or retry sequencing explains the event? I al=
+so do not want us to miss the possibility that third-party or bank timeout ex=
+plains the event.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use May 2025 as the new evidence point rather th=
+an recycling the earlier conclusion. The practical decision is the operationa=
+l owner, customer message and monitoring rule for each failure family. Please=
+ send a short decision pack with no more than five slides and an attached evi=
+dence table; I need the exceptions and counter-examples, not only an average.
+
+Work from transaction-level timestamps, channels, amounts, statuses and error=
+ context; debit-order mandates, collection dates, suspensions and cancellatio=
+ns; ATM attempts, host responses, PIN attempts, blocked-card state and latenc=
+y; customer contacts, complaints and suggestions. Do not infer a technical co=
+mponent failure beyond the error and timing fields available.
+
+Regards

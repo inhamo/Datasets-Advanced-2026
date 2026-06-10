@@ -1,0 +1,41 @@
+From: emma.steyn@analytics.retail.keystonebank.co.za
+To: data.engineering@keystonebank.co.za, banking.operations@keystonebank.co.za
+Cc: internal.audit@keystonebank.co.za
+Subject: Follow-up: analytics needs a source-of-truth decision
+Date: Mon, 13 Jan 2025 16:28:00 -0000
+Message-ID: <4f1c3457a8264d22b7968f103e2ae2ad@keystonebank.co.za>
+X-Keystone-Department: Data and Analytics
+X-Keystone-Project-Type: source_contradiction_review
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Team,
+
+Before this becomes another standing report, can we answer the real question?
+
+A requested analysis changes depending on whether the team starts from transa=
+ction, debit-order, account-status or customer-contact records. The possible =
+stories are that one source is updated retrospectively, that matching logic i=
+s joining unrelated records, or that the sources record different stages of o=
+ne event.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use January 2025 as the new evidence point rathe=
+r than recycling the earlier conclusion. The discussion is currently being dr=
+iven by anecdotes, and the teams involved are describing the same customers d=
+ifferently.
+
+Please prepare a short decision pack with no more than five slides and an att=
+ached evidence table. The output must help us decide the source precedence ru=
+le and the cases that must remain explicitly unresolved.
+
+Data available: transaction-level timestamps, channels, amounts, statuses and=
+ error context; debit-order mandates, collection dates, suspensions and cance=
+llations; monthly account snapshots, status events, limits, product enrolment=
+s and signatories; customer contacts, complaints and suggestions.
+
+Please state the limitation plainly: Do not force agreement by dropping excep=
+tions; preserve contradictory evidence for owner review.
+
+Thanks

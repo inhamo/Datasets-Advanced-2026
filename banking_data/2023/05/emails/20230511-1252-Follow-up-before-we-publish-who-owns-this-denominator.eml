@@ -1,0 +1,42 @@
+From: sarah.pillay@analytics.retail.keystonebank.co.za
+To: executive.office@keystonebank.co.za, data.engineering@keystonebank.co.za
+Cc: internal.audit@keystonebank.co.za, regulatory.reporting@keystonebank.co.za
+Subject: Follow-up: before we publish, who owns this denominator?
+Date: Thu, 11 May 2023 12:52:00 -0000
+Message-ID: <0a1da2a553a140e58fe88e2ad692231f@keystonebank.co.za>
+X-Keystone-Department: Data and Analytics
+X-Keystone-Project-Type: metric_definition_review
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi all,
+
+I may be joining dots that do not belong together, so please challenge the pr=
+emise.
+
+Analytics is receiving requests that use the same business term for different=
+ populations, dates and customer relationships. Failure anecdotes are beginni=
+ng to drive decisions, although retries and late posting may be making the pr=
+oblem look larger than the affected-customer population. There are enough dat=
+a exceptions to make a polished average dangerous; preserve the unresolved ca=
+ses.
+
+Could the answer be that an undocumented exclusion is changing the denominato=
+r? Or are we actually seeing that the teams need different metrics? I also do=
+ not want us to miss the possibility that snapshot timing creates the differe=
+nce.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use May 2023 as the new evidence point rather th=
+an recycling the earlier conclusion. The practical decision is the governed d=
+efinition, owner, exclusions and reconciliation bridge. Please send a control=
+ view with the exceptions, owner and reason each item was included; I need th=
+e exceptions and counter-examples, not only an average.
+
+Work from monthly account snapshots, status events, limits, product enrolment=
+s and signatories; monthly customer and KYC snapshots; transaction-level time=
+stamps, channels, amounts, statuses and error context. A technically consiste=
+nt definition still needs business ownership and approval.
+
+Regards

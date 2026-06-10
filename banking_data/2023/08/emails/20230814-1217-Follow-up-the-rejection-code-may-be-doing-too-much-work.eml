@@ -1,0 +1,41 @@
+From: johan.vanwyk@credit.risk.retail.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za
+Cc: compliance.retail@keystonebank.co.za, loan.products@keystonebank.co.za
+Subject: Follow-up: the rejection code may be doing too much work
+Date: Mon, 14 Aug 2023 12:17:00 -0000
+Message-ID: <767e9558e8674b4189da5388ef7b958e@keystonebank.co.za>
+X-Keystone-Department: Retail Credit Risk
+X-Keystone-Project-Type: decline_consistency
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Team,
+
+Before this becomes another standing report, can we answer the real question?
+
+Credit Risk needs to know whether recorded decline reasons are consistent wit=
+h affordability, documentation and workflow evidence. The possible stories ar=
+e that decline codes align with application facts, that generic reasons are m=
+asking multiple causes, or that channel differences indicate process inconsis=
+tency.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use August 2023 as the new evidence point rather=
+ than recycling the earlier conclusion. There is no confirmed problem yet; th=
+is is a request to test an assumption before it becomes policy.
+
+Please prepare a Power BI page with drill-through to a reproducible case list=
+. The output must help us decide which policy rules, reason codes or quality =
+checks need revision.
+
+Data available: the latest closed loan files available by the request date, i=
+ncluding affordability, pricing and origination risk fields; monthly customer=
+ and KYC snapshots; monthly account snapshots, status events, limits, product=
+ enrolments and signatories.
+
+Please state the limitation plainly: The separate rejected-account file and l=
+oan decisions represent different processes; do not merge them without a defi=
+ned key and business rule.
+
+Thanks

@@ -1,0 +1,40 @@
+From: david.fourie@infrastructure.ops.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, data.engineering@keystonebank.co.za
+Cc: payments.ops@keystonebank.co.za
+Subject: The retry pattern needs to be separated from demand
+Date: Tue, 16 Mar 2021 12:17:00 -0000
+Message-ID: <91a0e49f868f4be096ebce897991e5ce@keystonebank.co.za>
+X-Keystone-Department: IT Infrastructure
+X-Keystone-Project-Type: retry_storm_analysis
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi all,
+
+I may be joining dots that do not belong together, so please challenge the pr=
+emise.
+
+During service degradation, repeated attempts can inflate volume and obscure =
+the number of customers actually affected. Failure anecdotes are beginning to=
+ drive decisions, although retries and late posting may be making the problem=
+ look larger than the affected-customer population.
+
+Could the answer be that channel switching follows a timeout? Or are we actua=
+lly seeing that customers retry the same action within minutes? I also do not=
+ want us to miss the possibility that automatic retry and human retry are bei=
+ng mixed.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use March 2021 as the new evidence point rather =
+than recycling the earlier conclusion. The practical decision is how monitori=
+ng should count affected customers and when retry controls should activate. P=
+lease send a Power BI page with drill-through to a reproducible case list; I =
+need the exceptions and counter-examples, not only an average.
+
+Work from transaction-level timestamps, channels, amounts, statuses and error=
+ context; ATM attempts, host responses, PIN attempts, blocked-card state and =
+latency. Without application session IDs, use account, amount, channel and ti=
+me proximity as an explicit matching heuristic.
+
+Regards

@@ -1,0 +1,42 @@
+From: musa.khumalo@cyber.security.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, infrastructure.ops@keystonebank.co.za
+Cc: fraud.ops@keystonebank.co.za, payments.ops@keystonebank.co.za
+Subject: The same symptom can belong to Cyber or Operations
+Date: Mon, 20 Dec 2021 15:37:00 -0000
+Message-ID: <feb8472722174f268be3961630f64541@keystonebank.co.za>
+X-Keystone-Department: Cyber Security
+X-Keystone-Project-Type: payment_cyber_resilience
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi,
+
+This came up in a working session and nobody had the same definition.
+
+Timeouts, host-response failures and repeated attempts can resemble malicious=
+ activity or ordinary service degradation.
+
+I do not want a dashboard that simply counts the outcome. Start with the comp=
+eting explanations: a concentrated account or terminal pattern suggests abuse=
+; operational retries are obscuring the original event; or technical failure =
+explains the cluster.
+
+Failure anecdotes are beginning to drive decisions, although retries and late=
+ posting may be making the problem look larger than the affected-customer pop=
+ulation. Different teams have produced different answers from the same period=
+, so population and timing rules need to be visible. We looked at a version o=
+f this before. For the December 2021 review, please show what changed and whe=
+ther the earlier conclusion still holds.=20
+
+What we need to decide is the minimum evidence needed to route an alert to Cy=
+ber, Fraud, Payments or Infrastructure. Please bring a one-page finding note =
+plus the underlying CSV for our own review, including a few cases we can trac=
+e from source to conclusion.
+
+The available evidence is transaction-level timestamps, channels, amounts, st=
+atuses and error context; ATM attempts, host responses, PIN attempts, blocked=
+-card state and latency. This is triage design from available telemetry, not =
+a substitute for SOC, firewall or application logs.
+
+Thank you

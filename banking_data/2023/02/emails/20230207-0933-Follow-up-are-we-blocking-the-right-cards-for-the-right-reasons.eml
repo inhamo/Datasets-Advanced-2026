@@ -1,0 +1,41 @@
+From: riaan.swanepoel@cards.operations.keystonebank.co.za
+To: analytics.retail@keystonebank.co.za, fraud.ops@keystonebank.co.za
+Cc: cyber.security@keystonebank.co.za, customer.experience@keystonebank.co.za
+Subject: Follow-up: are we blocking the right cards for the right reasons?
+Date: Tue, 07 Feb 2023 09:33:00 -0000
+Message-ID: <b1c0c97023624586bee7203d33ee2c43@keystonebank.co.za>
+X-Keystone-Department: Card Operations
+X-Keystone-Project-Type: card_block_review
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+Hi all,
+
+I may be joining dots that do not belong together, so please challenge the pr=
+emise.
+
+Card blocking protects customers, but repeated legitimate attempts and later =
+complaints may reveal controls that are too blunt. Several teams are reportin=
+g more failed or retried activity than they expected, but they do not agree o=
+n the cause.
+
+Could the answer be that customers receive inconsistent recovery paths? Or ar=
+e we actually seeing that ordinary PIN errors create avoidable blocks? I also=
+ do not want us to miss the possibility that blocked cards follow genuinely u=
+nusual sequences.
+
+This has returned because the previous answer was useful but not strong enoug=
+h to become a standing rule. Use February 2023 as the new evidence point rath=
+er than recycling the earlier conclusion. The practical decision is where thr=
+esholds, escalation or customer communication should change. Please send a mo=
+del-ready table, data dictionary and an honest baseline; I need the exception=
+s and counter-examples, not only an average.
+
+Work from ATM attempts, host responses, PIN attempts, blocked-card state and =
+latency; transaction-level timestamps, channels, amounts, statuses and error =
+context; monthly account snapshots, status events, limits, product enrolments=
+ and signatories; customer contacts, complaints and suggestions. Do not label=
+ a block as incorrect without the rule decision and investigation outcome.
+
+Regards

@@ -23,6 +23,7 @@ from typing import Any
 
 import pandas as pd
 
+from commons.email_scenario_catalog import DATASET_LABELS, RESEARCH_SOURCES, SCENARIOS
 from commons.pdf_renderers import render_outlook_email_pdf
 
 
@@ -47,7 +48,7 @@ class MonthSignal:
     yoy_tx_growth_pct: float | None
 
 
-TRUSTED_SOURCES = [
+LEGACY_TRUSTED_SOURCES = [
     ("McKinsey", "Experience-led growth in banking", "https://www.mckinsey.com/capabilities/growth-marketing-and-sales/our-insights/five-ways-to-drive-experience-led-growth-in-banking"),
     ("McKinsey", "State of retail banking", "https://www.mckinsey.com/industries/financial-services/our-insights/the-state-of-retail-banking-profitability-and-growth-in-the-era-of-digital-and-ai"),
     ("McKinsey", "Combating payments fraud", "https://www.mckinsey.com/industries/financial-services/our-insights/combating-payments-fraud-and-enhancing-customer-experience"),
@@ -85,28 +86,20 @@ PROBLEM_PATTERNS = [
 
 
 def write_research_backbone() -> None:
-    """Write 100 source-to-problem mappings used as scenario inspiration."""
+    """Write the actual research sources used to shape the scenario catalogue."""
     SOURCE_NOTES_PATH.parent.mkdir(parents=True, exist_ok=True)
-    rows = []
-    idx = 1
-    for source in TRUSTED_SOURCES:
-        for pattern in PROBLEM_PATTERNS[:5]:
-            rows.append(
-                {
-                    "note_id": f"SRC-{idx:03d}",
-                    "source_org": source[0],
-                    "source_title": source[1],
-                    "source_url": source[2],
-                    "problem_area": pattern[0],
-                    "banking_problem_to_model": pattern[1],
-                    "dataset_link": "transactions, customers, accounts, loans, debit orders, communications, statements, campaigns",
-                }
-            )
-            idx += 1
+    rows = [
+        {
+            "source_id": f"SRC-{idx:03d}",
+            **source,
+            "usage_note": "Scenario inspiration only; no source statistics are presented as Keystone facts.",
+        }
+        for idx, source in enumerate(RESEARCH_SOURCES, start=1)
+    ]
     with SOURCE_NOTES_PATH.open("w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=list(rows[0]))
         writer.writeheader()
-        writer.writerows(rows[:100])
+        writer.writerows(rows)
 
 
 def load_teams() -> dict[str, Any]:
@@ -256,7 +249,7 @@ def spec(
     }
 
 
-def monthly_email_specs(sig: MonthSignal, teams: dict[str, Any], rng: random.Random) -> list[dict[str, Any]]:
+def legacy_monthly_email_specs(sig: MonthSignal, teams: dict[str, Any], rng: random.Random) -> list[dict[str, Any]]:
     y, m = sig.year, sig.month
     caps = year_capabilities(y)
     month_label = date(y, m, 1).strftime("%B %Y")
@@ -632,6 +625,444 @@ Zanele""",
     return sorted(specs, key=lambda x: (int(x["day"]), x["subject"]))
 
 
+def load_macro_events() -> list[dict[str, Any]]:
+    path = BASE_DIR / "corpus_context" / "events" / "macro_events.jsonl"
+    if not path.exists():
+        return []
+    events = []
+    for line in path.read_text(encoding="utf-8").splitlines():
+        if not line.strip():
+            continue
+        event = json.loads(line)
+        event["event_date"] = date.fromisoformat(event["date"])
+        events.append(event)
+    return events
+
+
+def load_news_titles(year: int, month: int) -> list[str]:
+    news_dir = BANKING_DIR / str(year) / f"{month:02d}" / "news"
+    titles = []
+    if not news_dir.exists():
+        return titles
+    for path in sorted(news_dir.glob("*.md")):
+        raw = path.read_text(encoding="utf-8", errors="ignore")
+        match = re.search(r"(?m)^title:\s*[\"']?(.*?)[\"']?\s*$", raw)
+        if match:
+            titles.append(match.group(1).strip())
+    return titles
+
+
+def available_data_keys(year: int, month: int) -> set[str]:
+    month_dir = BANKING_DIR / str(year) / f"{month:02d}"
+    keys = set()
+    checks = {
+        "accounts": list(month_dir.glob("accounts_*.parquet")),
+        "signatories": list(month_dir.glob("account_signatories_*.parquet")),
+        "customers": list(month_dir.glob("customers_*.parquet")),
+        "transactions": [month_dir / "transactions.jsonl"],
+        "initial_deposits": [month_dir / "initial_deposits.jsonl"],
+        "atm": list(month_dir.glob("atm_logs_*.parquet")),
+        "debit_orders": list(month_dir.glob("debit_orders_*.parquet")),
+        "loans": list(month_dir.glob("loans_*.parquet")),
+        "participations": list(month_dir.glob("loan_participations_*.parquet")),
+        "collections": [month_dir / "collections_cases" / "collections_cases.csv"],
+        "communications": [month_dir / "customer_communications" / "communications.csv"],
+        "campaigns": [month_dir / "marketing_campaigns" / "campaigns.csv"],
+        "statements": [month_dir / "bank_statements"],
+        "correspondent": [month_dir / "correspondent_banking"],
+        "news": [month_dir / "news"],
+    }
+    for key, paths in checks.items():
+        if any(path.exists() for path in paths):
+            keys.add(key)
+    historical_patterns = {
+        "loans": "loans_*.parquet",
+        "participations": "loan_participations_*.parquet",
+        "initial_deposits": "initial_deposits.jsonl",
+    }
+    for key, pattern in historical_patterns.items():
+        if key in keys:
+            continue
+        for candidate in BANKING_DIR.glob(f"*/*/{pattern}"):
+            candidate_month = (int(candidate.parts[-3]), int(candidate.parts[-2]))
+            if candidate_month <= (year, month):
+                keys.add(key)
+                break
+    return keys
+
+
+def month_distance(left: tuple[int, int], right: tuple[int, int]) -> int:
+    return (right[0] - left[0]) * 12 + right[1] - left[1]
+
+
+def active_context_tags(sig: MonthSignal, events: list[dict[str, Any]], data_keys: set[str]) -> set[str]:
+    tags = {"general"}
+    if sig.month in {3, 6, 9, 12}:
+        tags.add("quarter_end")
+    if sig.month in {8, 9, 10}:
+        tags.add("planning")
+    if sig.fail_pct >= 6.0 or sig.timeout_count >= max(10, int(sig.tx_count * 0.01)):
+        tags.add("failures")
+    if sig.data_error_pct >= 5.0:
+        tags.add("data_quality")
+    if sig.yoy_tx_growth_pct is not None and sig.yoy_tx_growth_pct < 0:
+        tags.add("growth")
+    if "correspondent" in data_keys:
+        tags.add("correspondent")
+    if "statements" in data_keys:
+        tags.add("statements")
+    for event in events:
+        tags.add(f"macro:{event['category']}")
+        if event.get("impact") == "lending":
+            tags.add("rates")
+        if event.get("impact") in {"branch_atm", "digital_channels", "payments_rail"}:
+            tags.add("resilience")
+    return tags
+
+
+def month_observation(sig: MonthSignal, events: list[dict[str, Any]], rng: random.Random) -> str:
+    observations = []
+    if events:
+        event = rng.choice(events)
+        observations.append(
+            f"The timing also overlaps with {event['title']}. Treat that as context to test, not an answer."
+        )
+    if sig.fail_pct >= 6.0:
+        observations.append(
+            rng.choice(
+                [
+                    "Several teams are reporting more failed or retried activity than they expected, but they do not agree on the cause.",
+                    "The operating teams agree that more journeys are failing; they disagree on whether the customer, the bank or a downstream party owns the failure.",
+                    "Failure anecdotes are beginning to drive decisions, although retries and late posting may be making the problem look larger than the affected-customer population.",
+                ]
+            )
+        )
+    if sig.data_error_pct >= 5.3:
+        observations.append(
+            rng.choice(
+                [
+                    "Different teams have produced different answers from the same period, so population and timing rules need to be visible.",
+                    "The first extracts did not reconcile, which means source precedence and exclusions must be part of the answer.",
+                    "There are enough data exceptions to make a polished average dangerous; preserve the unresolved cases.",
+                ]
+            )
+        )
+    if sig.yoy_tx_growth_pct is not None and sig.yoy_tx_growth_pct < 0:
+        observations.append(
+            "Useful customer activity appears softer than the planning story assumed, and we need to understand whether that is customer, product or service driven."
+        )
+    if not observations:
+        observations.append(
+            rng.choice(
+                [
+                    "There is no confirmed problem yet; this is a request to test an assumption before it becomes policy.",
+                    "The discussion is currently being driven by anecdotes, and the teams involved are describing the same customers differently.",
+                    "Please start with the decision we need to make, then show whether the available evidence is strong enough to support it.",
+                ]
+            )
+        )
+    return " ".join(observations[:2])
+
+
+def decapitalize(text: str) -> str:
+    if len(text) > 1 and text[:2].isupper():
+        return text
+    return text[:1].lower() + text[1:]
+
+
+def scenario_subject(item: dict[str, Any], occurrence: int, year: int, rng: random.Random) -> str:
+    subjects = item["subjects"]
+    subject = subjects[(occurrence - 1) % len(subjects)]
+    cycle = (occurrence - 1) // len(subjects)
+    if cycle == 1:
+        subject = f"Follow-up: {decapitalize(subject)}"
+    elif cycle >= 2:
+        subject = f"{subject} - {year} control review"
+    if cycle == 0 and rng.random() < 0.16:
+        subject = f"Quick question: {decapitalize(subject)}"
+    return subject
+
+
+def render_scenario_body(
+    item: dict[str, Any],
+    sig: MonthSignal,
+    events: list[dict[str, Any]],
+    data_keys: set[str],
+    occurrence: int,
+    rng: random.Random,
+) -> str:
+    deliverable = rng.choice(
+        [
+            "a working Excel file with the exception population and clear columns",
+            "a Power BI page with drill-through to a reproducible case list",
+            "a short decision pack with no more than five slides and an attached evidence table",
+            "a model-ready table, data dictionary and an honest baseline",
+            "a one-page finding note plus the underlying CSV for our own review",
+            "a control view with the exceptions, owner and reason each item was included",
+        ]
+    )
+    available = [key for key in item["datasets"] if key in data_keys]
+    data_sentence = "; ".join(DATASET_LABELS[key] for key in available)
+    hypotheses = list(item["hypotheses"])
+    rng.shuffle(hypotheses)
+    period_label = date(sig.year, sig.month, 1).strftime("%B %Y")
+    follow_up = ""
+    if occurrence == 2:
+        follow_up = (
+            f"We looked at a version of this before. For the {period_label} review, please show what changed and whether the earlier conclusion still holds. "
+        )
+    elif occurrence >= 3:
+        follow_up = (
+            f"This has returned because the previous answer was useful but not strong enough to become a standing rule. Use {period_label} as the new evidence point rather than recycling the earlier conclusion. "
+        )
+    relevant_events = [
+        event
+        for event in events
+        if f"macro:{event['category']}" in item["tags"]
+        or (
+            event.get("impact") in {"branch_atm", "digital_channels", "payments_rail"}
+            and "resilience" in item["tags"]
+        )
+        or (event.get("impact") == "lending" and "rates" in item["tags"])
+    ]
+    observation = month_observation(sig, relevant_events, rng)
+    style = rng.randrange(5)
+
+    if style == 0:
+        return f"""Hi team,
+
+{item['premise']}
+
+{follow_up}{observation}
+
+Can you test these explanations rather than choosing one at the start?
+- {hypotheses[0]}
+- {hypotheses[1]}
+- {hypotheses[2]}
+
+The decision is {item['decision']}. Please give us {deliverable}.
+
+You should be able to build the evidence from {data_sentence}. {item['boundary']}
+
+Thanks"""
+    if style == 1:
+        return f"""Morning,
+
+I need help with something that sounds simple but probably is not.
+
+{item['premise']} {observation}
+
+The questions I would ask in the room are:
+1. What would we expect to see if {decapitalize(hypotheses[0])}?
+2. What evidence would instead support that {decapitalize(hypotheses[1])}?
+3. How do we rule out that {decapitalize(hypotheses[2])}?
+
+{follow_up}Please work towards {item['decision']}. A useful output would be {deliverable}.
+
+Use {data_sentence}. One caution: {item['boundary']}
+
+Regards"""
+    if style == 2:
+        return f"""Hi,
+
+This came up in a working session and nobody had the same definition.
+
+{item['premise']}
+
+I do not want a dashboard that simply counts the outcome. Start with the competing explanations: {decapitalize(hypotheses[0])}; {decapitalize(hypotheses[1])}; or {decapitalize(hypotheses[2])}.
+
+{observation} {follow_up}
+
+What we need to decide is {item['decision']}. Please bring {deliverable}, including a few cases we can trace from source to conclusion.
+
+The available evidence is {data_sentence}. {item['boundary']}
+
+Thank you"""
+    if style == 3:
+        return f"""Team,
+
+Before this becomes another standing report, can we answer the real question?
+
+{item['premise']} The possible stories are that {decapitalize(hypotheses[0])}, that {decapitalize(hypotheses[1])}, or that {decapitalize(hypotheses[2])}.
+
+{follow_up}{observation}
+
+Please prepare {deliverable}. The output must help us decide {item['decision']}.
+
+Data available: {data_sentence}.
+
+Please state the limitation plainly: {item['boundary']}
+
+Thanks"""
+    return f"""Hi all,
+
+I may be joining dots that do not belong together, so please challenge the premise.
+
+{item['premise']} {observation}
+
+Could the answer be that {decapitalize(hypotheses[0])}? Or are we actually seeing that {decapitalize(hypotheses[1])}? I also do not want us to miss the possibility that {decapitalize(hypotheses[2])}.
+
+{follow_up}The practical decision is {item['decision']}. Please send {deliverable}; I need the exceptions and counter-examples, not only an average.
+
+Work from {data_sentence}. {item['boundary']}
+
+Regards"""
+
+
+def fraud_news_spec(
+    year: int,
+    month: int,
+    titles: list[str],
+    teams: dict[str, Any],
+    rng: random.Random,
+) -> dict[str, Any] | None:
+    keywords = ("fraud", "mule", "takeover", "forged", "scam", "beneficiary", "arrest")
+    title = next((value for value in titles if any(word in value.lower() for word in keywords)), None)
+    if not title:
+        return None
+    month_label = date(year, month, 1).strftime("%B")
+    return spec(
+        day=rng.randint(14, 22),
+        from_team="fraud",
+        to=[mailbox("analytics", teams), mailbox("compliance", teams)],
+        cc=[mailbox("legal", teams)],
+        department="Financial Crime",
+        project_type="external_intelligence_review",
+        subject=f"External intelligence check: {title[:58]}",
+        body=f"""Team,
+
+The article titled "{title}" has been circulated to Financial Crime.
+
+Please do not search for a few matching words and call it a case. I want to know whether the reported behaviour has a measurable footprint in our own {month_label} data, what an innocent explanation would look like, and which evidence we do not have.
+
+Start with transaction chronology, account age and status, channel changes, ATM attempts, linked beneficiaries and customer contacts. Where correspondent-payment files exist, include routing and settlement exceptions.
+
+The output should be a restricted case list with a comparison group and reasons both for and against escalation. No customer is to be described as fraudulent because they resemble a news story.
+
+Aisha""",
+    )
+
+
+def monthly_email_specs(
+    sig: MonthSignal,
+    teams: dict[str, Any],
+    rng: random.Random,
+    macro_events: list[dict[str, Any]],
+    scenario_counts: dict[str, int],
+    department_counts: dict[str, int],
+    last_used: dict[str, tuple[int, int]],
+) -> list[dict[str, Any]]:
+    year, month = sig.year, sig.month
+    current = (year, month)
+    data_keys = available_data_keys(year, month)
+    events = [
+        event
+        for event in macro_events
+        if event["event_date"].year == year and event["event_date"].month == month
+    ]
+    context_tags = active_context_tags(sig, events, data_keys)
+    target = 5
+    if month in {3, 6, 9, 12}:
+        target += 1
+    if events or "correspondent" in data_keys:
+        target += 1
+
+    eligible = []
+    for item in SCENARIOS:
+        if current < tuple(item["earliest"]):
+            continue
+        if item["latest"] is not None and current > tuple(item["latest"]):
+            continue
+        core_evidence = set(item["datasets"]) - {"statements", "news"}
+        if not core_evidence.issubset(data_keys):
+            continue
+        if item["requires"] and not set(item["requires"]).issubset(data_keys):
+            continue
+        eligible.append(item)
+
+    chosen: list[dict[str, Any]] = []
+    used_teams: set[str] = set()
+    while eligible and len(chosen) < target:
+        scored = []
+        for item in eligible:
+            previous = last_used.get(item["id"])
+            recency_penalty = 0
+            if previous is not None:
+                distance = month_distance(previous, current)
+                if distance < 12:
+                    recency_penalty = (12 - distance) * 12
+            tag_bonus = len(set(item["tags"]) & context_tags) * 20
+            month_bonus = 16 if item["months"] and month in item["months"] else 0
+            team_penalty = 90 if item["team"] in used_teams else 0
+            score = (
+                scenario_counts.get(item["id"], 0) * 13
+                + department_counts.get(item["team"], 0) * 1.8
+                + recency_penalty
+                + team_penalty
+                - tag_bonus
+                - month_bonus
+                + rng.random()
+            )
+            scored.append((score, item))
+        _, selected = min(scored, key=lambda pair: pair[0])
+        eligible.remove(selected)
+        chosen.append(selected)
+        used_teams.add(selected["team"])
+
+    if "correspondent" in data_keys and not any("correspondent" in item["tags"] for item in chosen):
+        correspondent_candidates = [
+            item
+            for item in SCENARIOS
+            if "correspondent" in item["tags"]
+            and current >= tuple(item["earliest"])
+            and (item["latest"] is None or current <= tuple(item["latest"]))
+            and set(item["requires"]).issubset(data_keys)
+        ]
+        if correspondent_candidates:
+            chosen.append(
+                min(
+                    correspondent_candidates,
+                    key=lambda item: (
+                        scenario_counts.get(item["id"], 0),
+                        department_counts.get(item["team"], 0),
+                        item["id"],
+                    ),
+                )
+            )
+
+    specs = []
+    for item in chosen:
+        occurrence = scenario_counts.get(item["id"], 0) + 1
+        scenario_counts[item["id"]] = occurrence
+        department_counts[item["team"]] = department_counts.get(item["team"], 0) + 1
+        last_used[item["id"]] = current
+        day = rng.randint(4, 22)
+        matching_events = [
+            event
+            for event in events
+            if f"macro:{event['category']}" in item["tags"]
+        ]
+        if matching_events:
+            day = min(26, max(day, matching_events[0]["event_date"].day + 1))
+        specs.append(
+            spec(
+                day=day,
+                from_team=item["team"],
+                to=[mailbox(team_id, teams) for team_id in item["to"]],
+                cc=[mailbox(team_id, teams) for team_id in item["cc"]],
+                department=item["department"],
+                project_type=item["project_type"],
+                subject=scenario_subject(item, occurrence, year, rng),
+                body=render_scenario_body(item, sig, events, data_keys, occurrence, rng),
+            )
+        )
+
+    extra = fraud_news_spec(year, month, load_news_titles(year, month), teams, rng)
+    if extra is not None and not any(item["from_team"] == "fraud" for item in specs):
+        specs.append(extra)
+    return sorted(specs, key=lambda item: (int(item["day"]), item["subject"]))
+
+
 def build_email(spec: dict[str, Any], teams: dict[str, Any], sent: datetime, rng: random.Random) -> EmailMessage:
     msg = EmailMessage()
     msg["From"] = sender(spec["from_team"], teams, rng)
@@ -679,11 +1110,16 @@ def generate(start_year: int, end_year: int, write_pdf: bool = True) -> None:
     write_research_backbone()
     teams = load_teams()
     signals = load_monthly_signals()
+    macro_events = load_macro_events()
     validation_errors: list[str] = []
     email_count = 0
     pdf_count = 0
+    scenario_counts: dict[str, int] = {}
+    department_counts: dict[str, int] = {}
+    last_used: dict[str, tuple[int, int]] = {}
 
     for year in range(start_year, end_year + 1):
+        print(f"Generating internal email projects for {year}...")
         for month in range(1, 13):
             if (year, month) < (FIRST_EMAIL_YEAR, FIRST_EMAIL_MONTH):
                 remove_email_dir(year, month)
@@ -693,7 +1129,15 @@ def generate(start_year: int, end_year: int, write_pdf: bool = True) -> None:
                 continue
             rng = random.Random(7100 + year * 100 + month)
             out_dir = clean_email_dir(year, month)
-            specs = monthly_email_specs(sig, teams, rng)
+            specs = monthly_email_specs(
+                sig,
+                teams,
+                rng,
+                macro_events,
+                scenario_counts,
+                department_counts,
+                last_used,
+            )
             used_days: dict[int, int] = {}
             for spec_item in specs:
                 base_day = nearest_business_day(year, month, min(28, int(spec_item["day"])))
