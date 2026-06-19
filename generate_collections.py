@@ -9,6 +9,10 @@ Writes per month:
 Only churned customers (failed payments with no successful payment in-month) are
 prioritised for new collections; a subset of previously churned customers may
 reappear in later years.
+
+Collections are intentionally not generated in the bank's first operating
+months. A collections case requires an observed account/loan relationship and
+enough elapsed time for repayment failure to age into delinquency.
 """
 
 from __future__ import annotations
@@ -32,6 +36,9 @@ BASE_DIR = Path(__file__).resolve().parent
 BANKING_DIR = BASE_DIR / "banking_data"
 CORPUS_DIR = BASE_DIR / "corpus_context"
 OUTPUT_SUBDIR = "collections_cases"
+DEFAULT_COLLECTION_START_YEAR = 2019
+DEFAULT_COLLECTION_START_MONTH = 12
+MIN_COLLECTION_ACCOUNT_AGE_DAYS = 180
 
 STAGES = [
     ("pre_delinquent", 1, 30, 0.35),
@@ -166,6 +173,48 @@ def load_customer_master() -> dict[str, dict[str, str]]:
             cid = row.get("customer_id")
             if cid:
                 master[str(cid)] = row
+    return master
+
+
+def _account_master_path(year: int, month: int) -> Path:
+    return BANKING_DIR / str(year) / f"{month:02d}" / f"accounts_{year}_{month:02d}.parquet"
+
+
+def load_global_account_master() -> dict[str, dict[str, str]]:
+    """Load all account/customer links seen up to the generation run.
+
+    Monthly account files are cohort extracts, not full snapshots. Collections
+    therefore validate against the global account universe, not just the same
+    month's account file.
+    """
+    master: dict[str, dict[str, str]] = {}
+    if pd is None:
+        return master
+    for path in sorted(BANKING_DIR.glob("20*/[0-1][0-9]/accounts_*.parquet")):
+        try:
+            import pyarrow.parquet as pq
+
+            columns = set(pq.read_schema(path).names)
+        except Exception:
+            continue
+        if not {"account_id", "customer_id"}.issubset(columns):
+            continue
+        wanted = [c for c in ["account_id", "customer_id", "opening_date"] if c in columns]
+        try:
+            frame = pd.read_parquet(path, columns=wanted)
+        except Exception:
+            continue
+        for _, row in frame.iterrows():
+            account_id = str(row.get("account_id", "")).strip()
+            if not account_id or account_id.lower() == "nan":
+                continue
+            master.setdefault(
+                account_id,
+                {
+                    "customer_id": str(row.get("customer_id", "")).strip(),
+                    "opening_date": str(row.get("opening_date", "")).strip(),
+                },
+            )
     return master
 
 
@@ -435,13 +484,30 @@ def generate_month(
     customer_master: dict[str, dict[str, str]],
     churned_ever: set[str],
     winback_eligible: set[str],
+    account_master: dict[str, dict[str, str]],
 ) -> tuple[int, int, set[str]]:
     random.seed(2019 * 100 + year * 100 + month)
+
+    if (year, month) < (DEFAULT_COLLECTION_START_YEAR, DEFAULT_COLLECTION_START_MONTH):
+        return 0, 0, churned_ever
 
     _all_candidates, churned, failed = load_loan_payment_customers(year, month)
     if not churned and not failed:
         return 0, 0, churned_ever
 
+    month_start = date(year, month, 1)
+    eligible_accounts: set[str] = set()
+    for account_id, account_row in account_master.items():
+        opened_raw = account_row.get("opening_date")
+        try:
+            opened = date.fromisoformat(str(opened_raw)[:10])
+        except ValueError:
+            opened = date(2019, 1, 1)
+        if (month_start - opened).days >= MIN_COLLECTION_ACCOUNT_AGE_DAYS:
+            eligible_accounts.add(account_id)
+
+    churned = [lc for lc in churned if lc.account_id in eligible_accounts]
+    failed = [lc for lc in failed if lc.account_id in eligible_accounts]
     collection_pool = churned if churned else failed
     if not collection_pool:
         return 0, 0, churned_ever
@@ -480,6 +546,10 @@ def generate_month(
             returned_pool,
             prefer_returned=is_returned,
         )
+        master_account = account_master.get(lc.account_id)
+        if not master_account:
+            continue
+        lc.customer_id = master_account.get("customer_id") or lc.customer_id
 
         stage, dpd = pick_stage()
         master_row = customer_master.get(lc.customer_id, {})
@@ -509,6 +579,13 @@ def generate_month(
 
         case_id = f"COLL-{year}{month:02d}-{seq:05d}"
         contact_day = random_date_in_month(year, month)
+        try:
+            opened = date.fromisoformat(str(master_account.get("opening_date", ""))[:10])
+        except ValueError:
+            opened = date(2019, 1, 1)
+        minimum_contact_day = opened + timedelta(days=max(MIN_COLLECTION_ACCOUNT_AGE_DAYS, dpd))
+        if contact_day < minimum_contact_day:
+            continue
         case_row = {
             "case_id": case_id,
             "account_id": lc.account_id,
@@ -622,14 +699,15 @@ def iter_year_months(
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Generate synthetic collections and recoveries data.")
-    parser.add_argument("--start-year", type=int, default=2019)
-    parser.add_argument("--start-month", type=int, default=1)
+    parser.add_argument("--start-year", type=int, default=DEFAULT_COLLECTION_START_YEAR)
+    parser.add_argument("--start-month", type=int, default=DEFAULT_COLLECTION_START_MONTH)
     parser.add_argument("--end-year", type=int, default=2025)
     parser.add_argument("--end-month", type=int, default=12)
     args = parser.parse_args()
 
     signals = load_monthly_signals()
     customer_master = load_customer_master()
+    account_master = load_global_account_master()
     churned_ever: set[str] = set()
     winback_eligible: set[str] = set()
 
@@ -654,6 +732,7 @@ def main() -> None:
             customer_master,
             churned_ever,
             winback_eligible,
+            account_master,
         )
         if cases == 0:
             continue
