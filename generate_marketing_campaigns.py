@@ -29,6 +29,7 @@ BASE_DIR = Path(__file__).resolve().parent
 BANKING_DIR = BASE_DIR / "banking_data"
 CORPUS_DIR = BASE_DIR / "corpus_context"
 MARKETING_SUBDIR = "marketing_campaigns"
+FIRST_MARKETING_MONTH = (2019, 7)
 
 CAMPAIGN_FIELDS = [
     "campaign_id",
@@ -525,7 +526,14 @@ def generate_campaigns(start_year: int, end_year: int, signals: dict[tuple[int, 
         yoy_values = [s.yoy_tx_growth_pct for (y, _), s in signals.items() if y == year and s.yoy_tx_growth_pct is not None]
         avg_yoy = sum(yoy_values) / len(yoy_values) if yoy_values else None
         count = campaigns_per_year(year, avg_yoy)
-        months = sorted(random.choices(range(1, 13), k=count))
+        eligible_months = [
+            month
+            for month in range(1, 13)
+            if (year, month) >= FIRST_MARKETING_MONTH
+        ]
+        if not eligible_months:
+            continue
+        months = sorted(random.choices(eligible_months, k=count))
 
         for month in months:
             annual_seen[year] = annual_seen.get(year, 0) + 1
@@ -584,6 +592,8 @@ def generate_campaigns(start_year: int, end_year: int, signals: dict[tuple[int, 
 
 
 def active_campaigns_for_month(campaigns: list[dict[str, Any]], year: int, month: int) -> list[dict[str, Any]]:
+    if (year, month) < FIRST_MARKETING_MONTH:
+        return []
     month_start = date(year, month, 1)
     month_end = date(year, month, monthrange(year, month)[1])
     active = []
@@ -596,6 +606,8 @@ def active_campaigns_for_month(campaigns: list[dict[str, Any]], year: int, month
 
 
 def campaign_starts_for_month(campaigns: list[dict[str, Any]], year: int, month: int) -> list[dict[str, Any]]:
+    if (year, month) < FIRST_MARKETING_MONTH:
+        return []
     out = []
     for campaign in campaigns:
         start = date.fromisoformat(campaign["start_date"])
@@ -633,6 +645,8 @@ def generate_month_responses(
     year: int,
     month: int,
 ) -> list[dict[str, Any]]:
+    if (year, month) < FIRST_MARKETING_MONTH:
+        return []
     customers = read_customer_month(year, month)
     if not customers:
         return []
@@ -696,6 +710,8 @@ def main() -> None:
     campaigns_written = 0
     for year in range(args.start_year, args.end_year + 1):
         for month in range(1, 13):
+            if (year, month) < FIRST_MARKETING_MONTH:
+                continue
             out_dir = BANKING_DIR / f"{year}" / f"{month:02d}" / MARKETING_SUBDIR
             month_campaigns = active_campaigns_for_month(campaigns, year, month)
             rows = generate_month_responses(campaigns, year, month)
