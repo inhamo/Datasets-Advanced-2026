@@ -12,6 +12,7 @@ from faker import Faker
 from tqdm import tqdm
 
 from commons.data_loader import get_branch_codes_by_city_data, get_retail_bank_products_data
+from commons.id_factory import make_account_id, make_application_id
 
 
 # Seasonal monthly opening patterns for retail banking in South Africa.
@@ -114,6 +115,57 @@ def generate_card_history(account_type, opening_date, history_end=date(2025, 12,
         ",".join(item[2].isoformat() for item in history),
         ",".join(item[3].isoformat() for item in history),
     )
+
+
+def build_cards_scd2(accounts_df: pd.DataFrame) -> pd.DataFrame:
+    """Move card lifecycle out of accounts into a card-management SCD2 table."""
+    fields = [
+        "card_id",
+        "account_id",
+        "customer_id",
+        "card_number_token",
+        "card_number_masked",
+        "card_type",
+        "card_status",
+        "valid_from",
+        "valid_to",
+        "issue_date",
+        "expiry_date",
+        "is_current",
+        "source_system",
+    ]
+    rows = []
+    for _, row in accounts_df.iterrows():
+        numbers = [x.strip() for x in str(row.get("card_number", "")).split(",") if x.strip() and x.strip().lower() != "nan"]
+        types = [x.strip() for x in str(row.get("card_type", "")).split(",") if x.strip() and x.strip().lower() != "nan"]
+        issues = [x.strip() for x in str(row.get("card_issue_date", "")).split(",") if x.strip() and x.strip().lower() != "nan"]
+        expiries = [x.strip() for x in str(row.get("card_expiry_date", "")).split(",") if x.strip() and x.strip().lower() != "nan"]
+        for idx, number in enumerate(numbers):
+            issue = issues[idx] if idx < len(issues) else None
+            expiry = expiries[idx] if idx < len(expiries) else None
+            next_issue = issues[idx + 1] if idx + 1 < len(issues) else None
+            valid_to = None
+            if next_issue:
+                valid_to = (pd.to_datetime(next_issue).date() - timedelta(days=1)).isoformat()
+            is_current = idx == len(numbers) - 1 and pd.isna(row.get("closure_date"))
+            rows.append(
+                {
+                    "card_id": f"CARD-{row.get('account_id')}-{idx + 1:02d}",
+                    "account_id": row.get("account_id"),
+                    "customer_id": row.get("customer_id"),
+                    "card_number_token": str(pd.util.hash_pandas_object(pd.Series([number]), index=False).iloc[0]),
+                    "card_number_masked": f"****{number[-4:]}",
+                    "card_type": types[idx] if idx < len(types) else None,
+                    "card_status": "active" if is_current else "replaced",
+                    "valid_from": issue,
+                    "valid_to": valid_to,
+                    "issue_date": issue,
+                    "expiry_date": expiry,
+                    "is_current": is_current,
+                    "source_system": "card_management",
+                }
+            )
+    return pd.DataFrame(rows, columns=fields)
 
 
 def generate_beneficiaries(customer_data, fake):
@@ -890,7 +942,7 @@ def generate_accounts(year, month=None, ultra_fast=False, counter_persist_every=
                 global_id = counter.get_next()
                 rejected_applications.append(
                     {
-                        "application_id": f"APP{global_id:07d}",
+                        "application_id": make_application_id("ACCTAPP", year, month, global_id),
                         "customer_id": customer_id,
                         "account_type": acc_type,
                         "application_date": application_date,
@@ -920,7 +972,7 @@ def generate_accounts(year, month=None, ultra_fast=False, counter_persist_every=
 
             is_primary = customer_id not in customer_primary_accounts
             if is_primary:
-                customer_primary_accounts[customer_id] = f"ACC{global_id:07d}"
+                customer_primary_accounts[customer_id] = make_account_id(year, month, global_id)
 
             statement_frequency = random.choices(["monthly", "quarterly", "annually"], weights=[0.55, 0.30, 0.15], k=1)[0]
             online_banking_enabled = random.random() < (0.85 if channel_details["opening_channel"] in ["online", "mobile_app"] else 0.65)
@@ -937,7 +989,7 @@ def generate_accounts(year, month=None, ultra_fast=False, counter_persist_every=
 
             accounts.append(
                 {
-                    "account_id": f"ACC{global_id:07d}",
+                    "account_id": make_account_id(year, month, global_id),
                     "account_number": account_number,
                     "customer_id": customer_id,
                     "bank_product_name": product_name,
@@ -1006,7 +1058,7 @@ def generate_accounts(year, month=None, ultra_fast=False, counter_persist_every=
 
             accounts.append(
                 {
-                    "account_id": f"ACC{global_id:07d}",
+                    "account_id": make_account_id(year, month, global_id),
                     "account_number": account_number,
                     "customer_id": customer_id,
                     "bank_product_name": product_name,
@@ -1071,7 +1123,7 @@ def generate_accounts(year, month=None, ultra_fast=False, counter_persist_every=
                 global_id = counter.get_next()
                 rejected_applications.append(
                     {
-                        "application_id": f"APP{global_id:07d}",
+                        "application_id": make_application_id("ACCTAPP", year, month, global_id),
                         "customer_id": customer_id,
                         "account_type": acc_type,
                         "application_date": application_date,
@@ -1101,13 +1153,13 @@ def generate_accounts(year, month=None, ultra_fast=False, counter_persist_every=
 
             is_primary = customer_id not in customer_primary_accounts
             if is_primary:
-                customer_primary_accounts[customer_id] = f"ACC{global_id:07d}"
+                customer_primary_accounts[customer_id] = make_account_id(year, month, global_id)
 
             card_number, card_type, card_issue_date, card_expiry_date = generate_card_history(acc_type, opening_date)
 
             accounts.append(
                 {
-                    "account_id": f"ACC{global_id:07d}",
+                    "account_id": make_account_id(year, month, global_id),
                     "account_number": account_number,
                     "customer_id": customer_id,
                     "bank_product_name": product_name,
@@ -1165,6 +1217,7 @@ def generate_accounts(year, month=None, ultra_fast=False, counter_persist_every=
             df_rejected = df_rejected[df_rejected["application_month"] == month].copy()
             df_rejected.drop("application_month", axis=1, inplace=True)
 
+    df_cards = build_cards_scd2(df_accounts)
     df_limits, df_status, df_enroll, df_signatories = build_history_tables(df_accounts, year)
     if ultra_fast:
         df_accounts["limits_history_json"] = "[]"
@@ -1175,6 +1228,11 @@ def generate_accounts(year, month=None, ultra_fast=False, counter_persist_every=
         df_accounts["record_last_updated_at"] = pd.Timestamp.now()
     else:
         df_accounts = add_history_json_to_main(df_accounts, df_limits, df_status, df_enroll, df_signatories)
+
+    df_accounts = df_accounts.drop(
+        columns=["card_number", "card_type", "card_issue_date", "card_expiry_date"],
+        errors="ignore",
+    )
 
     # Resolve output paths (flat if month=None, monthly if month is specified)
     output_base = get_output_path(github_repo_path, year, month, "accounts")
@@ -1195,6 +1253,7 @@ def generate_accounts(year, month=None, ultra_fast=False, counter_persist_every=
         "account_status_events": df_status,
         "account_product_enrollments": df_enroll,
         "account_signatories": df_signatories,
+        "cards": df_cards,
     }
     
     for base_name, table_df in history_mappings.items():
@@ -1207,16 +1266,11 @@ def generate_accounts(year, month=None, ultra_fast=False, counter_persist_every=
             table_df.to_csv(csv_path, index=False)
 
     if len(df_rejected) > 0:
-        rejected_path = get_output_path(github_repo_path, year, month, "rejected_applications")
-        rejected_file = rejected_path + ".parquet"
-        try:
-            df_rejected.to_parquet(rejected_file, index=False)
-        except Exception:
-            rejected_file = rejected_path + ".csv"
-            df_rejected.to_csv(rejected_file, index=False)
         month_str = f" (month {month:02d})" if month is not None else ""
-        print(f"Generated {len(df_rejected)} rejected applications for year {year}{month_str}.")
-        print(f"Saved to {rejected_file}")
+        print(
+            f"Skipped writing {len(df_rejected)} account onboarding rejections for year {year}{month_str}; "
+            "rejected credit applications are retained in the loans table."
+        )
 
     month_str = f" (month {month:02d})" if month is not None else ""
     print(f"Generated {len(df_accounts)} accounts for year {year}{month_str}.")

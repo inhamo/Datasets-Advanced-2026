@@ -61,3 +61,11 @@ def get_retail_bank_products_data() -> dict[str, Any]:
 
 def get_branch_codes_by_city_data() -> dict[str, Any]:
     return load_json("branch_codes_by_city.json")
+
+
+def get_sa_banking_realism_data() -> dict[str, Any]:
+    return load_json("sa_banking_realism.json")
+
+
+def get_realism_source_catalog_data() -> dict[str, Any]:
+    return load_json("realism_source_catalog.json")

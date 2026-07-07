@@ -11,10 +11,14 @@ import pandas as pd
 from faker import Faker
 from tqdm import tqdm
 
+from commons.data_loader import get_sa_banking_realism_data
+from commons.id_factory import make_application_id, make_loan_id
+
 
 BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = BASE_DIR / "banking_data"
 fake = Faker()
+REALISM = get_sa_banking_realism_data()
 
 
 LOAN_PRODUCTS = {
@@ -160,17 +164,27 @@ def infer_credit_score(customer: dict) -> int:
 
 
 def infer_loan_type(customer: dict, month: int) -> str:
-    if str(customer.get("customer_type", "Individual")) == "Company":
-        return "Business Loan"
+    mix_key = "company" if str(customer.get("customer_type", "Individual")).lower() == "company" else "default"
+    if month in [11, 12] and mix_key == "default":
+        mix_key = "nov_dec"
 
-    options = ["Home Loan", "Personal Loan", "Vehicle Loan", "Education Loan"]
-    weights = [0.18, 0.45, 0.27, 0.10]
-    if month in [11, 12]:
-        weights = [0.12, 0.56, 0.25, 0.07]
+    product_mix = REALISM["loan_product_mix"][mix_key]
+    options = list(product_mix.keys())
+    weights = list(product_mix.values())
+
     if int(customer.get("cnt_children", 0) or 0) == 0:
-        options.remove("Education Loan")
-        weights = [0.22, 0.50, 0.28]
+        filtered = [(option, weight) for option, weight in zip(options, weights) if option != "Education Loan"]
+        options = [option for option, _ in filtered]
+        weights = [weight for _, weight in filtered]
     return random.choices(options, weights=weights, k=1)[0]
+
+
+def loan_application_channel(year: int) -> str:
+    channel_mix = REALISM["loan_application_channel_weights"].get(
+        str(year),
+        REALISM["loan_application_channel_weights"]["2025"],
+    )
+    return random.choices(list(channel_mix.keys()), weights=list(channel_mix.values()), k=1)[0]
 
 
 def amortization_payment(principal: float, annual_rate_pct: float, term_months: int) -> float:
@@ -208,23 +222,24 @@ def generate_collateral(loan_type: str) -> tuple[str, str, float]:
 
 
 def affordability_assessment(customer: dict, proposed_installment: float) -> dict:
+    assumptions = REALISM["affordability_assumptions"]
     gross_annual_income = float(customer.get("annual_income", 300000) or 300000)
     gross_monthly_income = gross_annual_income / 12.0
 
-    net_ratio = float(np.random.normal(0.74, 0.05))
+    net_ratio = float(np.random.normal(assumptions["net_income_ratio_mean"], assumptions["net_income_ratio_sd"]))
     net_ratio = max(0.55, min(0.90, net_ratio))
     net_monthly_income = gross_monthly_income * net_ratio
 
-    expense_ratio = float(np.random.normal(0.42, 0.12))
+    expense_ratio = float(np.random.normal(assumptions["expense_ratio_mean"], assumptions["expense_ratio_sd"]))
     expense_ratio = max(0.20, min(0.75, expense_ratio))
     verified_monthly_expenses = net_monthly_income * expense_ratio
 
-    existing_debt_ratio = float(np.random.normal(0.14, 0.08))
+    existing_debt_ratio = float(np.random.normal(assumptions["existing_debt_ratio_mean"], assumptions["existing_debt_ratio_sd"]))
     existing_debt_ratio = max(0.0, min(0.45, existing_debt_ratio))
     existing_monthly_debt = net_monthly_income * existing_debt_ratio
 
     discretionary_income = net_monthly_income - verified_monthly_expenses - existing_monthly_debt
-    max_affordable_installment = max(0.0, discretionary_income * 0.85)
+    max_affordable_installment = max(0.0, discretionary_income * assumptions["installment_buffer_on_discretionary_income"])
 
     affordability_ratio = 1.0
     if max_affordable_installment > 0:
@@ -379,7 +394,7 @@ def generate_loans(year: int, month: int | None = None, target_records: int | No
     rows: list[dict] = []
     id_counter = 1
 
-    for _, row in tqdm(eligible.iterrows(), total=len(eligible), desc=f"Booking Loans {year}{'' if month is None else f'-{month:02d}'}"):
+    for _, row in tqdm(eligible.iterrows(), total=len(eligible), desc=f"Loan Applications {year}{'' if month is None else f'-{month:02d}'}"):
         customer = row.to_dict()
         customer_id = str(customer.get("customer_id"))
         account_id = str(customer.get("account_id"))
@@ -396,11 +411,7 @@ def generate_loans(year: int, month: int | None = None, target_records: int | No
                 app_end = datetime(year, next_month, 1) - timedelta(days=3)
 
         application_date = fake.date_time_between_dates(datetime_start=app_start, datetime_end=app_end)
-        channel = random.choices(
-            ["branch", "mobile_app", "broker", "call_center", "online"],
-            weights=[0.35, 0.20, 0.18, 0.10, 0.17],
-            k=1,
-        )[0]
+        channel = loan_application_channel(year)
 
         credit_score = infer_credit_score(customer)
         loan_type = infer_loan_type(customer, application_date.month)
@@ -443,28 +454,38 @@ def generate_loans(year: int, month: int | None = None, target_records: int | No
         monthly_installment = round(amortization_payment(amount_granted, nominal_rate, term_months), 2)
         debt_to_income = round(monthly_installment / max(1.0, aff["gross_monthly_income"]), 4)
 
+        decline_priors = REALISM["loan_decline_priors"]
         approval_state = "Approved"
         decline_code = None
         decline_reason = None
 
-        if random.random() < 0.03:
+        if random.random() < decline_priors["documentation_failure_rate"]:
             approval_state = "Rejected"
             decline_code, decline_reason = ncr_decline("DOCUMENTATION_FAIL")
-        elif credit_score < 520:
+        elif credit_score < decline_priors["credit_score_hard_decline"]:
             approval_state = "Rejected"
             decline_code, decline_reason = ncr_decline("CREDIT_SCORE_FAIL")
-        elif amount_granted <= 5000:
+        elif amount_granted <= decline_priors["minimum_bookable_amount"]:
             key = "COLLATERAL_SHORTFALL" if product["secured"] else "AFFORDABILITY_FAIL"
             approval_state = "Rejected"
             decline_code, decline_reason = ncr_decline(key)
         elif not aff["affordability_pass"]:
             approval_state = "Rejected"
             decline_code, decline_reason = ncr_decline("AFFORDABILITY_FAIL")
-        elif debt_to_income > 0.45:
+        elif debt_to_income > decline_priors["max_debt_to_income_for_policy"]:
             approval_state = "Rejected"
             decline_code, decline_reason = ncr_decline("POLICY_RULE_FAIL")
+        elif random.random() < decline_priors["manual_policy_decline_rate"]:
+            approval_state = "Rejected"
+            decline_code, decline_reason = ncr_decline(
+                random.choices(
+                    list(decline_priors["decline_reason_weights"].keys()),
+                    weights=list(decline_priors["decline_reason_weights"].values()),
+                    k=1,
+                )[0]
+            )
 
-        booked = approval_state == "Approved" and random.random() > 0.06
+        booked = approval_state == "Approved" and random.random() > decline_priors["post_approval_withdrawal_rate"]
         flow = workflow_timestamps(application_date, approved=(approval_state == "Approved"), booked=booked)
 
         if approval_state != "Approved":
@@ -485,11 +506,13 @@ def generate_loans(year: int, month: int | None = None, target_records: int | No
             ltv_ratio=ltv_ratio,
         )
 
-        loan_id = f"LN{year}{application_date.month:02d}{id_counter:07d}"
+        application_id = make_application_id("LOANAPP", year, application_date.month, id_counter)
+        loan_id = make_loan_id(year, application_date.month, id_counter) if flow["workflow_state"] == "Booked" else None
         id_counter += 1
 
         rows.append(
             {
+                "application_id": application_id,
                 "loan_id": loan_id,
                 "customer_id": customer_id,
                 "account_id": account_id,
@@ -523,6 +546,7 @@ def generate_loans(year: int, month: int | None = None, target_records: int | No
                 "ltv_cap": ltv_cap,
                 "loan_to_value_ratio": ltv_ratio,
                 "application_status": approval_state,
+                "application_outcome": flow["workflow_state"],
                 "ncr_decline_code": decline_code,
                 "ncr_decline_reason": decline_reason,
                 "workflow_state": flow["workflow_state"],
@@ -552,16 +576,17 @@ def generate_loans(year: int, month: int | None = None, target_records: int | No
 
     try:
         loans_df.to_parquet(output_parquet, index=False)
-        print(f"Generated {len(loans_df)} booking loans and saved to {output_parquet}")
+        print(f"Generated {len(loans_df)} loan applications and saved to {output_parquet}")
     except Exception as exc:
         print(f"Parquet export failed ({exc}). Falling back to CSV.")
         loans_df.to_csv(output_csv, index=False)
-        print(f"Generated {len(loans_df)} booking loans and saved to {output_csv}")
+        print(f"Generated {len(loans_df)} loan applications and saved to {output_csv}")
 
     if not loans_df.empty:
         booked_count = int((loans_df["workflow_state"] == "Booked").sum())
         rejected_count = int((loans_df["application_status"] == "Rejected").sum())
-        print(f"Booked: {booked_count} | Rejected: {rejected_count}")
+        withdrawn_count = int((loans_df["workflow_state"] == "Withdrawn").sum())
+        print(f"Booked: {booked_count} | Rejected: {rejected_count} | Withdrawn after approval: {withdrawn_count}")
 
     return loans_df
 
@@ -574,7 +599,7 @@ def run_year(year: int, cadence: str, month: int | None, target_records: int | N
         return
 
     if cadence == "monthly":
-        print(f"Generating loan booking data for all months in {year}...")
+        print(f"Generating loan application data for all months in {year}...")
         for m in range(1, 13):
             print(f"\n--- Month {m:02d} ---")
             generate_loans(year=year, month=m, target_records=target_records)

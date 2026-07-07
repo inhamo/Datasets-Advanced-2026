@@ -1,0 +1,68 @@
+{
+  "source_note": "Shared South African retail-banking realism assumptions for synthetic data. These are modelling priors, not official statistics.",
+  "customer_mix": {
+    "individual": 0.965,
+    "sole_proprietor": 0.018,
+    "company": 0.006,
+    "non_profit_or_trust": 0.004,
+    "stokvel_or_community_group": 0.004,
+    "public_sector_or_school": 0.003
+  },
+  "account_opening_channel_weights": {
+    "2019": {"branch": 0.58, "online": 0.16, "mobile_app": 0.14, "agent": 0.07, "call_center": 0.05},
+    "2020": {"branch": 0.44, "online": 0.22, "mobile_app": 0.22, "agent": 0.07, "call_center": 0.05},
+    "2021": {"branch": 0.38, "online": 0.23, "mobile_app": 0.27, "agent": 0.07, "call_center": 0.05},
+    "2022": {"branch": 0.34, "online": 0.24, "mobile_app": 0.30, "agent": 0.07, "call_center": 0.05},
+    "2023": {"branch": 0.31, "online": 0.23, "mobile_app": 0.34, "agent": 0.07, "call_center": 0.05},
+    "2024": {"branch": 0.29, "online": 0.22, "mobile_app": 0.37, "agent": 0.07, "call_center": 0.05},
+    "2025": {"branch": 0.27, "online": 0.21, "mobile_app": 0.40, "agent": 0.07, "call_center": 0.05}
+  },
+  "loan_product_mix": {
+    "default": {"Home Loan": 0.16, "Personal Loan": 0.49, "Vehicle Loan": 0.25, "Education Loan": 0.10},
+    "nov_dec": {"Home Loan": 0.11, "Personal Loan": 0.58, "Vehicle Loan": 0.24, "Education Loan": 0.07},
+    "company": {"Business Loan": 0.78, "Vehicle Loan": 0.12, "Personal Loan": 0.06, "Home Loan": 0.04}
+  },
+  "loan_application_channel_weights": {
+    "2019": {"branch": 0.42, "mobile_app": 0.13, "broker": 0.20, "call_center": 0.10, "online": 0.15},
+    "2020": {"branch": 0.33, "mobile_app": 0.20, "broker": 0.18, "call_center": 0.11, "online": 0.18},
+    "2021": {"branch": 0.29, "mobile_app": 0.25, "broker": 0.17, "call_center": 0.10, "online": 0.19},
+    "2022": {"branch": 0.26, "mobile_app": 0.29, "broker": 0.16, "call_center": 0.09, "online": 0.20},
+    "2023": {"branch": 0.24, "mobile_app": 0.32, "broker": 0.15, "call_center": 0.08, "online": 0.21},
+    "2024": {"branch": 0.22, "mobile_app": 0.35, "broker": 0.14, "call_center": 0.08, "online": 0.21},
+    "2025": {"branch": 0.20, "mobile_app": 0.38, "broker": 0.13, "call_center": 0.08, "online": 0.21}
+  },
+  "loan_decline_priors": {
+    "documentation_failure_rate": 0.045,
+    "post_approval_withdrawal_rate": 0.06,
+    "manual_policy_decline_rate": 0.025,
+    "minimum_bookable_amount": 5000,
+    "max_debt_to_income_for_policy": 0.45,
+    "credit_score_hard_decline": 520,
+    "decline_reason_weights": {
+      "AFFORDABILITY_FAIL": 0.36,
+      "CREDIT_SCORE_FAIL": 0.24,
+      "DOCUMENTATION_FAIL": 0.16,
+      "POLICY_RULE_FAIL": 0.14,
+      "COLLATERAL_SHORTFALL": 0.10
+    }
+  },
+  "affordability_assumptions": {
+    "net_income_ratio_mean": 0.74,
+    "net_income_ratio_sd": 0.05,
+    "expense_ratio_mean": 0.42,
+    "expense_ratio_sd": 0.12,
+    "existing_debt_ratio_mean": 0.14,
+    "existing_debt_ratio_sd": 0.08,
+    "installment_buffer_on_discretionary_income": 0.85
+  },
+  "collections_realism": {
+    "earliest_collection_age_months": 6,
+    "soft_collections_after_days_past_due": 30,
+    "legal_handover_after_days_past_due": 90
+  },
+  "beneficiary_usage": {
+    "any_beneficiary_on_account_rate": 0.38,
+    "median_beneficiary_count_when_present": 2,
+    "high_beneficiary_count_rate": 0.035
+  }
+}
