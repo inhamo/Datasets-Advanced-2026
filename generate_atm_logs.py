@@ -280,10 +280,40 @@ def all_card_lookup() -> pd.DataFrame:
     ]
     for path in sorted(BANKING_DIR.glob("20*/??/accounts_*.parquet")):
         df = pd.read_parquet(path)
-        if df.empty or "card_number" not in df.columns:
+        if df.empty:
             continue
-        keep = [c for c in cols if c in df.columns]
-        frames.append(df.loc[df["card_number"].notna(), keep].copy())
+        if "card_number" in df.columns:
+            keep = [c for c in cols if c in df.columns]
+            frames.append(df.loc[df["card_number"].notna(), keep].copy())
+
+    for path in sorted(BANKING_DIR.glob("20*/??/cards_*.parquet")):
+        cards = pd.read_parquet(path)
+        if cards.empty or "account_id" not in cards.columns:
+            continue
+
+        year = path.parent.parent.name
+        month = path.parent.name
+        accounts_path = BANKING_DIR / year / month / f"accounts_{year}_{month}.parquet"
+        accounts = pd.DataFrame()
+        if accounts_path.exists():
+            accounts = pd.read_parquet(accounts_path)
+
+        card_frame = cards.copy()
+        if "card_number" not in card_frame.columns:
+            if "card_number_token" in card_frame.columns:
+                card_frame["card_number"] = card_frame["card_number_token"]
+            elif "card_number_masked" in card_frame.columns:
+                card_frame["card_number"] = card_frame["card_number_masked"]
+        if "card_expiry_date" not in card_frame.columns and "expiry_date" in card_frame.columns:
+            card_frame["card_expiry_date"] = card_frame["expiry_date"]
+
+        if not accounts.empty and "account_id" in accounts.columns:
+            enrich_cols = [c for c in ["account_id", "account_number", "account_status", "currency", "opening_date"] if c in accounts.columns]
+            card_frame = card_frame.merge(accounts[enrich_cols].drop_duplicates("account_id"), on="account_id", how="left")
+
+        keep = [c for c in cols if c in card_frame.columns]
+        if "card_number" in card_frame.columns:
+            frames.append(card_frame.loc[card_frame["card_number"].notna(), keep].copy())
 
     if not frames:
         CARD_LOOKUP = pd.DataFrame(columns=cols)
@@ -294,6 +324,14 @@ def all_card_lookup() -> pd.DataFrame:
     lookup = lookup.drop_duplicates("account_id", keep="last")
     CARD_LOOKUP = lookup
     return CARD_LOOKUP
+
+
+def transaction_files_for_month(year: int, month: int) -> list[Path]:
+    month_dir = BANKING_DIR / str(year) / f"{month:02d}"
+    monthly = month_dir / "transactions.jsonl"
+    if monthly.exists():
+        return [monthly]
+    return sorted(month_dir.glob("??/transactions.jsonl"))
 
 
 def load_month_accounts(year: int, month: int) -> pd.DataFrame:
@@ -325,11 +363,20 @@ def load_month_accounts(year: int, month: int) -> pd.DataFrame:
 
 
 def transaction_log_rows(year: int, month: int, lookup: pd.DataFrame, rng: random.Random) -> list[dict[str, Any]]:
-    tx_path = BANKING_DIR / str(year) / f"{month:02d}" / "transactions.jsonl"
-    if not tx_path.exists():
+    tx_files = transaction_files_for_month(year, month)
+    if not tx_files:
         return []
 
-    tx = pd.read_json(tx_path, lines=True)
+    frames = []
+    for tx_path in tx_files:
+        try:
+            frames.append(pd.read_json(tx_path, lines=True))
+        except ValueError:
+            continue
+    if not frames:
+        return []
+
+    tx = pd.concat(frames, ignore_index=True)
     if tx.empty or "channel" not in tx.columns:
         return []
     tx = tx[tx["channel"].astype(str).str.lower().eq("atm")].copy()
@@ -480,14 +527,28 @@ def generate_month(year: int, month: int) -> int:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Generate ATM operational logs for monthly banking data.")
+    parser.add_argument("--year", type=int, default=None, help="Generate one year. Use with optional --month.")
+    parser.add_argument("--month", type=int, default=None, help="Generate one month, 1-12. Requires --year.")
     parser.add_argument("--start-year", type=int, default=2019)
     parser.add_argument("--end-year", type=int, default=2025)
     args = parser.parse_args()
 
+    if args.month is not None and args.year is None:
+        raise ValueError("--month requires --year")
+    if args.month is not None and (args.month < 1 or args.month > 12):
+        raise ValueError("--month must be in 1..12")
+
     total = 0
     months = 0
-    for year in range(args.start_year, args.end_year + 1):
-        for month in range(1, 13):
+    if args.year is not None:
+        month_values = [args.month] if args.month is not None else range(1, 13)
+        year_values = [args.year]
+    else:
+        year_values = range(args.start_year, args.end_year + 1)
+        month_values = range(1, 13)
+
+    for year in year_values:
+        for month in month_values:
             count = generate_month(year, month)
             if count:
                 total += count
