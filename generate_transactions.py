@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import math
 import random
@@ -225,6 +226,88 @@ CATEGORY_BASE_AMOUNTS = {
     "clothing": 550,
 }
 
+FEE_AMOUNTS = {
+    "monthly_account_fee": (5.0, 135.0),
+    "atm_withdrawal_fee": (6.0, 18.0),
+    "declined_debit_order_fee": (8.0, 55.0),
+    "cash_deposit_fee": (4.0, 35.0),
+    "international_transaction_fee": (18.0, 160.0),
+    "card_replacement_fee": (85.0, 160.0),
+    "sms_notification_fee": (1.0, 7.5),
+}
+
+INTEREST_CATEGORIES = {"credit_interest", "loan_interest", "overdraft_interest", "arrears_interest"}
+FEE_CATEGORIES = set(FEE_AMOUNTS)
+
+MERCHANT_CATALOG = {
+    "groceries": [
+        ("Shoprite", "5411"), ("Checkers", "5411"), ("Pick n Pay", "5411"),
+        ("Spar", "5411"), ("Boxer", "5411"), ("Woolworths Food", "5411"),
+    ],
+    "fuel": [
+        ("Shell", "5541"), ("Engen", "5541"), ("BP", "5541"),
+        ("Sasol", "5541"), ("TotalEnergies", "5541"), ("Astron Energy", "5541"),
+    ],
+    "transport": [
+        ("Gautrain", "4111"), ("Rea Vaya", "4111"), ("Golden Arrow", "4111"),
+        ("A Re Yeng", "4111"), ("Taxi Fare", "4121"),
+    ],
+    "airtime": [
+        ("Vodacom", "4814"), ("MTN", "4814"), ("Telkom", "4814"), ("Cell C", "4814"),
+    ],
+    "utilities": [
+        ("Eskom", "4900"), ("City Power", "4900"), ("Municipal Account", "4900"),
+        ("Rand Water", "4900"),
+    ],
+    "retail": [
+        ("Clicks", "5912"), ("Dis-Chem", "5912"), ("Pep", "5311"),
+        ("Mr Price", "5651"), ("Ackermans", "5651"), ("Game", "5311"),
+    ],
+    "restaurants": [
+        ("KFC", "5814"), ("Nando's", "5812"), ("Debonairs", "5814"),
+        ("Steers", "5814"), ("Spur", "5812"),
+    ],
+    "entertainment": [
+        ("Ster-Kinekor", "7832"), ("DStv", "4899"), ("Netflix", "4899"),
+        ("Spotify", "4899"),
+    ],
+    "alcohol": [
+        ("Tops at Spar", "5921"), ("Liquor City", "5921"), ("Checkers LiquorShop", "5921"),
+    ],
+    "clothing": [
+        ("Mr Price", "5651"), ("Edgars", "5651"), ("Woolworths", "5311"),
+        ("Ackermans", "5651"), ("Foschini", "5651"),
+    ],
+}
+
+ACQUIRER_BANK_WEIGHTS = {
+    "Standard Bank": 0.20,
+    "First National Bank": 0.20,
+    "Absa": 0.18,
+    "Nedbank": 0.17,
+    "Capitec": 0.14,
+    "Discovery Bank": 0.04,
+    "TymeBank": 0.03,
+    "PayFast": 0.02,
+    "Peach Payments": 0.02,
+}
+
+DEBIT_ORDER_RETURN_WEIGHTS = {
+    "insufficient_funds": 0.62,
+    "account_closed": 0.06,
+    "mandate_cancelled": 0.12,
+    "disputed": 0.10,
+    "invalid_account": 0.04,
+    "technical_failure": 0.06,
+}
+
+REVERSAL_REASON_WEIGHTS = {
+    "failed_debit_order_reversal": 0.38,
+    "merchant_refund": 0.30,
+    "duplicate_correction": 0.22,
+    "card_dispute_provisional_credit": 0.10,
+}
+
 
 FRAUD_PATTERN_WEIGHTS = {
     "smurfing": 0.15,
@@ -310,7 +393,7 @@ def write_jsonl(path: Path, rows: list[dict[str, Any]]) -> None:
 
 
 def transaction_day_folder(row: dict[str, Any]) -> str:
-    for field in ("transaction_date", "transaction_timestamp", "timestamp"):
+    for field in ("transaction_timestamp", "timestamp", "transaction_date"):
         value = row.get(field)
         if value in (None, ""):
             continue
@@ -913,7 +996,7 @@ def inject_errors(tx: dict[str, Any], txs_out: list[dict[str, Any]]) -> dict[str
         meta["amount_mutation"] = mutation
 
     if random.random() < ERROR_INJECTION["status_inconsistency"]:
-        tx["status"] = random.choice(["pending", "failed"]) if tx["status"] == "completed" else "completed"
+        tx["status"] = random.choice(["initiated", "authorised", "posted", "failed"]) if tx["status"] == "settled" else "settled"
         errors.append("status_inconsistency")
 
     if random.random() < ERROR_INJECTION["duplicate_transaction"]:
@@ -997,6 +1080,580 @@ def select_customers(accounts: pd.DataFrame, customers: pd.DataFrame, target_cus
     return merged.reset_index(drop=True)
 
 
+def stable_seed(*parts: Any) -> int:
+    text = "|".join(str(part) for part in parts)
+    return int(hashlib.sha256(text.encode("utf-8")).hexdigest()[:16], 16) % (2**32)
+
+
+def account_opening_datetime(account: pd.Series | dict[str, Any]) -> datetime | None:
+    opened = pd.to_datetime(account.get("opening_date"), errors="coerce")
+    if pd.isna(opened):
+        return None
+    return opened.to_pydatetime().replace(tzinfo=None)
+
+
+def initial_deposit_timestamp(account: pd.Series | dict[str, Any], year: int, month: int) -> datetime | None:
+    opened = account_opening_datetime(account)
+    if opened is None or opened.year != year or opened.month != month:
+        return None
+
+    rng = random.Random(stable_seed(account.get("account_id"), year, month, "initial_deposit_time"))
+    return opened.replace(hour=8 + rng.randint(0, 2), minute=rng.randint(0, 59), second=rng.randint(0, 59), microsecond=0)
+
+
+def first_allowed_activity_time(account: pd.Series | dict[str, Any], month_start: datetime) -> datetime:
+    deposit_ts = initial_deposit_timestamp(account, month_start.year, month_start.month)
+    if deposit_ts is not None:
+        return deposit_ts + timedelta(seconds=1)
+
+    opened = account_opening_datetime(account)
+    if opened is None:
+        return month_start
+    return max(month_start, opened.replace(hour=0, minute=0, second=0, microsecond=0))
+
+
+def weighted_key(weights: dict[str, float], rng: random.Random | None = None) -> str:
+    chooser = rng or random
+    keys = list(weights.keys())
+    vals = list(weights.values())
+    return chooser.choices(keys, weights=vals, k=1)[0]
+
+
+def month_last_day(year: int, month: int) -> datetime:
+    return (pd.Timestamp(datetime(year, month, 1)) + pd.offsets.MonthEnd(0)).to_pydatetime()
+
+
+def previous_business_day(day: datetime) -> datetime:
+    out = day
+    while out.weekday() >= 5:
+        out -= timedelta(days=1)
+    return out
+
+
+def next_business_day(day: datetime) -> datetime:
+    out = day
+    while out.weekday() >= 5:
+        out += timedelta(days=1)
+    return out
+
+
+def month_end_business_day(year: int, month: int) -> datetime:
+    return previous_business_day(month_last_day(year, month))
+
+
+def debit_order_collection_day(year: int, month: int, rng: random.Random | None = None) -> int:
+    chooser = rng or random
+    last = month_end_business_day(year, month).day
+    return chooser.choices([1, 15, 25, last], weights=[0.45, 0.18, 0.22, 0.15], k=1)[0]
+
+
+def salary_day(year: int, month: int, rng: random.Random | None = None) -> int:
+    chooser = rng or random
+    last = month_end_business_day(year, month).day
+    candidates = [d for d in range(max(1, last - 4), last + 1) if datetime(year, month, d).weekday() < 5]
+    return chooser.choice(candidates or [last])
+
+
+def lifecycle_status(status: str | None, category: str, payment_rail: str) -> str:
+    raw = str(status or "").lower()
+    if raw in {"failed", "reversed", "disputed", "refunded", "initiated", "authorised", "posted", "settled"}:
+        return raw
+    if raw in {"completed", "complete", "success", "successful", "paid", "processed"}:
+        return "settled"
+    if raw in {"pending"}:
+        return "posted"
+    if category in FEE_CATEGORIES or category in INTEREST_CATEGORIES:
+        return "settled"
+    if payment_rail == "card" and random.random() < 0.006:
+        return random.choices(["authorised", "posted", "disputed"], weights=[0.40, 0.45, 0.15], k=1)[0]
+    return "settled"
+
+
+def payment_rail_for(channel: str, category: str, debit_credit: str, year: int) -> str:
+    category = str(category).lower()
+    channel = str(channel).lower()
+    if category in FEE_CATEGORIES:
+        return "fee"
+    if category in INTEREST_CATEGORIES:
+        return "interest"
+    if category in {"loan_payment", "loan_repayment"}:
+        return "eft_debit" if debit_credit == "debit" else "eft_credit"
+    if category == "debit_order" or channel == "scheduled_payment":
+        return "debit_order" if debit_credit == "debit" else "eft_credit"
+    if channel in {"pos", "contactless"}:
+        return "card"
+    if channel == "atm":
+        return "atm"
+    if channel == "branch":
+        return "cash" if category in {"initial_deposit", "cash_deposit"} else "branch"
+    if channel == "ewallet":
+        return "ewallet"
+    if channel in {"mobile_banking_app", "online_banking", "ussd"}:
+        if category == "transfer":
+            if year >= 2023 and random.random() < 0.18:
+                return "payshap"
+            return random.choices(["eft_credit", "internal_transfer", "ewallet"], weights=[0.55, 0.30, 0.15], k=1)[0]
+        return "eft_credit" if debit_credit == "credit" else "eft_debit"
+    return "internal_transfer" if category == "transfer" else "eft_debit"
+
+
+def lifecycle_dates(tx_time: datetime, payment_rail: str, status: str) -> dict[str, str | None]:
+    initiated = tx_time
+    authorised = tx_time + timedelta(seconds=random.randint(1, 45))
+    posted = authorised
+    settlement = posted
+
+    if payment_rail == "card":
+        posted = authorised + timedelta(minutes=random.randint(2, 240))
+        settlement = next_business_day((posted + timedelta(days=random.choice([0, 1, 1, 2]))).replace(hour=9, minute=random.randint(0, 59), second=random.randint(0, 59)))
+    elif payment_rail in {"eft_credit", "eft_debit", "debit_order"}:
+        posted = authorised + timedelta(minutes=random.randint(15, 360))
+        settlement = next_business_day((posted + timedelta(days=random.choice([0, 1]))).replace(hour=8 + random.randint(0, 5), minute=random.randint(0, 59), second=random.randint(0, 59)))
+    elif payment_rail in {"atm", "cash", "branch", "fee", "interest", "internal_transfer", "ewallet", "payshap"}:
+        posted = authorised + timedelta(seconds=random.randint(5, 180))
+        settlement = posted
+
+    if status == "initiated":
+        authorised = posted = settlement = None
+    elif status == "authorised":
+        posted = settlement = None
+    elif status in {"failed"}:
+        posted = settlement = None
+    elif status == "posted":
+        settlement = None
+
+    value_dt = initiated.date() if payment_rail in {"cash", "atm", "branch", "fee", "interest", "internal_transfer", "ewallet", "payshap"} else posted.date() if posted else initiated.date()
+    return {
+        "initiated_at": initiated.isoformat(),
+        "authorised_at": authorised.isoformat() if authorised else None,
+        "posted_at": posted.isoformat() if posted else None,
+        "value_date": value_dt.isoformat(),
+        "settlement_date": settlement.date().isoformat() if settlement else None,
+    }
+
+
+def merchant_details(category: str, channel: str, tx_location: LocationPoint | None = None) -> dict[str, Any]:
+    category = str(category).lower()
+    if category not in MERCHANT_CATALOG or channel in {"branch", "scheduled_payment"}:
+        return {
+            "merchant_name": None,
+            "merchant_id": None,
+            "mcc": None,
+            "merchant_city": None,
+            "merchant_province": None,
+            "acquirer_bank": None,
+            "card_present": False if channel in {"mobile_banking_app", "online_banking", "ussd", "ewallet"} else None,
+            "entry_mode": None,
+        }
+    merchant_name, mcc = random.choice(MERCHANT_CATALOG[category])
+    card_present = channel in {"pos", "contactless", "atm"}
+    entry_weights = {
+        "contactless": {"tap": 0.96, "chip": 0.03, "magstripe": 0.01},
+        "pos": {"chip": 0.47, "tap": 0.42, "magstripe": 0.06, "manual": 0.05},
+        "mobile_banking_app": {"ecommerce": 1.0},
+        "online_banking": {"ecommerce": 1.0},
+        "ussd": {"manual": 1.0},
+        "ewallet": {"manual": 1.0},
+    }.get(channel, {"manual": 1.0})
+    city = tx_location.city if tx_location else None
+    province = tx_location.province if tx_location else None
+    return {
+        "merchant_name": merchant_name,
+        "merchant_id": f"MRC-{mcc}-{abs(hash(merchant_name)) % 100000:05d}",
+        "mcc": mcc,
+        "merchant_city": city,
+        "merchant_province": province,
+        "acquirer_bank": weighted_key(ACQUIRER_BANK_WEIGHTS),
+        "card_present": card_present,
+        "entry_mode": weighted_key(entry_weights),
+    }
+
+
+def apply_transaction_realism(tx: dict[str, Any], year: int, tx_location: LocationPoint | None = None) -> dict[str, Any]:
+    category = str(tx.get("category", "")).lower()
+    debit_credit = str(tx.get("debit_credit", "debit")).lower()
+    channel = str(tx.get("channel", "")).lower()
+    tx_time = pd.to_datetime(tx.get("transaction_timestamp"), errors="coerce")
+    if pd.isna(tx_time):
+        tx_time = pd.Timestamp.now()
+    tx_time = tx_time.to_pydatetime().replace(tzinfo=None)
+
+    payment_rail = payment_rail_for(channel, category, debit_credit, year)
+    status = lifecycle_status(str(tx.get("status")), category, payment_rail)
+    tx["payment_rail"] = payment_rail
+    tx["status"] = status
+    tx.update(lifecycle_dates(tx_time, payment_rail, status))
+
+    details = merchant_details(category, channel, tx_location)
+    if details["merchant_name"] is not None or not tx.get("merchant_name"):
+        tx["merchant_name"] = details.pop("merchant_name")
+    else:
+        details.pop("merchant_name")
+    tx.update(details)
+
+    tx.setdefault("original_transaction_id", None)
+    tx.setdefault("reversal_reason", None)
+    tx.setdefault("reversal_window_hours", None)
+    tx.setdefault("return_code", None)
+    tx.setdefault("return_reason", None)
+
+    if payment_rail == "debit_order" and status == "failed":
+        reason = weighted_key(DEBIT_ORDER_RETURN_WEIGHTS)
+        tx["return_code"] = reason
+        tx["return_reason"] = reason
+    return tx
+
+
+def base_system_transaction(
+    transaction_id: str,
+    account_id: Any,
+    customer_id: Any,
+    timestamp: datetime,
+    category: str,
+    amount: float,
+    debit_credit: str,
+    description: str,
+    channel: str = "scheduled_payment",
+    merchant_name: str | None = None,
+    status: str = "settled",
+) -> dict[str, Any]:
+    return {
+        "transaction_id": transaction_id,
+        "batch_id": f"BATCH-{timestamp:%Y%m}",
+        "generation_timestamp": pd.Timestamp.now(),
+        "transaction_timestamp": timestamp,
+        "transaction_date": timestamp.strftime("%Y-%m-%d"),
+        "transaction_time": timestamp.strftime("%H:%M:%S"),
+        "customer_id": customer_id,
+        "account_id": account_id,
+        "channel": channel,
+        "channel_metadata": {
+            "network_type": None,
+            "ip_address": None,
+            "terminal_id": None,
+            "atm_id": None,
+            "branch_code": None,
+            "gps_coordinates": None,
+            "session_duration_seconds": None,
+        },
+        "category": category,
+        "amount": round(float(amount), 2),
+        "debit_credit": debit_credit,
+        "status": status,
+        "description": description,
+        "merchant_name": merchant_name,
+        "is_fraudulent": False,
+        "fraud_pattern": None,
+        "fraud_confidence": 0.0,
+        "fraud_metadata": {},
+        "has_error": False,
+        "error_types": [],
+        "error_metadata": {},
+        "network_latency_ms": random.randint(8, 180),
+        "authorization_time_ms": random.randint(35, 450),
+        "third_party_timeout": False,
+        "stan": f"{random.randint(100000, 999999)}",
+        "rrn": f"{timestamp:%Y%m}{random.randint(100000000, 999999999)}",
+        "source_table": "system_generated",
+    }
+
+
+def salary_and_grant_rows(population: pd.DataFrame, year: int, month: int, tx_counter: int) -> tuple[list[dict[str, Any]], int]:
+    rows: list[dict[str, Any]] = []
+    for _, row in population.iterrows():
+        account_id = row.get("account_id")
+        customer_id = row.get("customer_id")
+        occupation = str(row.get("occupation", "")).lower()
+        income = float(pd.to_numeric(row.get("annual_income", 0), errors="coerce") or 0)
+        rng = random.Random(stable_seed(account_id, year, month, "salary_grant"))
+        eligible_salary = income >= 36_000 and not any(word in occupation for word in ["unemployed", "student", "pension", "retired"])
+        if eligible_salary and rng.random() < 0.78:
+            day = salary_day(year, month, rng)
+            ts = datetime(year, month, day, rng.randint(6, 15), rng.randint(0, 59), rng.randint(0, 59))
+            if ts < first_allowed_activity_time(row, datetime(year, month, 1)):
+                continue
+            monthly_salary = max(1800.0, income / 12.0 * rng.uniform(0.88, 1.04))
+            tx = base_system_transaction(
+                f"MTX{year}{month:02d}{tx_counter:09d}",
+                account_id,
+                customer_id,
+                ts,
+                "salary",
+                round(monthly_salary, 2),
+                "credit",
+                "Salary Payment",
+                "scheduled_payment",
+                "Employer Payroll",
+            )
+            rows.append(apply_transaction_realism(tx, year))
+            tx_counter += 1
+        grant_probability = 0.22 if any(word in occupation for word in ["unemployed", "pension", "retired"]) else 0.035
+        if rng.random() < grant_probability:
+            day = min(month_last_day(year, month).day, rng.choice([3, 4, 5, 6, 7]))
+            ts = datetime(year, month, day, rng.randint(7, 12), rng.randint(0, 59), rng.randint(0, 59))
+            if ts < first_allowed_activity_time(row, datetime(year, month, 1)):
+                continue
+            amount = rng.choice([510, 530, 1090, 1180, 1980, 2090]) * rng.uniform(0.98, 1.02)
+            tx = base_system_transaction(
+                f"MTX{year}{month:02d}{tx_counter:09d}",
+                account_id,
+                customer_id,
+                ts,
+                "social_grant",
+                amount,
+                "credit",
+                "Social Grant Payment",
+                "scheduled_payment",
+                "SASSA",
+            )
+            rows.append(apply_transaction_realism(tx, year))
+            tx_counter += 1
+    return rows, tx_counter
+
+
+def fee_and_interest_rows(accounts: pd.DataFrame, tx_rows: list[dict[str, Any]], year: int, month: int, tx_counter: int) -> tuple[list[dict[str, Any]], int]:
+    rows: list[dict[str, Any]] = []
+    last_bd = month_end_business_day(year, month)
+    account_frame = accounts.drop_duplicates("account_id") if "account_id" in accounts.columns else accounts
+    for _, account in account_frame.iterrows():
+        account_id = account.get("account_id")
+        customer_id = account.get("customer_id")
+        rng = random.Random(stable_seed(account_id, year, month, "fees_interest"))
+        allowed_at = first_allowed_activity_time(account, datetime(year, month, 1))
+        monthly_charge = pd.to_numeric(account.get("monthly_fee", account.get("monthly_charges", account.get("account_fee", None))), errors="coerce")
+        if pd.isna(monthly_charge):
+            monthly_charge = rng.uniform(*FEE_AMOUNTS["monthly_account_fee"])
+        if float(monthly_charge) > 0 and rng.random() < 0.92:
+            ts = last_bd.replace(hour=rng.randint(6, 18), minute=rng.randint(0, 59), second=rng.randint(0, 59))
+            if ts < allowed_at:
+                continue
+            tx = base_system_transaction(
+                f"MTX{year}{month:02d}{tx_counter:09d}",
+                account_id,
+                customer_id,
+                ts,
+                "monthly_account_fee",
+                float(monthly_charge),
+                "debit",
+                "Monthly Account Fee",
+                "scheduled_payment",
+                "Keystone Bank",
+            )
+            rows.append(apply_transaction_realism(tx, year))
+            tx_counter += 1
+        if rng.random() < 0.18:
+            ts = last_bd.replace(hour=rng.randint(8, 17), minute=rng.randint(0, 59), second=rng.randint(0, 59))
+            if ts < allowed_at:
+                continue
+            tx = base_system_transaction(
+                f"MTX{year}{month:02d}{tx_counter:09d}",
+                account_id,
+                customer_id,
+                ts,
+                "credit_interest",
+                rng.uniform(0.25, 85.0),
+                "credit",
+                "Credit Interest",
+                "scheduled_payment",
+                "Keystone Bank",
+            )
+            rows.append(apply_transaction_realism(tx, year))
+            tx_counter += 1
+        if rng.random() < 0.16:
+            ts = datetime(year, month, rng.randint(2, max(2, month_last_day(year, month).day - 2)), rng.randint(6, 19), rng.randint(0, 59), rng.randint(0, 59))
+            if ts < allowed_at:
+                continue
+            tx = base_system_transaction(
+                f"MTX{year}{month:02d}{tx_counter:09d}",
+                account_id,
+                customer_id,
+                ts,
+                "sms_notification_fee",
+                rng.uniform(*FEE_AMOUNTS["sms_notification_fee"]),
+                "debit",
+                "SMS Notification Fee",
+                "scheduled_payment",
+                "Keystone Bank",
+            )
+            rows.append(apply_transaction_realism(tx, year))
+            tx_counter += 1
+        if rng.random() < 0.012:
+            ts = datetime(year, month, rng.randint(2, max(2, month_last_day(year, month).day - 2)), rng.randint(8, 15), rng.randint(0, 59), rng.randint(0, 59))
+            if ts < allowed_at:
+                continue
+            tx = base_system_transaction(
+                f"MTX{year}{month:02d}{tx_counter:09d}",
+                account_id,
+                customer_id,
+                ts,
+                "card_replacement_fee",
+                rng.uniform(*FEE_AMOUNTS["card_replacement_fee"]),
+                "debit",
+                "Card Replacement Fee",
+                "branch",
+                "Keystone Bank",
+            )
+            rows.append(apply_transaction_realism(tx, year))
+            tx_counter += 1
+        if rng.random() < 0.035:
+            category = rng.choices(["overdraft_interest", "arrears_interest"], weights=[0.72, 0.28], k=1)[0]
+            ts = last_bd.replace(hour=rng.randint(8, 17), minute=rng.randint(0, 59), second=rng.randint(0, 59))
+            if ts < allowed_at:
+                continue
+            tx = base_system_transaction(
+                f"MTX{year}{month:02d}{tx_counter:09d}",
+                account_id,
+                customer_id,
+                ts,
+                category,
+                rng.uniform(12.0, 360.0),
+                "debit",
+                category.replace("_", " ").title(),
+                "scheduled_payment",
+                "Keystone Bank",
+            )
+            rows.append(apply_transaction_realism(tx, year))
+            tx_counter += 1
+
+    atm_candidates = [tx for tx in tx_rows if tx.get("channel") == "atm" and str(tx.get("debit_credit")).lower() == "debit"]
+    for tx in random.sample(atm_candidates, k=min(len(atm_candidates), max(0, int(len(atm_candidates) * 0.18)))):
+        ts = pd.to_datetime(tx["transaction_timestamp"]).to_pydatetime().replace(tzinfo=None) + timedelta(seconds=random.randint(20, 180))
+        fee = base_system_transaction(
+            f"MTX{year}{month:02d}{tx_counter:09d}",
+            tx.get("account_id"),
+            tx.get("customer_id"),
+            ts,
+            "atm_withdrawal_fee",
+            random.uniform(*FEE_AMOUNTS["atm_withdrawal_fee"]),
+            "debit",
+            "ATM Withdrawal Fee",
+            "scheduled_payment",
+            "Keystone Bank",
+        )
+        rows.append(apply_transaction_realism(fee, year))
+        tx_counter += 1
+
+    cash_deposits = [tx for tx in tx_rows if tx.get("category") == "initial_deposit" and tx.get("channel") in {"atm", "branch"}]
+    for tx in random.sample(cash_deposits, k=min(len(cash_deposits), max(0, int(len(cash_deposits) * 0.08)))):
+        ts = pd.to_datetime(tx["transaction_timestamp"]).to_pydatetime().replace(tzinfo=None) + timedelta(minutes=random.randint(1, 12))
+        fee = base_system_transaction(
+            f"MTX{year}{month:02d}{tx_counter:09d}",
+            tx.get("account_id"),
+            tx.get("customer_id"),
+            ts,
+            "cash_deposit_fee",
+            random.uniform(*FEE_AMOUNTS["cash_deposit_fee"]),
+            "debit",
+            "Cash Deposit Fee",
+            "scheduled_payment",
+            "Keystone Bank",
+        )
+        rows.append(apply_transaction_realism(fee, year))
+        tx_counter += 1
+
+    intl_candidates = [tx for tx in tx_rows if tx.get("payment_rail") == "card" and str(tx.get("debit_credit")).lower() == "debit"]
+    for tx in random.sample(intl_candidates, k=min(len(intl_candidates), max(0, int(len(intl_candidates) * 0.004)))):
+        ts = pd.to_datetime(tx["transaction_timestamp"]).to_pydatetime().replace(tzinfo=None) + timedelta(seconds=random.randint(30, 240))
+        fee = base_system_transaction(
+            f"MTX{year}{month:02d}{tx_counter:09d}",
+            tx.get("account_id"),
+            tx.get("customer_id"),
+            ts,
+            "international_transaction_fee",
+            random.uniform(*FEE_AMOUNTS["international_transaction_fee"]),
+            "debit",
+            "International Transaction Fee",
+            "scheduled_payment",
+            "Keystone Bank",
+        )
+        rows.append(apply_transaction_realism(fee, year))
+        tx_counter += 1
+
+    loan_accounts = {
+        (tx.get("account_id"), tx.get("customer_id"))
+        for tx in tx_rows
+        if str(tx.get("category", "")).lower() in {"loan_payment", "loan_repayment"}
+    }
+    for account_id, customer_id in loan_accounts:
+        rng = random.Random(stable_seed(account_id, year, month, "loan_interest"))
+        if rng.random() >= 0.72:
+            continue
+        ts = last_bd.replace(hour=rng.randint(6, 14), minute=rng.randint(0, 59), second=rng.randint(0, 59))
+        tx = base_system_transaction(
+            f"MTX{year}{month:02d}{tx_counter:09d}",
+            account_id,
+            customer_id,
+            ts,
+            "loan_interest",
+            rng.uniform(90.0, 1850.0),
+            "debit",
+            "Loan Interest",
+            "scheduled_payment",
+            "Keystone Bank",
+        )
+        rows.append(apply_transaction_realism(tx, year))
+        tx_counter += 1
+
+    failed_debits = [tx for tx in tx_rows if tx.get("payment_rail") == "debit_order" and tx.get("status") == "failed"]
+    for tx in failed_debits:
+        ts = pd.to_datetime(tx["transaction_timestamp"]).to_pydatetime().replace(tzinfo=None) + timedelta(hours=random.randint(1, 24))
+        fee = base_system_transaction(
+            f"MTX{year}{month:02d}{tx_counter:09d}",
+            tx.get("account_id"),
+            tx.get("customer_id"),
+            ts,
+            "declined_debit_order_fee",
+            random.uniform(*FEE_AMOUNTS["declined_debit_order_fee"]),
+            "debit",
+            "Declined Debit Order Fee",
+            "scheduled_payment",
+            "Keystone Bank",
+        )
+        rows.append(apply_transaction_realism(fee, year))
+        tx_counter += 1
+    return rows, tx_counter
+
+
+def reversal_and_refund_rows(tx_rows: list[dict[str, Any]], year: int, month: int, tx_counter: int) -> tuple[list[dict[str, Any]], int]:
+    rows: list[dict[str, Any]] = []
+    eligible = [
+        tx for tx in tx_rows
+        if tx.get("status") == "settled"
+        and tx.get("payment_rail") in {"card", "debit_order", "eft_debit"}
+        and str(tx.get("debit_credit")).lower() == "debit"
+        and float(tx.get("amount", 0) or 0) > 0
+    ]
+    target = min(len(eligible), max(1 if eligible and random.random() < 0.35 else 0, int(len(eligible) * 0.0015)))
+    for original in random.sample(eligible, k=target):
+        reason = weighted_key(REVERSAL_REASON_WEIGHTS)
+        window_hours = random.choice([2, 4, 8, 12, 24, 48, 72])
+        ts = pd.to_datetime(original["transaction_timestamp"]).to_pydatetime().replace(tzinfo=None) + timedelta(hours=window_hours, minutes=random.randint(0, 59))
+        if ts.month != month:
+            continue
+        debit_credit = "credit"
+        status = "refunded" if reason in {"merchant_refund", "card_dispute_provisional_credit"} else "reversed"
+        category = "refund" if status == "refunded" else "reversal"
+        row = base_system_transaction(
+            f"MTX{year}{month:02d}{tx_counter:09d}",
+            original.get("account_id"),
+            original.get("customer_id"),
+            ts,
+            category,
+            float(original.get("amount", 0) or 0),
+            debit_credit,
+            reason.replace("_", " ").title(),
+            "scheduled_payment",
+            original.get("merchant_name") or "Keystone Bank",
+            status,
+        )
+        row["original_transaction_id"] = original.get("transaction_id")
+        row["reversal_reason"] = reason
+        row["reversal_window_hours"] = window_hours
+        rows.append(apply_transaction_realism(row, year))
+        tx_counter += 1
+    return rows, tx_counter
+
+
 def initial_deposit_rows(accounts: pd.DataFrame, year: int, month: int) -> list[dict[str, Any]]:
     if accounts.empty or "opening_date" not in accounts.columns:
         return []
@@ -1008,7 +1665,7 @@ def initial_deposit_rows(accounts: pd.DataFrame, year: int, month: int) -> list[
         opened = account["opening_dt"]
         if pd.isna(opened):
             continue
-        rng_seed = abs(hash((str(account.get("account_id")), "initial_deposit"))) % (2**32)
+        rng_seed = stable_seed(account.get("account_id"), year, month, "initial_deposit")
         rng = random.Random(rng_seed)
         channel = "atm" if rng.random() < 0.12 else "branch"
         branch_code = str(account.get("branch_code") or "000000")
@@ -1017,7 +1674,9 @@ def initial_deposit_rows(accounts: pd.DataFrame, year: int, month: int) -> list[
             amount = round(max(20.0, float(amount)), 2)
         except Exception:
             amount = round(rng.uniform(50, 5000), 2)
-        timestamp = opened.replace(hour=8 + rng.randint(0, 7), minute=rng.randint(0, 59), second=rng.randint(0, 59))
+        timestamp = initial_deposit_timestamp(account, year, month)
+        if timestamp is None:
+            continue
         metadata = {
             "network_type": None,
             "ip_address": None,
@@ -1027,19 +1686,19 @@ def initial_deposit_rows(accounts: pd.DataFrame, year: int, month: int) -> list[
             "gps_coordinates": None,
             "session_duration_seconds": rng.randint(80, 420),
         }
-        rows.append(
-            {
+        row_out = {
                 "transaction_id": f"IDP{opened:%Y%m%d}{str(account.get('account_id'))[-7:]}",
                 "transaction_timestamp": timestamp.isoformat(),
                 "transaction_date": timestamp.strftime("%Y-%m-%d"),
                 "transaction_time": timestamp.strftime("%H:%M:%S"),
+                "customer_id": account.get("customer_id"),
                 "account_id": account.get("account_id"),
                 "channel": channel,
                 "channel_metadata": metadata,
                 "category": "initial_deposit",
                 "amount": amount,
                 "debit_credit": "credit",
-                "status": "completed",
+                "status": "settled",
                 "description": "Initial Deposit",
                 "merchant_name": "Keystone Bank",
                 "has_error": False,
@@ -1058,7 +1717,7 @@ def initial_deposit_rows(accounts: pd.DataFrame, year: int, month: int) -> list[
                     "is_weekend": timestamp.weekday() >= 5,
                 },
             }
-        )
+        rows.append(apply_transaction_realism(row_out, year))
     return rows
 
 
@@ -1124,6 +1783,10 @@ def generate_month(
             tx_timestamp = pd.to_datetime(f"{tx_date.strftime('%Y-%m-%d')} {tx_time}", errors="coerce")
             if pd.isna(tx_timestamp):
                 tx_timestamp = tx_date
+            tx_timestamp = tx_timestamp.to_pydatetime().replace(tzinfo=None)
+
+            if tx_timestamp < first_allowed_activity_time(cust.iloc[0], start):
+                continue
 
             amount = float(pd.to_numeric(r.get("amount", 0), errors="coerce") or 0)
             dc = str(r.get("debit_credit", "Debit")).lower()
@@ -1133,8 +1796,7 @@ def generate_month(
             scheduled_daily_count[key] = scheduled_daily_count.get(key, 0) + 1
             scheduled_daily_amt[key] = scheduled_daily_amt.get(key, 0.0) + amount_signed
 
-            tx_rows.append(
-                {
+            scheduled_tx = {
                     "transaction_id": f"MTX{year}{month:02d}{tx_counter:09d}",
                     "batch_id": f"BATCH-{year}{month:02d}",
                     "generation_timestamp": pd.Timestamp.now(),
@@ -1169,7 +1831,7 @@ def generate_month(
                     "rrn": f"{year}{month:02d}{random.randint(100000000, 999999999)}",
                     "source_table": "scheduled",
                 }
-            )
+            tx_rows.append(apply_transaction_realism(scheduled_tx, year))
             tx_counter += 1
 
     states: dict[str, CustomerState] = {}
@@ -1200,7 +1862,7 @@ def generate_month(
             customer_id=customer_id,
             current_location=home_location,
             preferred_transport=transport,
-            earliest_next_physical=start,
+            earliest_next_physical=first_allowed_activity_time(row, start),
             anchor_locations={"home": home_location, "work": work_location, "social": social_location},
             primary_device=primary_device,
             secondary_device=secondary_device,
@@ -1214,7 +1876,8 @@ def generate_month(
 
         schedule = CUSTOMER_SCHEDULE_TEMPLATES[schedule_key]
 
-        day = start
+        activity_start = first_allowed_activity_time(row, start)
+        day = activity_start.replace(hour=0, minute=0, second=0, microsecond=0)
         customer_tx_count = 0
         customer_channel_counts: dict[str, int] = {}
 
@@ -1247,6 +1910,8 @@ def generate_month(
 
                 for _ in range(int(tx_events)):
                     tx_time = pick_tx_time_in_window(day, block["window"])
+                    if tx_time < activity_start:
+                        continue
                     channel = weighted_choice(channels, state.channel_affinity)
                     if channel not in CHANNEL_REGISTRY:
                         continue
@@ -1293,7 +1958,7 @@ def generate_month(
                     network_type = network_type_for_channel(channel)
                     ip_address = ip_for_transaction(state, channel, network_type)
                     device_fingerprint = device_for_transaction(state, channel, is_injected_travel_anomaly)
-                    status = "completed"
+                    status = "settled"
                     if ext["load_shedding_stage"] >= 4 and channel in ["pos", "atm"] and random.random() < 0.12:
                         status = "failed"
 
@@ -1330,7 +1995,7 @@ def generate_month(
                         "debit_credit": debit_credit,
                         "status": status,
                         "description": f"{category.title()} via {channel}",
-                        "merchant_name": random.choice(["Shoprite", "Pick n Pay", "Spar", "Clicks", "Shell", "Checkers", None]),
+                        "merchant_name": None,
                         "customer_location_state_before": {
                             "province": state.current_location.province,
                             "city": state.current_location.city,
@@ -1371,6 +2036,7 @@ def generate_month(
                         "rrn": f"{year}{month:02d}{random.randint(100000000, 999999999)}",
                         "source_table": "synthetic",
                     }
+                    tx = apply_transaction_realism(tx, year, tx_location)
 
                     fraud_case = inject_fraud(tx, state)
                     if fraud_case is not None:
@@ -1405,6 +2071,15 @@ def generate_month(
                         tx["error_types"] = error_case["error_types"]
                         tx["error_metadata"] = error_case["error_metadata"]
                         error_rows.append(error_case)
+                        tx = apply_transaction_realism(tx, year, tx_location)
+
+                    final_ts = pd.to_datetime(tx["transaction_timestamp"], errors="coerce")
+                    if not pd.isna(final_ts) and final_ts.to_pydatetime().replace(tzinfo=None) < activity_start:
+                        corrected_ts = activity_start + timedelta(seconds=random.randint(1, 300))
+                        tx["transaction_timestamp"] = corrected_ts
+                        tx["transaction_date"] = corrected_ts.strftime("%Y-%m-%d")
+                        tx["transaction_time"] = corrected_ts.strftime("%H:%M:%S")
+                        tx = apply_transaction_realism(tx, year, tx_location)
 
                     tx_rows.append(tx)
                     tx_counter += 1
@@ -1510,13 +2185,25 @@ def generate_month(
             "home_city": city,
         }
 
+    opening_deposits = initial_deposit_rows(accounts, year, month)
+    tx_rows = opening_deposits + tx_rows
+
+    salary_rows, tx_counter = salary_and_grant_rows(population, year, month, tx_counter)
+    tx_rows.extend(salary_rows)
+
+    fee_interest, tx_counter = fee_and_interest_rows(accounts, tx_rows, year, month, tx_counter)
+    tx_rows.extend(fee_interest)
+
+    reversals, tx_counter = reversal_and_refund_rows(tx_rows, year, month, tx_counter)
+    tx_rows.extend(reversals)
+
     if not tx_rows:
         print(f"No transactions generated for {year}-{month:02d}")
         return {"generated": False, "reason": "no_transactions"}
 
-    tx_rows = initial_deposit_rows(accounts, year, month) + tx_rows
     tx_df = pd.DataFrame(tx_rows)
     tx_df["transaction_timestamp"] = pd.to_datetime(tx_df["transaction_timestamp"], errors="coerce")
+    tx_df = tx_df[(tx_df["transaction_timestamp"] >= start) & (tx_df["transaction_timestamp"] <= end)].copy()
     tx_df = tx_df.sort_values("transaction_timestamp").reset_index(drop=True)
 
     # Running counters and synthetic balances for metadata.
