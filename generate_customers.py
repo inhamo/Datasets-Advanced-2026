@@ -32,6 +32,37 @@ BASE_DIR = Path(__file__).resolve().parent
 OUTPUT_DIR = BASE_DIR / "banking_data"
 COMMONS_DIR = BASE_DIR / "commons"
 
+CUSTOMER_OUTPUT_DROP_COLUMNS = {
+    "customer_type",
+    "citizenship",
+    "income_band",
+    "avg_monthly_balance",
+    "balance_volatility",
+    "opening_balance",
+    "expected_monthly_txn_count",
+    "cash_deposit_ratio",
+    "merchant_spend_ratio",
+    "cross_border_txn_ratio",
+    "phone_change_count",
+    "data_issue_flags",
+    "is_minor_account",
+    "account_opened_for_minor",
+    "spouse_customer_id",
+    "family_group_id",
+    "surname_shared_with_spouse",
+    "relative_side",
+    "relative_link_customer_id",
+    "is_fraudster",
+    "fraud_type",
+    "digital_exposure_level",
+    "device_type",
+    "is_alias",
+    "alias_name",
+    "customer_segment",
+    "campaign_name",
+    "campaign_status",
+}
+
 COUNTRY_CODES = {
     "South Africa": "ZA",
     "Zimbabwe": "ZW",
@@ -1218,17 +1249,6 @@ def generate_customer_data(year, cadence="monthly", target_records=None, month=N
         df = df[df['entry_month'] == month].copy()
         df.drop('entry_month', axis=1, inplace=True)
 
-    output_base = get_output_path(OUTPUT_DIR, year, month, "customers")
-    output_dir = os.path.dirname(output_base) if month is not None else str(OUTPUT_DIR)
-    os.makedirs(output_dir, exist_ok=True)
-    output_file = Path(output_base + ".parquet")
-    try:
-        df.to_parquet(output_file, index=False)
-    except Exception as exc:
-        print(f"Parquet export failed ({exc}); writing CSV fallback.")
-        output_file = Path(output_base + ".csv")
-        df.to_csv(output_file, index=False)
-
     print(
         f"Generated {len(df)} customers (Individuals: {num_individuals}, Companies: {num_companies}) "
         f"for year {year}{' (month ' + str(month).zfill(2) + ')' if month is not None else ''} using cadence={cadence}."
@@ -1274,8 +1294,20 @@ def generate_customer_data(year, cadence="monthly", target_records=None, month=N
             print(f"- Location lookup used: Yes ({len(reference_data['provinces'])} provinces)")
             print(f"- Cadence recommendation: monthly (daily available for stream simulation)")
 
+    output_df = df.drop(columns=[col for col in CUSTOMER_OUTPUT_DROP_COLUMNS if col in df.columns])
+    output_base = get_output_path(OUTPUT_DIR, year, month, "customers")
+    output_dir = os.path.dirname(output_base) if month is not None else str(OUTPUT_DIR)
+    os.makedirs(output_dir, exist_ok=True)
+    output_file = Path(output_base + ".parquet")
+    try:
+        output_df.to_parquet(output_file, index=False)
+    except Exception as exc:
+        print(f"Parquet export failed ({exc}); writing CSV fallback.")
+        output_file = Path(output_base + ".csv")
+        output_df.to_csv(output_file, index=False)
+
     print(f"Saved to {output_file}")
-    return df
+    return output_df
 
 
 if __name__ == "__main__":
