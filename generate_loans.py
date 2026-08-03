@@ -20,6 +20,27 @@ DATA_DIR = BASE_DIR / "banking_data"
 fake = Faker()
 REALISM = get_sa_banking_realism_data()
 
+LOAN_OUTPUT_DROP_COLUMNS = {
+    "debt_to_income",
+    "affordability_pass",
+    "gross_annual_income",
+    "gross_monthly_incmoe",
+    "gross_monthly_income",
+    "net_monthly_income",
+    "verified_monthly_expenses",
+    "existing_monthly_debt",
+    "discretionary_income",
+    "max_affordable_installment",
+    "affordabilit_ratio",
+    "affordability_ratio",
+    "pricing_basis",
+    "ltv_cap",
+    "loan_to-value_ratio",
+    "loan_to_value_ratio",
+    "application_outcome",
+    "workflow_state",
+}
+
 
 LOAN_PRODUCTS = {
     "Home Loan": {
@@ -573,14 +594,15 @@ def generate_loans(year: int, month: int | None = None, target_records: int | No
     output_base.parent.mkdir(parents=True, exist_ok=True)
     output_parquet = output_base.with_suffix(".parquet")
     output_csv = output_base.with_suffix(".csv")
+    output_df = loans_df.drop(columns=[col for col in LOAN_OUTPUT_DROP_COLUMNS if col in loans_df.columns])
 
     try:
-        loans_df.to_parquet(output_parquet, index=False)
-        print(f"Generated {len(loans_df)} loan applications and saved to {output_parquet}")
+        output_df.to_parquet(output_parquet, index=False)
+        print(f"Generated {len(output_df)} loan applications and saved to {output_parquet}")
     except Exception as exc:
         print(f"Parquet export failed ({exc}). Falling back to CSV.")
-        loans_df.to_csv(output_csv, index=False)
-        print(f"Generated {len(loans_df)} loan applications and saved to {output_csv}")
+        output_df.to_csv(output_csv, index=False)
+        print(f"Generated {len(output_df)} loan applications and saved to {output_csv}")
 
     if not loans_df.empty:
         booked_count = int((loans_df["workflow_state"] == "Booked").sum())
@@ -588,7 +610,7 @@ def generate_loans(year: int, month: int | None = None, target_records: int | No
         withdrawn_count = int((loans_df["workflow_state"] == "Withdrawn").sum())
         print(f"Booked: {booked_count} | Rejected: {rejected_count} | Withdrawn after approval: {withdrawn_count}")
 
-    return loans_df
+    return output_df
 
 
 def run_year(year: int, cadence: str, month: int | None, target_records: int | None) -> None:

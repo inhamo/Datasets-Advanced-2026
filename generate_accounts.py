@@ -32,6 +32,13 @@ MONTHLY_OPENING_WEIGHTS = {
     12: 0.10,
 }
 
+ACCOUNT_OUTPUT_DROP_COLUMNS = {
+    "limits_history_json",
+    "status_events_json",
+    "product_enrollments_json",
+    "signatories_json",
+}
+
 
 def calculate_age(birth_date, target_year):
     if pd.isna(birth_date) or birth_date is None:
@@ -1230,7 +1237,13 @@ def generate_accounts(year, month=None, ultra_fast=False, counter_persist_every=
         df_accounts = add_history_json_to_main(df_accounts, df_limits, df_status, df_enroll, df_signatories)
 
     df_accounts = df_accounts.drop(
-        columns=["card_number", "card_type", "card_issue_date", "card_expiry_date"],
+        columns=[
+            "card_number",
+            "card_type",
+            "card_issue_date",
+            "card_expiry_date",
+            *sorted(ACCOUNT_OUTPUT_DROP_COLUMNS),
+        ],
         errors="ignore",
     )
 
